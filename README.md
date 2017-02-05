@@ -1,5 +1,5 @@
 # angular-web-handhistory
-AngularJS application for displaying hand history for poker games.
+AngularJS application used for displaying player's hand history for poker games.
 
 This AngularJS 1.6 single page application was built with Component architecture, file structure, one-way data flow, and lifecycle hooks in mind.
 
