@@ -1,0 +1,188 @@
+@import "../../../assets/less/app/core";
+@import "../../../assets/less/utils/text";
+@import "../../../assets/less/utils/layout";
+@import "../../../assets/less/legos";
+@import "../../../assets/less/structure/base";
+@import "../../../assets/less/structure/layouts";
+@import "../../../assets/font-awesome/less/font-awesome";
+
+// Hand History list box
+
+.HandHistory-expand {
+  color: @base-color--light;
+  vertical-align: middle;
+  display: inline-block;
+  margin-right: 5px;
+  font-size: 20px;
+  .line-height(4);
+}
+
+.HandHistoryDay-title {
+  color: #3D3D3D;
+  display: inline-block;
+  margin-top: 15px;
+  margin-bottom: 15px;
+}
+
+.HandHistoryDay-info {
+  text-align: left;
+  margin-top: 12px;
+  .line-height(4);
+}
+
+.HandHistory-icon {
+  display: inline-block;
+
+}
+
+.HandHistory-divider {
+  .Divider;
+  margin-top: 0px;
+  margin-bottom: 0px;
+}
+
+.HandHistory-divider--dotted {
+  &:extend(.HandHistory-divider);
+  .Divider--dotted;
+}
+
+//----- Game Item -----
+.HandHistory-gameItem {
+  position: relative;
+  background-color: #F5F5F5;
+  border-radius: 4px;
+  padding-left: 15px;
+  padding-right: 15px;
+  .margin-top(1);
+  .margin-bottom(1);
+
+    &:hover {
+        background-color: darken(@button--filter-backgroundColor, 4%);
+    }
+}
+
+.HandHistory-gameItem-circle {
+  &:extend(.Circle);
+  .margin-top(3);
+}
+
+.HandHistory-gameItem-gameType {
+  &:extend(.Heading--eight);
+  color: @base-color--light;
+  .margin-top(2);
+  margin-bottom: 0;
+}
+
+.HandHistory-gameItem-title {
+  &:extend(.Heading--five);
+  .line-height(@heading--five-fontSize + 12px);
+  .u-textTruncate;
+  margin-top: 0;
+  .margin-bottom(1);
+  font-weight: 500;
+  color: @base-color;
+}
+
+.HandHistory-gameItem-counter {
+  position: absolute;
+  .top(1);
+  right: 15px;
+  background-color: #D8D8D8;
+  border-radius: 15px;
+  padding: 0 10px;
+}
+
+.HandHistory-gameItem-kpi {
+  text-align: right;
+  .margin-top(5);
+  font-size: 14px;
+  color: @base-color--light;
+}
+
+.HandHistory-gameItem-kpi-value {
+  color: @base-color;
+  margin: 0 5px;
+  font-weight: 500;
+}
+
+.HandHistory-gameItem-holeCards {
+  display: inline-block;
+  margin-top: 12px;
+  margin-bottom: 6px;
+}
+
+.HandHistory-gameItem-communityCards {
+  display: inline-block;
+  margin-top: 12px;
+  margin-bottom: 6px;
+}
+
+.HandHistory-gameItem-separateCards {
+  margin-left: 22px;
+}
+
+.HandHistory-gameItem-levelText {
+  &:extend(.Heading--eight);
+  color: @base-color--light;
+  .margin-top(3);
+  margin-bottom: 0;
+}
+
+.HandHistory-gameItem-levelValue  {
+  &:extend(.Heading--six);
+  .line-height(@heading--five-fontSize + 6px);
+  margin-top: 0;
+  .margin-bottom(1);
+  font-weight: 500;
+  color: @base-color;
+}
+
+.HandHistory-gameItem-actions {
+  .margin-top(2);
+
+  .Button-icon {
+    font-size: 14px;
+
+  }
+
+  .Circle {
+    background-color: @brand-primary;
+    .height(5);
+    .width(5);
+  }
+
+  .Button {
+    opacity: 0.8;
+
+    &:hover {
+        opacity:1;
+    }
+  }
+
+  .fn-shareButton {
+    .Circle {
+      background-color: @brand-primary;
+    }
+
+    .Button-icon {
+      margin-right: 2px; // inline-block margin fix
+    }
+  }
+
+  .fn-playButton {
+    .Circle {
+      background-color: @brand-success;
+    }
+
+    .Button-icon {
+      margin-right: -3px; // inline-block margin fix
+    }
+  }
+}
+
+.HandHistory-gameItem-itm {
+  color: @brand-success;
+  margin-left: 5px;
+  font-size: 18px;
+}
+

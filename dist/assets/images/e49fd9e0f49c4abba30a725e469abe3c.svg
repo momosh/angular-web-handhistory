@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<svg width="29px" height="41px" viewBox="0 0 29 41" version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" xmlns:sketch="http://www.bohemiancoding.com/sketch/ns">
+    <!-- Generator: Sketch 3.4 (15575) - http://www.bohemiancoding.com/sketch -->
+    <title>D10</title>
+    <desc>Created with Sketch.</desc>
+    <defs></defs>
+    <g id="Page-1" stroke="none" stroke-width="1" fill="none" fill-rule="evenodd" sketch:type="MSPage">
+        <g id="D10" sketch:type="MSArtboardGroup">
+            <g id="Rectangle-12-+-10-+-Fill-86" sketch:type="MSLayerGroup">
+                <g id="Rectangle-12" stroke="#D8D8D8" fill="#F7F7F7" sketch:type="MSShapeGroup">
+                    <rect x="0" y="0" width="29" height="41" rx="3"></rect>
+                </g>
+                <text id="10" opacity="0.8" sketch:type="MSTextLayer" font-family="Droid Sans" font-size="13" font-weight="bold" sketch:alignment="middle" fill="#ED1C24">
+                    <tspan x="7.33984375" y="15">10</tspan>
+                </text>
+                <g id="Fill-86" transform="translate(9.000000, 20.000000)" fill="#ED1C24" sketch:type="MSShapeGroup">
+                    <path d="M6,0 C6,1.15609135 0.990489347,7.00010736 0,7 C0.990489347,7.00010736 6,12.8441234 6,14 C6,12.8441234 11.0095107,7.00010736 12,7 C11.0095107,7.00010736 6,1.15609135 6,0"></path>
+                </g>
+            </g>
+        </g>
+    </g>
+</svg>

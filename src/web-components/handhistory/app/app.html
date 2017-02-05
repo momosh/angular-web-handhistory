@@ -1,0 +1,17 @@
+<filter-bar
+    on-game-type-select="$ctrl.gameTypeClickHandler($event)"
+    on-game-outcome-select="$ctrl.gameOutcomeClickHandler($event)">
+</filter-bar>
+
+<game-list
+    hide="$ctrl.gameListLoading && !$ctrl.scrollLoading"
+    history="$ctrl.handhistory"
+    on-bottom-scroll="$ctrl.loadOnScroll()">
+</game-list>
+
+<spinner
+    visible="$ctrl.gameListLoading || $ctrl.scrollLoading"
+    icon="circle-o-notch"
+    size="4"
+    text="Loading">
+</spinner>

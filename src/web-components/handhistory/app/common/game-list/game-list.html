@@ -1,0 +1,31 @@
+<div bottom-scroll="$ctrl.onBottomScroll()" ng-hide="$ctrl.hide">
+
+    <section class="Panel" ng-repeat="game in $ctrl.history track by $index">
+        <div class="Panel-body">
+            <div class="Grid-row">
+                <div class="Grid-col--10" ng-click="$ctrl.collapseOneClick($index)">
+                    <div class="HandHistory-expand"><i ng-class="$ctrl.collapse[$index] ? 'fa fa-caret-down':'fa fa-caret-right'"></i></div>
+                    <h1 class="Heading--five HandHistoryDay-title">{{ game.date | date: 'EEEE, MMMM d' }}</h1>
+                </div>
+                <div class="Grid-col--2 Grid--alignRight">
+                    <div class="Media HandHistoryDay-info">
+                        <div class="Media-object--right" ng-hide="game.cashgame_count < 1">
+                            <div class="Media">
+                                <div class="Media-object--left"><span class="Circle Circle--filled--success"><i class="fa fa-usd Button-icon"></i></span></div>
+                                <div class="Media-body">{{ game.cashgame_count }}</div>
+                            </div>
+                        </div>
+                        <div class="Media-object--right" ng-hide="game.tourney_count < 1">
+                            <div class="Media">
+                                <div class="Media-object--left"><span class="Circle Circle--filled--info"><i class="fa fa-trophy Button-icon"></i></span></div>
+                                <div class="Media-body">{{ game.tourney_count }}</div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <games replays="game.replays" visible="$ctrl.collapse[$index]"></games>
+        </div>
+    </section>
+</div>

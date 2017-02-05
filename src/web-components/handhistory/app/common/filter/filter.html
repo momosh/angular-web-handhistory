@@ -1,0 +1,37 @@
+<section class="Panel">
+    <div class="Panel-heading">
+        <div class="Grid-row">
+            <div class="Grid-col--10">
+                <button class="Button Button--filter Button--flex"
+                        ng-click="$ctrl.tourneyClick()"
+                        ng-class="$ctrl.filterModel.tourney ? 'is-active': ''">
+                    <span class="Button-media"><span class="Circle Circle--filled--info"><i class="fa fa-trophy Button-icon"></i></span></span>Tournaments
+                </button>
+
+                <button class="Button Button--filter Button--flex"
+                        ng-click="$ctrl.cashClick()"
+                        ng-class="$ctrl.filterModel.cash ? 'is-active': ''">
+                    <span class="Button-media"><span class="Circle Circle--filled--primary"><i class="fa fa-usd Button-icon"></i></span></span>Cash Games
+                </button>
+
+                <button class="Button Button--filter Button--flex"
+                        ng-click="$ctrl.wonClick()"
+                        ng-class="$ctrl.filterModel.won ? 'is-active':''">
+                    <span class="Button-media"><span class="Circle Circle--filled--success"><i class="fa fa-thumbs-up Button-icon"></i></span></span>Hands Won
+                </button>
+
+                <button class="Button Button--filter Button--flex"
+                        ng-click="$ctrl.lostClick()"
+                        ng-class="$ctrl.filterModel.lost ? 'is-active':''">
+                    <span class="Button-media"><span class="Circle Circle--filled--danger"><i class="fa fa-thumbs-down Button-icon"></i></span></span>Hands Lost
+                </button>
+            </div>
+            <div class="Grid-col--2 Grid--alignRight">
+                <button class="Button Button--filter Button--flex" ng-click="$ctrl.colapseAllClick()">
+                    <span ng-show="$ctrl.collapseButtonText">Collapse all</span>
+                    <span ng-hide="$ctrl.collapseButtonText">Close all</span>
+                </button>
+            </div>
+        </div>
+    </div>
+</section>

@@ -1,0 +1,102 @@
+/********************************************
+	Circle
+********************************************/
+
+/// Naming conventions:
+// LegoName
+// LegoName--modifierName
+// LegoName-descendantName
+// LegoName.is-stateOfLego
+// Variable names:
+// @legoModifier-property ex: @buttonPrimary-borderColor
+// @legoModifier-descendand-property ex: @listGroup-itemHeading-fontSize
+
+//<div class="Circle Circle--bordered"></div>
+
+// -------------------- Variables --------------------
+
+// -------------------- Variables --------------------
+// Either use pixels, percentages or baseline units
+
+@circle-backgroundColor: #f4f4f4; //default background so that <div class="Circle"></div> does something
+@circle-color: #fff;
+@circle-dimensionUnits: 24px;
+
+// Bordered modifier
+@circle--bordered-borderWidth: 0;
+@circle--bordered-borderColor: transparent;
+@circle--bordered-borderStyle: solid;
+
+// Filled modifier
+@circle--filled-backgroundColor: @circle-backgroundColor;
+
+// Inner circle
+@circle-inner-borderColor: #fff;
+@circle-inner-backgroundColor: @circle-backgroundColor;
+
+// Rectangular fill
+@circle-fill-backgroundColor: @circle-backgroundColor;
+@circle-fill-zIndex: 10;
+
+// -------------------- Core LEGO --------------------
+
+.Circle {
+    .Circle();
+}
+
+// -------------------- Descendants --------------------
+
+// When we want a fill that we can move up and down
+.Circle-fill {
+    .Circle-fill();
+}
+
+.Circle-media {
+    .Circle-media();
+}
+
+// -------------------- Modifiers --------------------
+.Circle--filled {
+    .Circle--filled();
+}
+
+.Circle--filled--primary {
+    &:extend(.Circle--filled);
+    background-color: @brand-primary;
+    color: #fff;
+}
+
+.Circle--filled--danger {
+    &:extend(.Circle--filled);
+    background-color: @brand-danger;
+    color: #fff;
+}
+
+.Circle--filled--info {
+    &:extend(.Circle--filled);
+    background-color: @brand-info;
+    color: #fff;
+}
+
+.Circle--filled--secondary {
+    &:extend(.Circle--filled);
+    background-color: @brand-secondary;
+    color: #fff;
+}
+
+.Circle--filled--success {
+    &:extend(.Circle--filled);
+    background-color: @brand-success;
+    color: #fff;
+}
+
+.Circle--filled--warning {
+    &:extend(.Circle--filled);
+    background-color: @brand-warning;
+    color: #fff;
+}
+
+
+.Circle--bordered {
+    .Circle--bordered();
+}

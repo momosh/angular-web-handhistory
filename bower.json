@@ -1,0 +1,19 @@
+{
+  "name": "angular-web-handhistory",
+  "version": "1.0.0",
+  "homepage": "https://github.com/momosh/angular-web-handhistory",
+  "authors": [
+    "Momcilo Miladinovic <xtopala@gmail.com>"
+  ],
+  "description": "A Single Page Application used for displaying player's hand history for poker games",
+  "main": "dist/handhistory.js",
+  "moduleType": [],
+  "license": "MIT",
+  "ignore": [
+    "**/.*",
+    "node_modules",
+    "bower_components",
+    "test",
+    "tests"
+  ]
+}

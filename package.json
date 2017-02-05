@@ -1,0 +1,65 @@
+{
+  "name": "angular-web-components",
+  "version": "1.0.0",
+  "description": "Angular Web Components for Jivaro Web Site",
+  "main": "webpack.config.common.js",
+  "scripts": {
+    "clean": "rimraf node_modules dist && npm cache clean",
+    "clean:dist": "rimraf dist",
+    "clean:client": "rimraf client",
+    "clean:install": "npm run clean && npm install",
+    "clean:start": "npm clean && npm start",
+    "handhistory:dev": "npm run clean:client && npm run clean:dist && COMPONENT='handhistory' webpack --config webpack.config.dev.js --progress --profile --colors --display-error-details --display-cached",
+    "handhistory:prod": "npm run clean:client && npm run clean:dist && COMPONENT='handhistory' webpack --config webpack.config.prod.js --progress --profile --colors --display-error-details --display-cached",
+    "serve:handhistory": "COMPONENT='handhistory' webpack-dev-server --config webpack.config.dev.js --open --progress --profile --watch --content-base client/",
+    "start:handhistory": "npm run handhistory:dev && npm run serve:handhistory",
+    "start": "npm run start:handhistory"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/Jivaro/angular-web-components.git"
+  },
+  "keywords": [
+    "angular",
+    "webpack",
+    "es6"
+  ],
+  "author": "m.d.miladinovic@gmail.com",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/Jivaro/angular-web-components/issues"
+  },
+  "homepage": "https://github.com/Jivaro/angular-web-components#readme",
+  "devDependencies": {
+    "babel-core": "^6.18.2",
+    "babel-loader": "^6.2.8",
+    "babel-plugin-ng-annotate": "^0.3.2",
+    "babel-plugin-transform-decorators": "^6.13.0",
+    "babel-polyfill": "^6.16.0",
+    "babel-preset-es2015": "^6.18.0",
+    "babel-preset-stage-0": "^6.16.0",
+    "babel-register": "^6.18.0",
+    "babel-runtime": "^6.18.0",
+    "copy-webpack-plugin": "^4.0.1",
+    "css-loader": "^0.26.0",
+    "extract-text-webpack-plugin": "^1.0.1",
+    "file-loader": "^0.9.0",
+    "html-webpack-plugin": "^2.24.1",
+    "json-loader": "^0.5.4",
+    "less": "^2.7.1",
+    "less-loader": "^2.2.3",
+    "ng-annotate-loader": "^0.2.0",
+    "postcss-loader": "^1.1.1",
+    "raw-loader": "^0.5.1",
+    "rimraf": "^2.5.4",
+    "style-loader": "^0.13.1",
+    "webpack": "^1.13.3",
+    "webpack-dev-server": "^1.16.2",
+    "webpack-merge": "^1.0.2"
+  },
+  "dependencies": {
+    "angular": "^1.6.0-rc.2",
+    "legolize": "^0.4.0-beta.3",
+    "normalize.css": "^5.0.0"
+  }
+}

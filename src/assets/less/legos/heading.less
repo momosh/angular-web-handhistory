@@ -1,0 +1,139 @@
+/********************************************
+	Heading
+********************************************/
+
+/// Naming conventions:
+// LegoName
+// LegoName--modifierName
+// LegoName-descendantName
+// LegoName.is-stateOfLego
+// Variable names:
+// @legoModifier-property ex: @buttonPrimary-borderColor
+// @legoModifier-descendant-property ex: @listGroup-itemHeading-fontSize
+
+//<h1 class="Heading Heading--four">My heading</h1>
+
+// -------------------- Variables --------------------
+@heading--one-fontSize: 32px;
+@heading--two-fontSize: 30px;
+@heading--three-fontSize: 24px;
+@heading--four-fontSize: 21px;
+@heading--five-fontSize: 18px;
+@heading--six-fontSize: 16px;
+
+// Either use baseline units or pixels
+@heading-marginTop: 2;
+@heading-marginBottom: 2;
+
+// Custom
+@heading--huge-fontSize: 36px;
+@heading--huge-lineHeight: 40px;
+@heading--seven-fontSize: 14px;
+@heading--eight-fontSize: 12px;
+@heading--light-color: #7F7F7F;
+
+// -------------------- Core LEGO --------------------
+.Heading {
+    .Heading();
+    font-family: @base-heading-fontFamily;
+    font-weight: normal;
+}
+
+// -------------------- Legolize modifiers --------------------
+.Heading--one,
+.Heading--two,
+.Heading--three,
+.Heading--four,
+.Heading--five,
+.Heading--six,
+.Heading--seven,
+.Heading--eight,
+.Heading--huge,
+.Heading--fancy {
+    &:extend(.Heading);
+}
+
+.Heading--one {
+    .Heading--one();
+}
+
+.Heading--two {
+    .Heading--two();
+    color: #2ebd59;
+}
+
+.Heading--three {
+    .Heading--three();
+}
+
+.Heading--four {
+    .Heading--four();
+}
+
+.Heading--five {
+    .Heading--five();
+}
+
+.Heading--six {
+    .Heading--six();
+}
+
+// -------------------- Custom modifiers --------------------
+.Heading--huge {
+    font-size: @heading--huge-fontSize;
+    .line-height(@heading--huge-lineHeight);
+}
+
+.Heading--seven {
+    font-size: @heading--seven-fontSize;
+    .lineHeight-calculated(@heading--seven-fontSize);
+}
+
+.Heading--eight {
+    font-size: @heading--eight-fontSize;
+    .lineHeight-calculated(@heading--eight-fontSize);
+}
+.HeadingGroup {
+    .HeadingGroup-heading--top + .HeadingGroup-heading--main {
+        margin-top: 0;
+    }
+
+    .HeadingGroup-heading--bottom {
+    }
+}
+
+.Heading--light {
+    color: @heading--light-color;
+    font-weight: 300;
+}
+
+@heading--fancy-text-height: 2px;
+.Heading--fancy {
+    text-align: center;
+    overflow: hidden;
+
+    .Heading-text {
+        display: inline-block;
+        position: relative;
+
+        &:before,
+        &:after {
+            content: '';
+            position: absolute;
+            height: 2px;
+            background-color: rgba(0,0,0, .2);
+            width: 2000px;
+            top: calc(50% - 2px);
+        }
+
+        &:before {
+            left:100%;
+            margin-left: 15px;
+        }
+
+        &:after {
+            right:100%;
+            margin-right: 15px;
+        }
+    }
+}

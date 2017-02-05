@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<svg width="29px" height="41px" viewBox="0 0 29 41" version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" xmlns:sketch="http://www.bohemiancoding.com/sketch/ns">
+    <!-- Generator: Sketch 3.4 (15575) - http://www.bohemiancoding.com/sketch -->
+    <title>H4</title>
+    <desc>Created with Sketch.</desc>
+    <defs></defs>
+    <g id="Page-1" stroke="none" stroke-width="1" fill="none" fill-rule="evenodd" sketch:type="MSPage">
+        <g id="H4" sketch:type="MSArtboardGroup">
+            <g id="Rectangle-12" sketch:type="MSLayerGroup" stroke="#D8D8D8" fill="#F7F7F7">
+                <rect sketch:type="MSShapeGroup" x="0" y="0" width="29" height="41" rx="3"></rect>
+            </g>
+            <g id="Fill-81" sketch:type="MSLayerGroup" transform="translate(8.000000, 22.000000)" fill="#ED1C24">
+                <path d="M6.35098536,3.31804832 C5.74794218,-0.938837241 0.489895985,0.382443983 0.743142633,3.91355749 C0.949963817,6.64108226 4.48791235,9.37029095 6.64613497,12.846195 C8.30297776,9.37029095 12.0471945,6.64108226 12.2539777,3.91355749 C12.5072623,0.382443983 7.22739357,-0.938837241 6.64613497,3.31804832 C6.55418191,3.36656413 6.42115385,3.36656413 6.35098536,3.31804832 Z" sketch:type="MSShapeGroup"></path>
+            </g>
+            <text id="4" opacity="0.8" sketch:type="MSTextLayer" font-family="Droid Sans" font-size="13" font-weight="bold" sketch:alignment="middle" fill="#ED1C24">
+                <tspan x="11.1582031" y="16">4</tspan>
+            </text>
+        </g>
+    </g>
+</svg>

@@ -1,0 +1,124 @@
+/********************************************
+	Alert
+********************************************/
+
+/// Naming conventions:
+// LegoName
+// LegoName--modifierName
+// LegoName-descendantName
+// LegoName.is-stateOfLego
+// Variable names:
+// @legoModifier-property ex: @buttonPrimary-borderColor
+// @legoModifier-descendand-property ex: @listGroup-itemHeading-fontSize
+
+// -------------------- Core Lego Variables --------------------
+@alert-padding: 0;
+@alert-borderRadius: 3px;
+@alert-borderWidth: 1px;
+@alert-borderStyle: solid;
+@alert-borderColor: #d8d8d8;
+@alert-bgColor: #fff;
+
+@alert-marginTop: 1;
+@alert-marginBottom: 1;
+@alert-paddingSides: 0;
+
+// -------------------- Descendants Variables --------------------
+@alert-header-paddingSides: 20px;
+@alert-heading-paddingSides: 0;
+@alert-body-paddingSides: 20px;
+@alert-footer-paddingSides: 20px;
+
+// -------------------- Modifier Variables --------------------
+@alert--info-borderColor: #D8ECF7;
+@alert--info-bgColor: #D8ECF7;
+@alert--info-color: #31708f;
+
+@alert--primary-borderColor: #06a3d5;
+@alert--primary-bgColor: #EDF7FC;
+@alert--primary-color: inherit;
+
+@alert--success-borderColor: #6B904C;
+@alert--success-bgColor: #D5ECC2;
+@alert--success-color: #3c763d;
+
+@alert--warning-borderColor: #FFAE00;
+@alert--warning-bgColor: #fff5dc;
+@alert--warning-color: #8a6d3b;
+
+@alert--danger-borderColor: #d42020;
+@alert--danger-bgColor: #FFE2E2;
+@alert--danger-color: #a94442;
+
+@alert--simple-bgColor: #fff;
+@alert--simple-borderWidth: 2px;
+
+@alert-caretSize: 3px;
+
+// -------------------- Core LEGO ------------------------
+.Alert {
+  .Alert();
+  padding-left: @alert-paddingSides;
+  padding-right: @alert-paddingSides;
+  .margin-top(@alert-marginTop);
+  .margin-bottom(@alert-marginBottom);
+}
+
+// -------------------- Descendants ----------------------
+.Alert-header {
+  padding-left: @alert-header-paddingSides;
+  padding-right: @alert-header-paddingSides;
+}
+
+.Alert-heading {
+  padding-left: @alert-heading-paddingSides;
+  padding-right: @alert-heading-paddingSides;
+}
+
+.Alert-body {
+  padding-left: @alert-body-paddingSides;
+  padding-right: @alert-body-paddingSides;
+}
+
+.Alert-footer {
+  padding-left: @alert-footer-paddingSides;
+  padding-right: @alert-footer-paddingSides;
+}
+
+.Alert-closeButton {
+  .Alert-closeButton();
+}
+
+// -------------------- Type modifiers --------------------
+.Alert--info {
+  &:extend(.Alert);
+  .createAlertVariant(@alert--info-borderColor, @alert--info-bgColor);
+  color: @alert--info-color;
+}
+
+.Alert--success {
+  &:extend(.Alert);
+  .createAlertVariant(@alert--success-borderColor, @alert--success-bgColor);
+  color: @alert--success-color;
+}
+
+.Alert--primary {
+  &:extend(.Alert);
+  .createAlertVariant(@alert--primary-borderColor, @alert--primary-bgColor);
+  color: @alert--primary-color;
+}
+
+.Alert--warning {
+  &:extend(.Alert);
+  .createAlertVariant(@alert--warning-borderColor, @alert--warning-bgColor);
+  color: @alert--warning-color;
+
+  .Alert-icon {
+    color: @alert--warning-borderColor;
+  }
+}
+
+.Alert--danger {
+  &:extend(.Alert);
+  .createAlertVariant(@alert--danger-borderColor, @alert--danger-bgColor);
+}

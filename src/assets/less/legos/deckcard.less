@@ -1,0 +1,118 @@
+/********************************************
+	Cards
+********************************************/
+/// Naming conventions:
+// LegoName
+// LegoName--modifierName
+// LegoName-descendantName
+// LegoName.is-stateOfLego
+// Variable names:
+// @lego--modifier-property ex: @button--warning-borderColor
+// @lego--modifier-descendant-property ex: @listGroup-itemHeading-fontSize
+
+// -------------------- Variables --------------------
+@cardsIterations: 10;
+@card-width: 30px;
+@card-height: 42px;
+@card-marginRight: 5px;
+@card-borderRadius: 4px;
+@cardsUrl: '../../images/deck-cards';
+
+// ---------------------- Core -----------------------
+.DeckCard {
+    display: inline-block;
+    float: left;
+    height: @card-height;
+    width: @card-width;
+    margin-right: @card-marginRight;
+    border-radius: @card-borderRadius;
+    background-size: 100%;
+    background-repeat: no-repeat;
+
+    &--X,
+    &--x,
+    &--back {
+        background-image: url('@{cardsUrl}/back.svg');
+    }
+}
+
+// -------------------- Modifiers --------------------
+
+// Omaha
+.cards-4 {
+    .Replayer-holeCards {
+        .DeckCard {
+            box-shadow: -1px 1px 2px 0 rgba(0, 0, 0, 0.5);
+        }
+        .DeckCard--0 {
+            box-shadow: none;
+        }
+        .DeckCard--1 {
+            left: @card-width - (@card-width / 3);
+        }
+
+        .DeckCard--2 {
+            left: (@card-width - (@card-width / 3)) * 2;
+        }
+
+        .DeckCard--3 {
+            left: (@card-width - (@card-width / 3)) * 3;
+        }
+    }
+}
+
+// -------------------- Mixins ---------------------
+
+// Card Generator
+
+.replayerCardGenerator(@cardType) {
+    // Main card looper to generate deck-cards from 2 to 10
+    .cardLooper (@index, @cardType) when (@index > 1) {
+        @cardTypeLowerCase: e(`'@{cardType}'.toLowerCase()`);
+
+        // Generate classes. EX: .Card--2d
+        .DeckCard--@{index}@{cardTypeLowerCase} {
+            background-image: url('@{cardsUrl}/@{cardType}@{index}.svg');
+        }
+
+        // Let's put it to work - make it iterate
+        .cardLooper(@index - 1, @cardType);
+    }
+
+    // J, K, Q and A card generator
+    .otherCards(@cardType) {
+        @cardTypeLowerCase: e(`'@{cardType}'.toLowerCase()`);
+
+        .DeckCard--J@{cardTypeLowerCase} {
+            background-image: url('@{cardsUrl}/@{cardType}J.svg');
+        }
+        .DeckCard--Q@{cardTypeLowerCase} {
+            background-image: url('@{cardsUrl}/@{cardType}Q.svg');
+        }
+        .DeckCard--K@{cardTypeLowerCase} {
+            background-image: url('@{cardsUrl}/@{cardType}K.svg');
+        }
+        .DeckCard--A@{cardTypeLowerCase} {
+            background-image: url('@{cardsUrl}/@{cardType}A.svg');
+        }
+        .DeckCard--T@{cardTypeLowerCase} {
+            background-image: url('@{cardsUrl}/@{cardType}10.svg');
+        }
+    }
+
+    // Call the mixin for non-numeric deck-cards
+    .otherCards(@cardType);
+
+    // "call" the CardLooper the first time with highest value
+    .cardLooper(@cardsIterations, @cardType);
+
+    // Stop the CardLooper
+    .cardLooper(0, @cardType);
+}
+
+// Time to generate some deck-cards?
+/* .replayerCardGenerator(D); */
+.replayerCardGenerator(D);
+.replayerCardGenerator(S);
+.replayerCardGenerator(C);
+.replayerCardGenerator(H);

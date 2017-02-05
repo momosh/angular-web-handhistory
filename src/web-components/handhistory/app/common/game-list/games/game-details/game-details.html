@@ -1,0 +1,42 @@
+<div ng-repeat="detail in $ctrl.details" ng-show="$ctrl.visible">
+    <hr class="HandHistory-divider--dotted">
+
+    <div class="Grid-row">
+        <!-- Dynamically change Grid class based on number of Hole cards -->
+        <div ng-class="$ctrl.numberOfCards(detail.hole_cards) > 2 ? 'Grid-col--3--tablet Grid-col--12' : 'Grid-col--2--tablet Grid-col--12'">
+            <div class="HandHistory-gameItem-holeCards">
+                <div ng-repeat="hole in detail.hole_cards" class="DeckCard DeckCard--{{ hole }}"></div>
+            </div>
+        </div>
+        <div class="Grid-col--4--tablet Grid-col--12">
+            <div class="HandHistory-gameItem-communityCards">
+                <div ng-repeat="community in detail.cards_on_board track by $index"
+                     ng-class="$index == 3 ? 'HandHistory-gameItem-separateCards' : ''"
+                     class="DeckCard DeckCard--{{ community }}">
+                </div>
+            </div>
+        </div>
+        <div class="Grid-col--auto--tablet Grid-col--12">
+            <div class="Media">
+                <div class="Media-body">
+                    <h1 class="HandHistory-gameItem-levelText">Level</h1>
+                    <h2 class="HandHistory-gameItem-levelValue">{{ detail.currency.symbol }}{{ detail.small_blind }}/{{ detail.big_blind }}</h2>
+                </div>
+            </div>
+        </div>
+        <div class="Grid-col--auto--tablet Grid-col--12">
+            <div class="Media">
+                <div class="Media-body">
+                    <h1 class="HandHistory-gameItem-levelText">Pot Size</h1>
+                    <h2 class="HandHistory-gameItem-levelValue" ng-class="detail.pot < 0 ? 'u-textDanger' : ''">{{ detail.currency.symbol }}{{ detail.pot }}</h2>
+                </div>
+            </div>
+        </div>
+        <div class="Grid-col--2--tablet Grid-col--12 Grid--alignRight">
+            <div class="HandHistory-gameItem-actions">
+                <button class="Button Button--icon fn-shareButton" ng-click="$ctrl.click()"><span class="Circle"><i class="fa fa-share-alt Button-icon"></i></span></button>
+                <button class="Button Button--icon fn-playButton" ng-click="$ctrl.click()"><span class="Circle"><i class="fa fa-play Button-icon"></i></span></button>
+            </div>
+        </div>
+    </div>
+</div>

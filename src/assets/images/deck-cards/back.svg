@@ -1,0 +1,976 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<svg width="50px" height="70px" viewBox="0 0 50 70" version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" xmlns:sketch="http://www.bohemiancoding.com/sketch/ns">
+    <!-- Generator: Sketch 3.2.2 (9983) - http://www.bohemiancoding.com/sketch -->
+    <title>back</title>
+    <desc>Created with Sketch.</desc>
+    <defs>
+        <rect id="path-1" x="0" y="0" width="50" height="70" rx="3"></rect>
+        <rect id="path-2" x="7" y="7" width="36" height="56" rx="2"></rect>
+        <rect id="path-3" x="0" y="0" width="36" height="56" rx="2"></rect>
+    </defs>
+    <g id="Page-1" stroke="none" stroke-width="1" fill="none" fill-rule="evenodd" sketch:type="MSPage">
+        <g id="Large" sketch:type="MSArtboardGroup" transform="translate(-50.000000, -236.000000)">
+            <g id="back" sketch:type="MSLayerGroup" transform="translate(50.000000, 236.000000)">
+                <g id="Rectangle-12">
+                    <use fill="#FFFFFF" fill-rule="evenodd" sketch:type="MSShapeGroup" xlink:href="#path-1"></use>
+                    <use fill="none" xlink:href="#path-1"></use>
+                    <use fill="#F4F4F4" fill-rule="evenodd" xlink:href="#path-1"></use>
+                </g>
+                <rect id="Rectangle-67" fill="#34B6D9" sketch:type="MSShapeGroup" x="3" y="3" width="44" height="64" rx="2"></rect>
+                <g id="Rectangle-68">
+                    <use fill="#76CCE9" fill-rule="evenodd" sketch:type="MSShapeGroup" xlink:href="#path-2"></use>
+                    <use fill="none" xlink:href="#path-2"></use>
+                </g>
+                <g id="Group" transform="translate(7.000000, 7.000000)">
+                    <mask id="mask-4" sketch:name="Mask" fill="white">
+                        <use xlink:href="#path-3"></use>
+                    </mask>
+                    <g id="Mask">
+                        <use sketch:type="MSShapeGroup" xlink:href="#path-3"></use>
+                        <use xlink:href="#path-3"></use>
+                    </g>
+                    <g mask="url(#mask-4)">
+                        <g transform="translate(-6.000000, -9.000000)">
+                            <g id="Group">
+                                <rect id="Rectangle-12" fill="#8CE3FF" sketch:type="MSShapeGroup" x="0" y="1" width="3" height="3"></rect>
+                                <rect id="Rectangle-12" fill="#8CE3FF" sketch:type="MSShapeGroup" x="24" y="1" width="3" height="3"></rect>
+                                <rect id="Rectangle-12" fill="#8CE3FF" sketch:type="MSShapeGroup" x="3" y="1" width="3" height="3"></rect>
+                                <rect id="Rectangle-12" fill="#8CE3FF" sketch:type="MSShapeGroup" x="27" y="1" width="3" height="3"></rect>
+                                <rect id="Rectangle-12" fill="#8CE3FF" sketch:type="MSShapeGroup" x="3" y="4" width="3" height="3"></rect>
+                                <rect id="Rectangle-12" fill="#8CE3FF" sketch:type="MSShapeGroup" x="27" y="4" width="3" height="3"></rect>
+                                <rect id="Rectangle-12" fill="#8CE3FF" sketch:type="MSShapeGroup" x="0" y="4" width="3" height="3"></rect>
+                                <rect id="Rectangle-12" fill="#8CE3FF" sketch:type="MSShapeGroup" x="24" y="4" width="3" height="3"></rect>
+                                <rect id="Rectangle-12" opacity="0.455223881" fill="#34B6D9" sketch:type="MSShapeGroup" x="0" y="1" width="3" height="3"></rect>
+                                <rect id="Rectangle-12" opacity="0.455223881" fill="#34B6D9" sketch:type="MSShapeGroup" x="24" y="1" width="3" height="3"></rect>
+                                <rect id="Rectangle-12" opacity="0.455223881" fill="#34B6D9" sketch:type="MSShapeGroup" x="2" y="1" width="4" height="4"></rect>
+                                <rect id="Rectangle-12" opacity="0.455223881" fill="#34B6D9" sketch:type="MSShapeGroup" x="26" y="1" width="4" height="4"></rect>
+                                <rect id="Rectangle-12" opacity="0.455223881" fill="#34B6D9" sketch:type="MSShapeGroup" x="3" y="4" width="3" height="3"></rect>
+                                <rect id="Rectangle-12" opacity="0.455223881" fill="#34B6D9" sketch:type="MSShapeGroup" x="27" y="4" width="3" height="3"></rect>
+                                <rect id="Rectangle-12" opacity="0.455223881" fill="#34B6D9" sketch:type="MSShapeGroup" x="0" y="2" width="5" height="5"></rect>
+                                <rect id="Rectangle-12" opacity="0.455223881" fill="#34B6D9" sketch:type="MSShapeGroup" x="24" y="2" width="5" height="5"></rect>
+                                <g transform="translate(9.000000, 4.000000) rotate(-90.000000) translate(-9.000000, -4.000000) translate(6.000000, 1.000000)" id="Rectangle-12" sketch:type="MSShapeGroup">
+                                    <rect fill="#8CE3FF" x="0" y="0" width="3" height="3"></rect>
+                                    <rect fill="#8CE3FF" x="3" y="0" width="3" height="3"></rect>
+                                    <rect fill="#8CE3FF" x="3" y="3" width="3" height="3"></rect>
+                                    <rect fill="#8CE3FF" x="0" y="3" width="3" height="3"></rect>
+                                    <rect opacity="0.455223881" fill="#34B6D9" x="0" y="0" width="3" height="3"></rect>
+                                    <rect opacity="0.455223881" fill="#34B6D9" x="2" y="0" width="4" height="4"></rect>
+                                    <rect opacity="0.455223881" fill="#34B6D9" x="3" y="3" width="3" height="3"></rect>
+                                    <rect opacity="0.455223881" fill="#34B6D9" x="0" y="1" width="5" height="5"></rect>
+                                </g>
+                                <g transform="translate(33.000000, 4.000000) rotate(-90.000000) translate(-33.000000, -4.000000) translate(30.000000, 1.000000)" id="Rectangle-12" sketch:type="MSShapeGroup">
+                                    <rect fill="#8CE3FF" x="0" y="0" width="3" height="3"></rect>
+                                    <rect fill="#8CE3FF" x="3" y="0" width="3" height="3"></rect>
+                                    <rect fill="#8CE3FF" x="3" y="3" width="3" height="3"></rect>
+                                    <rect fill="#8CE3FF" x="0" y="3" width="3" height="3"></rect>
+                                    <rect opacity="0.455223881" fill="#34B6D9" x="0" y="0" width="3" height="3"></rect>
+                                    <rect opacity="0.455223881" fill="#34B6D9" x="2" y="0" width="4" height="4"></rect>
+                                    <rect opacity="0.455223881" fill="#34B6D9" x="3" y="3" width="3" height="3"></rect>
+                                    <rect opacity="0.455223881" fill="#34B6D9" x="0" y="1" width="5" height="5"></rect>
+                                </g>
+                                <g transform="translate(15.000000, 4.000000) rotate(-180.000000) translate(-15.000000, -4.000000) translate(12.000000, 1.000000)" id="Rectangle-12" sketch:type="MSShapeGroup">
+                                    <rect fill="#8CE3FF" x="0" y="0" width="3" height="3"></rect>
+                                    <rect fill="#8CE3FF" x="3" y="0" width="3" height="3"></rect>
+                                    <rect fill="#8CE3FF" x="3" y="3" width="3" height="3"></rect>
+                                    <rect fill="#8CE3FF" x="0" y="3" width="3" height="3"></rect>
+                                    <rect opacity="0.455223881" fill="#34B6D9" x="0" y="0" width="3" height="3"></rect>
+                                    <rect opacity="0.455223881" fill="#34B6D9" x="2" y="0" width="4" height="4"></rect>
+                                    <rect opacity="0.455223881" fill="#34B6D9" x="3" y="3" width="3" height="3"></rect>
+                                    <rect opacity="0.455223881" fill="#34B6D9" x="0" y="1" width="5" height="5"></rect>
+                                </g>
+                                <g transform="translate(39.000000, 4.000000) rotate(-180.000000) translate(-39.000000, -4.000000) translate(36.000000, 1.000000)" id="Rectangle-12" sketch:type="MSShapeGroup">
+                                    <rect fill="#8CE3FF" x="0" y="0" width="3" height="3"></rect>
+                                    <rect fill="#8CE3FF" x="3" y="0" width="3" height="3"></rect>
+                                    <rect fill="#8CE3FF" x="3" y="3" width="3" height="3"></rect>
+                                    <rect fill="#8CE3FF" x="0" y="3" width="3" height="3"></rect>
+                                    <rect opacity="0.455223881" fill="#34B6D9" x="0" y="0" width="3" height="3"></rect>
+                                    <rect opacity="0.455223881" fill="#34B6D9" x="2" y="0" width="4" height="4"></rect>
+                                    <rect opacity="0.455223881" fill="#34B6D9" x="3" y="3" width="3" height="3"></rect>
+                                    <rect opacity="0.455223881" fill="#34B6D9" x="0" y="1" width="5" height="5"></rect>
+                                </g>
+                                <g transform="translate(21.000000, 4.000000) rotate(-270.000000) translate(-21.000000, -4.000000) translate(18.000000, 1.000000)" id="Rectangle-12" sketch:type="MSShapeGroup">
+                                    <rect fill="#8CE3FF" x="0" y="0" width="3" height="3"></rect>
+                                    <rect fill="#8CE3FF" x="3" y="0" width="3" height="3"></rect>
+                                    <rect fill="#8CE3FF" x="3" y="3" width="3" height="3"></rect>
+                                    <rect fill="#8CE3FF" x="0" y="3" width="3" height="3"></rect>
+                                    <rect opacity="0.455223881" fill="#34B6D9" x="0" y="0" width="3" height="3"></rect>
+                                    <rect opacity="0.455223881" fill="#34B6D9" x="2" y="0" width="4" height="4"></rect>
+                                    <rect opacity="0.455223881" fill="#34B6D9" x="3" y="3" width="3" height="3"></rect>
+                                    <rect opacity="0.455223881" fill="#34B6D9" x="0" y="1" width="5" height="5"></rect>
+                                </g>
+                                <g transform="translate(45.000000, 4.000000) rotate(-270.000000) translate(-45.000000, -4.000000) translate(42.000000, 1.000000)" id="Rectangle-12" sketch:type="MSShapeGroup">
+                                    <rect fill="#8CE3FF" x="0" y="0" width="3" height="3"></rect>
+                                    <rect fill="#8CE3FF" x="3" y="0" width="3" height="3"></rect>
+                                    <rect fill="#8CE3FF" x="3" y="3" width="3" height="3"></rect>
+                                    <rect fill="#8CE3FF" x="0" y="3" width="3" height="3"></rect>
+                                    <rect opacity="0.455223881" fill="#34B6D9" x="0" y="0" width="3" height="3"></rect>
+                                    <rect opacity="0.455223881" fill="#34B6D9" x="2" y="0" width="4" height="4"></rect>
+                                    <rect opacity="0.455223881" fill="#34B6D9" x="3" y="3" width="3" height="3"></rect>
+                                    <rect opacity="0.455223881" fill="#34B6D9" x="0" y="1" width="5" height="5"></rect>
+                                </g>
+                            </g>
+                            <g id="Group" transform="translate(0.000000, 36.000000)">
+                                <rect id="Rectangle-12" fill="#8CE3FF" sketch:type="MSShapeGroup" x="0" y="1" width="3" height="3"></rect>
+                                <rect id="Rectangle-12" fill="#8CE3FF" sketch:type="MSShapeGroup" x="24" y="1" width="3" height="3"></rect>
+                                <rect id="Rectangle-12" fill="#8CE3FF" sketch:type="MSShapeGroup" x="3" y="1" width="3" height="3"></rect>
+                                <rect id="Rectangle-12" fill="#8CE3FF" sketch:type="MSShapeGroup" x="27" y="1" width="3" height="3"></rect>
+                                <rect id="Rectangle-12" fill="#8CE3FF" sketch:type="MSShapeGroup" x="3" y="4" width="3" height="3"></rect>
+                                <rect id="Rectangle-12" fill="#8CE3FF" sketch:type="MSShapeGroup" x="27" y="4" width="3" height="3"></rect>
+                                <rect id="Rectangle-12" fill="#8CE3FF" sketch:type="MSShapeGroup" x="0" y="4" width="3" height="3"></rect>
+                                <rect id="Rectangle-12" fill="#8CE3FF" sketch:type="MSShapeGroup" x="24" y="4" width="3" height="3"></rect>
+                                <rect id="Rectangle-12" opacity="0.455223881" fill="#34B6D9" sketch:type="MSShapeGroup" x="0" y="1" width="3" height="3"></rect>
+                                <rect id="Rectangle-12" opacity="0.455223881" fill="#34B6D9" sketch:type="MSShapeGroup" x="24" y="1" width="3" height="3"></rect>
+                                <rect id="Rectangle-12" opacity="0.455223881" fill="#34B6D9" sketch:type="MSShapeGroup" x="2" y="1" width="4" height="4"></rect>
+                                <rect id="Rectangle-12" opacity="0.455223881" fill="#34B6D9" sketch:type="MSShapeGroup" x="26" y="1" width="4" height="4"></rect>
+                                <rect id="Rectangle-12" opacity="0.455223881" fill="#34B6D9" sketch:type="MSShapeGroup" x="3" y="4" width="3" height="3"></rect>
+                                <rect id="Rectangle-12" opacity="0.455223881" fill="#34B6D9" sketch:type="MSShapeGroup" x="27" y="4" width="3" height="3"></rect>
+                                <rect id="Rectangle-12" opacity="0.455223881" fill="#34B6D9" sketch:type="MSShapeGroup" x="0" y="2" width="5" height="5"></rect>
+                                <rect id="Rectangle-12" opacity="0.455223881" fill="#34B6D9" sketch:type="MSShapeGroup" x="24" y="2" width="5" height="5"></rect>
+                                <g transform="translate(9.000000, 4.000000) rotate(-90.000000) translate(-9.000000, -4.000000) translate(6.000000, 1.000000)" id="Rectangle-12" sketch:type="MSShapeGroup">
+                                    <rect fill="#8CE3FF" x="0" y="0" width="3" height="3"></rect>
+                                    <rect fill="#8CE3FF" x="3" y="0" width="3" height="3"></rect>
+                                    <rect fill="#8CE3FF" x="3" y="3" width="3" height="3"></rect>
+                                    <rect fill="#8CE3FF" x="0" y="3" width="3" height="3"></rect>
+                                    <rect opacity="0.455223881" fill="#34B6D9" x="0" y="0" width="3" height="3"></rect>
+                                    <rect opacity="0.455223881" fill="#34B6D9" x="2" y="0" width="4" height="4"></rect>
+                                    <rect opacity="0.455223881" fill="#34B6D9" x="3" y="3" width="3" height="3"></rect>
+                                    <rect opacity="0.455223881" fill="#34B6D9" x="0" y="1" width="5" height="5"></rect>
+                                </g>
+                                <g transform="translate(33.000000, 4.000000) rotate(-90.000000) translate(-33.000000, -4.000000) translate(30.000000, 1.000000)" id="Rectangle-12" sketch:type="MSShapeGroup">
+                                    <rect fill="#8CE3FF" x="0" y="0" width="3" height="3"></rect>
+                                    <rect fill="#8CE3FF" x="3" y="0" width="3" height="3"></rect>
+                                    <rect fill="#8CE3FF" x="3" y="3" width="3" height="3"></rect>
+                                    <rect fill="#8CE3FF" x="0" y="3" width="3" height="3"></rect>
+                                    <rect opacity="0.455223881" fill="#34B6D9" x="0" y="0" width="3" height="3"></rect>
+                                    <rect opacity="0.455223881" fill="#34B6D9" x="2" y="0" width="4" height="4"></rect>
+                                    <rect opacity="0.455223881" fill="#34B6D9" x="3" y="3" width="3" height="3"></rect>
+                                    <rect opacity="0.455223881" fill="#34B6D9" x="0" y="1" width="5" height="5"></rect>
+                                </g>
+                                <g transform="translate(15.000000, 4.000000) rotate(-180.000000) translate(-15.000000, -4.000000) translate(12.000000, 1.000000)" id="Rectangle-12" sketch:type="MSShapeGroup">
+                                    <rect fill="#8CE3FF" x="0" y="0" width="3" height="3"></rect>
+                                    <rect fill="#8CE3FF" x="3" y="0" width="3" height="3"></rect>
+                                    <rect fill="#8CE3FF" x="3" y="3" width="3" height="3"></rect>
+                                    <rect fill="#8CE3FF" x="0" y="3" width="3" height="3"></rect>
+                                    <rect opacity="0.455223881" fill="#34B6D9" x="0" y="0" width="3" height="3"></rect>
+                                    <rect opacity="0.455223881" fill="#34B6D9" x="2" y="0" width="4" height="4"></rect>
+                                    <rect opacity="0.455223881" fill="#34B6D9" x="3" y="3" width="3" height="3"></rect>
+                                    <rect opacity="0.455223881" fill="#34B6D9" x="0" y="1" width="5" height="5"></rect>
+                                </g>
+                                <g transform="translate(39.000000, 4.000000) rotate(-180.000000) translate(-39.000000, -4.000000) translate(36.000000, 1.000000)" id="Rectangle-12" sketch:type="MSShapeGroup">
+                                    <rect fill="#8CE3FF" x="0" y="0" width="3" height="3"></rect>
+                                    <rect fill="#8CE3FF" x="3" y="0" width="3" height="3"></rect>
+                                    <rect fill="#8CE3FF" x="3" y="3" width="3" height="3"></rect>
+                                    <rect fill="#8CE3FF" x="0" y="3" width="3" height="3"></rect>
+                                    <rect opacity="0.455223881" fill="#34B6D9" x="0" y="0" width="3" height="3"></rect>
+                                    <rect opacity="0.455223881" fill="#34B6D9" x="2" y="0" width="4" height="4"></rect>
+                                    <rect opacity="0.455223881" fill="#34B6D9" x="3" y="3" width="3" height="3"></rect>
+                                    <rect opacity="0.455223881" fill="#34B6D9" x="0" y="1" width="5" height="5"></rect>
+                                </g>
+                                <g transform="translate(21.000000, 4.000000) rotate(-270.000000) translate(-21.000000, -4.000000) translate(18.000000, 1.000000)" id="Rectangle-12" sketch:type="MSShapeGroup">
+                                    <rect fill="#8CE3FF" x="0" y="0" width="3" height="3"></rect>
+                                    <rect fill="#8CE3FF" x="3" y="0" width="3" height="3"></rect>
+                                    <rect fill="#8CE3FF" x="3" y="3" width="3" height="3"></rect>
+                                    <rect fill="#8CE3FF" x="0" y="3" width="3" height="3"></rect>
+                                    <rect opacity="0.455223881" fill="#34B6D9" x="0" y="0" width="3" height="3"></rect>
+                                    <rect opacity="0.455223881" fill="#34B6D9" x="2" y="0" width="4" height="4"></rect>
+                                    <rect opacity="0.455223881" fill="#34B6D9" x="3" y="3" width="3" height="3"></rect>
+                                    <rect opacity="0.455223881" fill="#34B6D9" x="0" y="1" width="5" height="5"></rect>
+                                </g>
+                                <g transform="translate(45.000000, 4.000000) rotate(-270.000000) translate(-45.000000, -4.000000) translate(42.000000, 1.000000)" id="Rectangle-12" sketch:type="MSShapeGroup">
+                                    <rect fill="#8CE3FF" x="0" y="0" width="3" height="3"></rect>
+                                    <rect fill="#8CE3FF" x="3" y="0" width="3" height="3"></rect>
+                                    <rect fill="#8CE3FF" x="3" y="3" width="3" height="3"></rect>
+                                    <rect fill="#8CE3FF" x="0" y="3" width="3" height="3"></rect>
+                                    <rect opacity="0.455223881" fill="#34B6D9" x="0" y="0" width="3" height="3"></rect>
+                                    <rect opacity="0.455223881" fill="#34B6D9" x="2" y="0" width="4" height="4"></rect>
+                                    <rect opacity="0.455223881" fill="#34B6D9" x="3" y="3" width="3" height="3"></rect>
+                                    <rect opacity="0.455223881" fill="#34B6D9" x="0" y="1" width="5" height="5"></rect>
+                                </g>
+                            </g>
+                            <g id="Group" transform="translate(0.000000, 12.000000)">
+                                <rect id="Rectangle-12" fill="#8CE3FF" sketch:type="MSShapeGroup" x="0" y="1" width="3" height="3"></rect>
+                                <rect id="Rectangle-12" fill="#8CE3FF" sketch:type="MSShapeGroup" x="24" y="1" width="3" height="3"></rect>
+                                <rect id="Rectangle-12" fill="#8CE3FF" sketch:type="MSShapeGroup" x="3" y="1" width="3" height="3"></rect>
+                                <rect id="Rectangle-12" fill="#8CE3FF" sketch:type="MSShapeGroup" x="27" y="1" width="3" height="3"></rect>
+                                <rect id="Rectangle-12" fill="#8CE3FF" sketch:type="MSShapeGroup" x="3" y="4" width="3" height="3"></rect>
+                                <rect id="Rectangle-12" fill="#8CE3FF" sketch:type="MSShapeGroup" x="27" y="4" width="3" height="3"></rect>
+                                <rect id="Rectangle-12" fill="#8CE3FF" sketch:type="MSShapeGroup" x="0" y="4" width="3" height="3"></rect>
+                                <rect id="Rectangle-12" fill="#8CE3FF" sketch:type="MSShapeGroup" x="24" y="4" width="3" height="3"></rect>
+                                <rect id="Rectangle-12" opacity="0.455223881" fill="#34B6D9" sketch:type="MSShapeGroup" x="0" y="1" width="3" height="3"></rect>
+                                <rect id="Rectangle-12" opacity="0.455223881" fill="#34B6D9" sketch:type="MSShapeGroup" x="24" y="1" width="3" height="3"></rect>
+                                <rect id="Rectangle-12" opacity="0.455223881" fill="#34B6D9" sketch:type="MSShapeGroup" x="2" y="1" width="4" height="4"></rect>
+                                <rect id="Rectangle-12" opacity="0.455223881" fill="#34B6D9" sketch:type="MSShapeGroup" x="26" y="1" width="4" height="4"></rect>
+                                <rect id="Rectangle-12" opacity="0.455223881" fill="#34B6D9" sketch:type="MSShapeGroup" x="3" y="4" width="3" height="3"></rect>
+                                <rect id="Rectangle-12" opacity="0.455223881" fill="#34B6D9" sketch:type="MSShapeGroup" x="27" y="4" width="3" height="3"></rect>
+                                <rect id="Rectangle-12" opacity="0.455223881" fill="#34B6D9" sketch:type="MSShapeGroup" x="0" y="2" width="5" height="5"></rect>
+                                <rect id="Rectangle-12" opacity="0.455223881" fill="#34B6D9" sketch:type="MSShapeGroup" x="24" y="2" width="5" height="5"></rect>
+                                <g transform="translate(9.000000, 4.000000) rotate(-90.000000) translate(-9.000000, -4.000000) translate(6.000000, 1.000000)" id="Rectangle-12" sketch:type="MSShapeGroup">
+                                    <rect fill="#8CE3FF" x="0" y="0" width="3" height="3"></rect>
+                                    <rect fill="#8CE3FF" x="3" y="0" width="3" height="3"></rect>
+                                    <rect fill="#8CE3FF" x="3" y="3" width="3" height="3"></rect>
+                                    <rect fill="#8CE3FF" x="0" y="3" width="3" height="3"></rect>
+                                    <rect opacity="0.455223881" fill="#34B6D9" x="0" y="0" width="3" height="3"></rect>
+                                    <rect opacity="0.455223881" fill="#34B6D9" x="2" y="0" width="4" height="4"></rect>
+                                    <rect opacity="0.455223881" fill="#34B6D9" x="3" y="3" width="3" height="3"></rect>
+                                    <rect opacity="0.455223881" fill="#34B6D9" x="0" y="1" width="5" height="5"></rect>
+                                </g>
+                                <g transform="translate(33.000000, 4.000000) rotate(-90.000000) translate(-33.000000, -4.000000) translate(30.000000, 1.000000)" id="Rectangle-12" sketch:type="MSShapeGroup">
+                                    <rect fill="#8CE3FF" x="0" y="0" width="3" height="3"></rect>
+                                    <rect fill="#8CE3FF" x="3" y="0" width="3" height="3"></rect>
+                                    <rect fill="#8CE3FF" x="3" y="3" width="3" height="3"></rect>
+                                    <rect fill="#8CE3FF" x="0" y="3" width="3" height="3"></rect>
+                                    <rect opacity="0.455223881" fill="#34B6D9" x="0" y="0" width="3" height="3"></rect>
+                                    <rect opacity="0.455223881" fill="#34B6D9" x="2" y="0" width="4" height="4"></rect>
+                                    <rect opacity="0.455223881" fill="#34B6D9" x="3" y="3" width="3" height="3"></rect>
+                                    <rect opacity="0.455223881" fill="#34B6D9" x="0" y="1" width="5" height="5"></rect>
+                                </g>
+                                <g transform="translate(15.000000, 4.000000) rotate(-180.000000) translate(-15.000000, -4.000000) translate(12.000000, 1.000000)" id="Rectangle-12" sketch:type="MSShapeGroup">
+                                    <rect fill="#8CE3FF" x="0" y="0" width="3" height="3"></rect>
+                                    <rect fill="#8CE3FF" x="3" y="0" width="3" height="3"></rect>
+                                    <rect fill="#8CE3FF" x="3" y="3" width="3" height="3"></rect>
+                                    <rect fill="#8CE3FF" x="0" y="3" width="3" height="3"></rect>
+                                    <rect opacity="0.455223881" fill="#34B6D9" x="0" y="0" width="3" height="3"></rect>
+                                    <rect opacity="0.455223881" fill="#34B6D9" x="2" y="0" width="4" height="4"></rect>
+                                    <rect opacity="0.455223881" fill="#34B6D9" x="3" y="3" width="3" height="3"></rect>
+                                    <rect opacity="0.455223881" fill="#34B6D9" x="0" y="1" width="5" height="5"></rect>
+                                </g>
+                                <g transform="translate(39.000000, 4.000000) rotate(-180.000000) translate(-39.000000, -4.000000) translate(36.000000, 1.000000)" id="Rectangle-12" sketch:type="MSShapeGroup">
+                                    <rect fill="#8CE3FF" x="0" y="0" width="3" height="3"></rect>
+                                    <rect fill="#8CE3FF" x="3" y="0" width="3" height="3"></rect>
+                                    <rect fill="#8CE3FF" x="3" y="3" width="3" height="3"></rect>
+                                    <rect fill="#8CE3FF" x="0" y="3" width="3" height="3"></rect>
+                                    <rect opacity="0.455223881" fill="#34B6D9" x="0" y="0" width="3" height="3"></rect>
+                                    <rect opacity="0.455223881" fill="#34B6D9" x="2" y="0" width="4" height="4"></rect>
+                                    <rect opacity="0.455223881" fill="#34B6D9" x="3" y="3" width="3" height="3"></rect>
+                                    <rect opacity="0.455223881" fill="#34B6D9" x="0" y="1" width="5" height="5"></rect>
+                                </g>
+                                <g transform="translate(21.000000, 4.000000) rotate(-270.000000) translate(-21.000000, -4.000000) translate(18.000000, 1.000000)" id="Rectangle-12" sketch:type="MSShapeGroup">
+                                    <rect fill="#8CE3FF" x="0" y="0" width="3" height="3"></rect>
+                                    <rect fill="#8CE3FF" x="3" y="0" width="3" height="3"></rect>
+                                    <rect fill="#8CE3FF" x="3" y="3" width="3" height="3"></rect>
+                                    <rect fill="#8CE3FF" x="0" y="3" width="3" height="3"></rect>
+                                    <rect opacity="0.455223881" fill="#34B6D9" x="0" y="0" width="3" height="3"></rect>
+                                    <rect opacity="0.455223881" fill="#34B6D9" x="2" y="0" width="4" height="4"></rect>
+                                    <rect opacity="0.455223881" fill="#34B6D9" x="3" y="3" width="3" height="3"></rect>
+                                    <rect opacity="0.455223881" fill="#34B6D9" x="0" y="1" width="5" height="5"></rect>
+                                </g>
+                                <g transform="translate(45.000000, 4.000000) rotate(-270.000000) translate(-45.000000, -4.000000) translate(42.000000, 1.000000)" id="Rectangle-12" sketch:type="MSShapeGroup">
+                                    <rect fill="#8CE3FF" x="0" y="0" width="3" height="3"></rect>
+                                    <rect fill="#8CE3FF" x="3" y="0" width="3" height="3"></rect>
+                                    <rect fill="#8CE3FF" x="3" y="3" width="3" height="3"></rect>
+                                    <rect fill="#8CE3FF" x="0" y="3" width="3" height="3"></rect>
+                                    <rect opacity="0.455223881" fill="#34B6D9" x="0" y="0" width="3" height="3"></rect>
+                                    <rect opacity="0.455223881" fill="#34B6D9" x="2" y="0" width="4" height="4"></rect>
+                                    <rect opacity="0.455223881" fill="#34B6D9" x="3" y="3" width="3" height="3"></rect>
+                                    <rect opacity="0.455223881" fill="#34B6D9" x="0" y="1" width="5" height="5"></rect>
+                                </g>
+                            </g>
+                            <g id="Group" transform="translate(0.000000, 48.000000)">
+                                <rect id="Rectangle-12" fill="#8CE3FF" sketch:type="MSShapeGroup" x="0" y="1" width="3" height="3"></rect>
+                                <rect id="Rectangle-12" fill="#8CE3FF" sketch:type="MSShapeGroup" x="24" y="1" width="3" height="3"></rect>
+                                <rect id="Rectangle-12" fill="#8CE3FF" sketch:type="MSShapeGroup" x="3" y="1" width="3" height="3"></rect>
+                                <rect id="Rectangle-12" fill="#8CE3FF" sketch:type="MSShapeGroup" x="27" y="1" width="3" height="3"></rect>
+                                <rect id="Rectangle-12" fill="#8CE3FF" sketch:type="MSShapeGroup" x="3" y="4" width="3" height="3"></rect>
+                                <rect id="Rectangle-12" fill="#8CE3FF" sketch:type="MSShapeGroup" x="27" y="4" width="3" height="3"></rect>
+                                <rect id="Rectangle-12" fill="#8CE3FF" sketch:type="MSShapeGroup" x="0" y="4" width="3" height="3"></rect>
+                                <rect id="Rectangle-12" fill="#8CE3FF" sketch:type="MSShapeGroup" x="24" y="4" width="3" height="3"></rect>
+                                <rect id="Rectangle-12" opacity="0.455223881" fill="#34B6D9" sketch:type="MSShapeGroup" x="0" y="1" width="3" height="3"></rect>
+                                <rect id="Rectangle-12" opacity="0.455223881" fill="#34B6D9" sketch:type="MSShapeGroup" x="24" y="1" width="3" height="3"></rect>
+                                <rect id="Rectangle-12" opacity="0.455223881" fill="#34B6D9" sketch:type="MSShapeGroup" x="2" y="1" width="4" height="4"></rect>
+                                <rect id="Rectangle-12" opacity="0.455223881" fill="#34B6D9" sketch:type="MSShapeGroup" x="26" y="1" width="4" height="4"></rect>
+                                <rect id="Rectangle-12" opacity="0.455223881" fill="#34B6D9" sketch:type="MSShapeGroup" x="3" y="4" width="3" height="3"></rect>
+                                <rect id="Rectangle-12" opacity="0.455223881" fill="#34B6D9" sketch:type="MSShapeGroup" x="27" y="4" width="3" height="3"></rect>
+                                <rect id="Rectangle-12" opacity="0.455223881" fill="#34B6D9" sketch:type="MSShapeGroup" x="0" y="2" width="5" height="5"></rect>
+                                <rect id="Rectangle-12" opacity="0.455223881" fill="#34B6D9" sketch:type="MSShapeGroup" x="24" y="2" width="5" height="5"></rect>
+                                <g transform="translate(9.000000, 4.000000) rotate(-90.000000) translate(-9.000000, -4.000000) translate(6.000000, 1.000000)" id="Rectangle-12" sketch:type="MSShapeGroup">
+                                    <rect fill="#8CE3FF" x="0" y="0" width="3" height="3"></rect>
+                                    <rect fill="#8CE3FF" x="3" y="0" width="3" height="3"></rect>
+                                    <rect fill="#8CE3FF" x="3" y="3" width="3" height="3"></rect>
+                                    <rect fill="#8CE3FF" x="0" y="3" width="3" height="3"></rect>
+                                    <rect opacity="0.455223881" fill="#34B6D9" x="0" y="0" width="3" height="3"></rect>
+                                    <rect opacity="0.455223881" fill="#34B6D9" x="2" y="0" width="4" height="4"></rect>
+                                    <rect opacity="0.455223881" fill="#34B6D9" x="3" y="3" width="3" height="3"></rect>
+                                    <rect opacity="0.455223881" fill="#34B6D9" x="0" y="1" width="5" height="5"></rect>
+                                </g>
+                                <g transform="translate(33.000000, 4.000000) rotate(-90.000000) translate(-33.000000, -4.000000) translate(30.000000, 1.000000)" id="Rectangle-12" sketch:type="MSShapeGroup">
+                                    <rect fill="#8CE3FF" x="0" y="0" width="3" height="3"></rect>
+                                    <rect fill="#8CE3FF" x="3" y="0" width="3" height="3"></rect>
+                                    <rect fill="#8CE3FF" x="3" y="3" width="3" height="3"></rect>
+                                    <rect fill="#8CE3FF" x="0" y="3" width="3" height="3"></rect>
+                                    <rect opacity="0.455223881" fill="#34B6D9" x="0" y="0" width="3" height="3"></rect>
+                                    <rect opacity="0.455223881" fill="#34B6D9" x="2" y="0" width="4" height="4"></rect>
+                                    <rect opacity="0.455223881" fill="#34B6D9" x="3" y="3" width="3" height="3"></rect>
+                                    <rect opacity="0.455223881" fill="#34B6D9" x="0" y="1" width="5" height="5"></rect>
+                                </g>
+                                <g transform="translate(15.000000, 4.000000) rotate(-180.000000) translate(-15.000000, -4.000000) translate(12.000000, 1.000000)" id="Rectangle-12" sketch:type="MSShapeGroup">
+                                    <rect fill="#8CE3FF" x="0" y="0" width="3" height="3"></rect>
+                                    <rect fill="#8CE3FF" x="3" y="0" width="3" height="3"></rect>
+                                    <rect fill="#8CE3FF" x="3" y="3" width="3" height="3"></rect>
+                                    <rect fill="#8CE3FF" x="0" y="3" width="3" height="3"></rect>
+                                    <rect opacity="0.455223881" fill="#34B6D9" x="0" y="0" width="3" height="3"></rect>
+                                    <rect opacity="0.455223881" fill="#34B6D9" x="2" y="0" width="4" height="4"></rect>
+                                    <rect opacity="0.455223881" fill="#34B6D9" x="3" y="3" width="3" height="3"></rect>
+                                    <rect opacity="0.455223881" fill="#34B6D9" x="0" y="1" width="5" height="5"></rect>
+                                </g>
+                                <g transform="translate(39.000000, 4.000000) rotate(-180.000000) translate(-39.000000, -4.000000) translate(36.000000, 1.000000)" id="Rectangle-12" sketch:type="MSShapeGroup">
+                                    <rect fill="#8CE3FF" x="0" y="0" width="3" height="3"></rect>
+                                    <rect fill="#8CE3FF" x="3" y="0" width="3" height="3"></rect>
+                                    <rect fill="#8CE3FF" x="3" y="3" width="3" height="3"></rect>
+                                    <rect fill="#8CE3FF" x="0" y="3" width="3" height="3"></rect>
+                                    <rect opacity="0.455223881" fill="#34B6D9" x="0" y="0" width="3" height="3"></rect>
+                                    <rect opacity="0.455223881" fill="#34B6D9" x="2" y="0" width="4" height="4"></rect>
+                                    <rect opacity="0.455223881" fill="#34B6D9" x="3" y="3" width="3" height="3"></rect>
+                                    <rect opacity="0.455223881" fill="#34B6D9" x="0" y="1" width="5" height="5"></rect>
+                                </g>
+                                <g transform="translate(21.000000, 4.000000) rotate(-270.000000) translate(-21.000000, -4.000000) translate(18.000000, 1.000000)" id="Rectangle-12" sketch:type="MSShapeGroup">
+                                    <rect fill="#8CE3FF" x="0" y="0" width="3" height="3"></rect>
+                                    <rect fill="#8CE3FF" x="3" y="0" width="3" height="3"></rect>
+                                    <rect fill="#8CE3FF" x="3" y="3" width="3" height="3"></rect>
+                                    <rect fill="#8CE3FF" x="0" y="3" width="3" height="3"></rect>
+                                    <rect opacity="0.455223881" fill="#34B6D9" x="0" y="0" width="3" height="3"></rect>
+                                    <rect opacity="0.455223881" fill="#34B6D9" x="2" y="0" width="4" height="4"></rect>
+                                    <rect opacity="0.455223881" fill="#34B6D9" x="3" y="3" width="3" height="3"></rect>
+                                    <rect opacity="0.455223881" fill="#34B6D9" x="0" y="1" width="5" height="5"></rect>
+                                </g>
+                                <g transform="translate(45.000000, 4.000000) rotate(-270.000000) translate(-45.000000, -4.000000) translate(42.000000, 1.000000)" id="Rectangle-12" sketch:type="MSShapeGroup">
+                                    <rect fill="#8CE3FF" x="0" y="0" width="3" height="3"></rect>
+                                    <rect fill="#8CE3FF" x="3" y="0" width="3" height="3"></rect>
+                                    <rect fill="#8CE3FF" x="3" y="3" width="3" height="3"></rect>
+                                    <rect fill="#8CE3FF" x="0" y="3" width="3" height="3"></rect>
+                                    <rect opacity="0.455223881" fill="#34B6D9" x="0" y="0" width="3" height="3"></rect>
+                                    <rect opacity="0.455223881" fill="#34B6D9" x="2" y="0" width="4" height="4"></rect>
+                                    <rect opacity="0.455223881" fill="#34B6D9" x="3" y="3" width="3" height="3"></rect>
+                                    <rect opacity="0.455223881" fill="#34B6D9" x="0" y="1" width="5" height="5"></rect>
+                                </g>
+                            </g>
+                            <g id="Group" transform="translate(24.000000, 10.000000) rotate(-180.000000) translate(-24.000000, -10.000000) translate(0.000000, 6.000000)">
+                                <rect id="Rectangle-12" fill="#8CE3FF" sketch:type="MSShapeGroup" x="0" y="1" width="3" height="3"></rect>
+                                <rect id="Rectangle-12" fill="#8CE3FF" sketch:type="MSShapeGroup" x="24" y="1" width="3" height="3"></rect>
+                                <rect id="Rectangle-12" fill="#8CE3FF" sketch:type="MSShapeGroup" x="3" y="1" width="3" height="3"></rect>
+                                <rect id="Rectangle-12" fill="#8CE3FF" sketch:type="MSShapeGroup" x="27" y="1" width="3" height="3"></rect>
+                                <rect id="Rectangle-12" fill="#8CE3FF" sketch:type="MSShapeGroup" x="3" y="4" width="3" height="3"></rect>
+                                <rect id="Rectangle-12" fill="#8CE3FF" sketch:type="MSShapeGroup" x="27" y="4" width="3" height="3"></rect>
+                                <rect id="Rectangle-12" fill="#8CE3FF" sketch:type="MSShapeGroup" x="0" y="4" width="3" height="3"></rect>
+                                <rect id="Rectangle-12" fill="#8CE3FF" sketch:type="MSShapeGroup" x="24" y="4" width="3" height="3"></rect>
+                                <rect id="Rectangle-12" opacity="0.455223881" fill="#34B6D9" sketch:type="MSShapeGroup" x="0" y="1" width="3" height="3"></rect>
+                                <rect id="Rectangle-12" opacity="0.455223881" fill="#34B6D9" sketch:type="MSShapeGroup" x="24" y="1" width="3" height="3"></rect>
+                                <rect id="Rectangle-12" opacity="0.455223881" fill="#34B6D9" sketch:type="MSShapeGroup" x="2" y="1" width="4" height="4"></rect>
+                                <rect id="Rectangle-12" opacity="0.455223881" fill="#34B6D9" sketch:type="MSShapeGroup" x="26" y="1" width="4" height="4"></rect>
+                                <rect id="Rectangle-12" opacity="0.455223881" fill="#34B6D9" sketch:type="MSShapeGroup" x="3" y="4" width="3" height="3"></rect>
+                                <rect id="Rectangle-12" opacity="0.455223881" fill="#34B6D9" sketch:type="MSShapeGroup" x="27" y="4" width="3" height="3"></rect>
+                                <rect id="Rectangle-12" opacity="0.455223881" fill="#34B6D9" sketch:type="MSShapeGroup" x="0" y="2" width="5" height="5"></rect>
+                                <rect id="Rectangle-12" opacity="0.455223881" fill="#34B6D9" sketch:type="MSShapeGroup" x="24" y="2" width="5" height="5"></rect>
+                                <g transform="translate(9.000000, 4.000000) rotate(-90.000000) translate(-9.000000, -4.000000) translate(6.000000, 1.000000)" id="Rectangle-12" sketch:type="MSShapeGroup">
+                                    <rect fill="#8CE3FF" x="0" y="0" width="3" height="3"></rect>
+                                    <rect fill="#8CE3FF" x="3" y="0" width="3" height="3"></rect>
+                                    <rect fill="#8CE3FF" x="3" y="3" width="3" height="3"></rect>
+                                    <rect fill="#8CE3FF" x="0" y="3" width="3" height="3"></rect>
+                                    <rect opacity="0.455223881" fill="#34B6D9" x="0" y="0" width="3" height="3"></rect>
+                                    <rect opacity="0.455223881" fill="#34B6D9" x="2" y="0" width="4" height="4"></rect>
+                                    <rect opacity="0.455223881" fill="#34B6D9" x="3" y="3" width="3" height="3"></rect>
+                                    <rect opacity="0.455223881" fill="#34B6D9" x="0" y="1" width="5" height="5"></rect>
+                                </g>
+                                <g transform="translate(33.000000, 4.000000) rotate(-90.000000) translate(-33.000000, -4.000000) translate(30.000000, 1.000000)" id="Rectangle-12" sketch:type="MSShapeGroup">
+                                    <rect fill="#8CE3FF" x="0" y="0" width="3" height="3"></rect>
+                                    <rect fill="#8CE3FF" x="3" y="0" width="3" height="3"></rect>
+                                    <rect fill="#8CE3FF" x="3" y="3" width="3" height="3"></rect>
+                                    <rect fill="#8CE3FF" x="0" y="3" width="3" height="3"></rect>
+                                    <rect opacity="0.455223881" fill="#34B6D9" x="0" y="0" width="3" height="3"></rect>
+                                    <rect opacity="0.455223881" fill="#34B6D9" x="2" y="0" width="4" height="4"></rect>
+                                    <rect opacity="0.455223881" fill="#34B6D9" x="3" y="3" width="3" height="3"></rect>
+                                    <rect opacity="0.455223881" fill="#34B6D9" x="0" y="1" width="5" height="5"></rect>
+                                </g>
+                                <g transform="translate(15.000000, 4.000000) rotate(-180.000000) translate(-15.000000, -4.000000) translate(12.000000, 1.000000)" id="Rectangle-12" sketch:type="MSShapeGroup">
+                                    <rect fill="#8CE3FF" x="0" y="0" width="3" height="3"></rect>
+                                    <rect fill="#8CE3FF" x="3" y="0" width="3" height="3"></rect>
+                                    <rect fill="#8CE3FF" x="3" y="3" width="3" height="3"></rect>
+                                    <rect fill="#8CE3FF" x="0" y="3" width="3" height="3"></rect>
+                                    <rect opacity="0.455223881" fill="#34B6D9" x="0" y="0" width="3" height="3"></rect>
+                                    <rect opacity="0.455223881" fill="#34B6D9" x="2" y="0" width="4" height="4"></rect>
+                                    <rect opacity="0.455223881" fill="#34B6D9" x="3" y="3" width="3" height="3"></rect>
+                                    <rect opacity="0.455223881" fill="#34B6D9" x="0" y="1" width="5" height="5"></rect>
+                                </g>
+                                <g transform="translate(39.000000, 4.000000) rotate(-180.000000) translate(-39.000000, -4.000000) translate(36.000000, 1.000000)" id="Rectangle-12" sketch:type="MSShapeGroup">
+                                    <rect fill="#8CE3FF" x="0" y="0" width="3" height="3"></rect>
+                                    <rect fill="#8CE3FF" x="3" y="0" width="3" height="3"></rect>
+                                    <rect fill="#8CE3FF" x="3" y="3" width="3" height="3"></rect>
+                                    <rect fill="#8CE3FF" x="0" y="3" width="3" height="3"></rect>
+                                    <rect opacity="0.455223881" fill="#34B6D9" x="0" y="0" width="3" height="3"></rect>
+                                    <rect opacity="0.455223881" fill="#34B6D9" x="2" y="0" width="4" height="4"></rect>
+                                    <rect opacity="0.455223881" fill="#34B6D9" x="3" y="3" width="3" height="3"></rect>
+                                    <rect opacity="0.455223881" fill="#34B6D9" x="0" y="1" width="5" height="5"></rect>
+                                </g>
+                                <g transform="translate(21.000000, 4.000000) rotate(-270.000000) translate(-21.000000, -4.000000) translate(18.000000, 1.000000)" id="Rectangle-12" sketch:type="MSShapeGroup">
+                                    <rect fill="#8CE3FF" x="0" y="0" width="3" height="3"></rect>
+                                    <rect fill="#8CE3FF" x="3" y="0" width="3" height="3"></rect>
+                                    <rect fill="#8CE3FF" x="3" y="3" width="3" height="3"></rect>
+                                    <rect fill="#8CE3FF" x="0" y="3" width="3" height="3"></rect>
+                                    <rect opacity="0.455223881" fill="#34B6D9" x="0" y="0" width="3" height="3"></rect>
+                                    <rect opacity="0.455223881" fill="#34B6D9" x="2" y="0" width="4" height="4"></rect>
+                                    <rect opacity="0.455223881" fill="#34B6D9" x="3" y="3" width="3" height="3"></rect>
+                                    <rect opacity="0.455223881" fill="#34B6D9" x="0" y="1" width="5" height="5"></rect>
+                                </g>
+                                <g transform="translate(45.000000, 4.000000) rotate(-270.000000) translate(-45.000000, -4.000000) translate(42.000000, 1.000000)" id="Rectangle-12" sketch:type="MSShapeGroup">
+                                    <rect fill="#8CE3FF" x="0" y="0" width="3" height="3"></rect>
+                                    <rect fill="#8CE3FF" x="3" y="0" width="3" height="3"></rect>
+                                    <rect fill="#8CE3FF" x="3" y="3" width="3" height="3"></rect>
+                                    <rect fill="#8CE3FF" x="0" y="3" width="3" height="3"></rect>
+                                    <rect opacity="0.455223881" fill="#34B6D9" x="0" y="0" width="3" height="3"></rect>
+                                    <rect opacity="0.455223881" fill="#34B6D9" x="2" y="0" width="4" height="4"></rect>
+                                    <rect opacity="0.455223881" fill="#34B6D9" x="3" y="3" width="3" height="3"></rect>
+                                    <rect opacity="0.455223881" fill="#34B6D9" x="0" y="1" width="5" height="5"></rect>
+                                </g>
+                            </g>
+                            <g id="Group" transform="translate(24.000000, 46.000000) rotate(-180.000000) translate(-24.000000, -46.000000) translate(0.000000, 42.000000)">
+                                <rect id="Rectangle-12" fill="#8CE3FF" sketch:type="MSShapeGroup" x="0" y="1" width="3" height="3"></rect>
+                                <rect id="Rectangle-12" fill="#8CE3FF" sketch:type="MSShapeGroup" x="24" y="1" width="3" height="3"></rect>
+                                <rect id="Rectangle-12" fill="#8CE3FF" sketch:type="MSShapeGroup" x="3" y="1" width="3" height="3"></rect>
+                                <rect id="Rectangle-12" fill="#8CE3FF" sketch:type="MSShapeGroup" x="27" y="1" width="3" height="3"></rect>
+                                <rect id="Rectangle-12" fill="#8CE3FF" sketch:type="MSShapeGroup" x="3" y="4" width="3" height="3"></rect>
+                                <rect id="Rectangle-12" fill="#8CE3FF" sketch:type="MSShapeGroup" x="27" y="4" width="3" height="3"></rect>
+                                <rect id="Rectangle-12" fill="#8CE3FF" sketch:type="MSShapeGroup" x="0" y="4" width="3" height="3"></rect>
+                                <rect id="Rectangle-12" fill="#8CE3FF" sketch:type="MSShapeGroup" x="24" y="4" width="3" height="3"></rect>
+                                <rect id="Rectangle-12" opacity="0.455223881" fill="#34B6D9" sketch:type="MSShapeGroup" x="0" y="1" width="3" height="3"></rect>
+                                <rect id="Rectangle-12" opacity="0.455223881" fill="#34B6D9" sketch:type="MSShapeGroup" x="24" y="1" width="3" height="3"></rect>
+                                <rect id="Rectangle-12" opacity="0.455223881" fill="#34B6D9" sketch:type="MSShapeGroup" x="2" y="1" width="4" height="4"></rect>
+                                <rect id="Rectangle-12" opacity="0.455223881" fill="#34B6D9" sketch:type="MSShapeGroup" x="26" y="1" width="4" height="4"></rect>
+                                <rect id="Rectangle-12" opacity="0.455223881" fill="#34B6D9" sketch:type="MSShapeGroup" x="3" y="4" width="3" height="3"></rect>
+                                <rect id="Rectangle-12" opacity="0.455223881" fill="#34B6D9" sketch:type="MSShapeGroup" x="27" y="4" width="3" height="3"></rect>
+                                <rect id="Rectangle-12" opacity="0.455223881" fill="#34B6D9" sketch:type="MSShapeGroup" x="0" y="2" width="5" height="5"></rect>
+                                <rect id="Rectangle-12" opacity="0.455223881" fill="#34B6D9" sketch:type="MSShapeGroup" x="24" y="2" width="5" height="5"></rect>
+                                <g transform="translate(9.000000, 4.000000) rotate(-90.000000) translate(-9.000000, -4.000000) translate(6.000000, 1.000000)" id="Rectangle-12" sketch:type="MSShapeGroup">
+                                    <rect fill="#8CE3FF" x="0" y="0" width="3" height="3"></rect>
+                                    <rect fill="#8CE3FF" x="3" y="0" width="3" height="3"></rect>
+                                    <rect fill="#8CE3FF" x="3" y="3" width="3" height="3"></rect>
+                                    <rect fill="#8CE3FF" x="0" y="3" width="3" height="3"></rect>
+                                    <rect opacity="0.455223881" fill="#34B6D9" x="0" y="0" width="3" height="3"></rect>
+                                    <rect opacity="0.455223881" fill="#34B6D9" x="2" y="0" width="4" height="4"></rect>
+                                    <rect opacity="0.455223881" fill="#34B6D9" x="3" y="3" width="3" height="3"></rect>
+                                    <rect opacity="0.455223881" fill="#34B6D9" x="0" y="1" width="5" height="5"></rect>
+                                </g>
+                                <g transform="translate(33.000000, 4.000000) rotate(-90.000000) translate(-33.000000, -4.000000) translate(30.000000, 1.000000)" id="Rectangle-12" sketch:type="MSShapeGroup">
+                                    <rect fill="#8CE3FF" x="0" y="0" width="3" height="3"></rect>
+                                    <rect fill="#8CE3FF" x="3" y="0" width="3" height="3"></rect>
+                                    <rect fill="#8CE3FF" x="3" y="3" width="3" height="3"></rect>
+                                    <rect fill="#8CE3FF" x="0" y="3" width="3" height="3"></rect>
+                                    <rect opacity="0.455223881" fill="#34B6D9" x="0" y="0" width="3" height="3"></rect>
+                                    <rect opacity="0.455223881" fill="#34B6D9" x="2" y="0" width="4" height="4"></rect>
+                                    <rect opacity="0.455223881" fill="#34B6D9" x="3" y="3" width="3" height="3"></rect>
+                                    <rect opacity="0.455223881" fill="#34B6D9" x="0" y="1" width="5" height="5"></rect>
+                                </g>
+                                <g transform="translate(15.000000, 4.000000) rotate(-180.000000) translate(-15.000000, -4.000000) translate(12.000000, 1.000000)" id="Rectangle-12" sketch:type="MSShapeGroup">
+                                    <rect fill="#8CE3FF" x="0" y="0" width="3" height="3"></rect>
+                                    <rect fill="#8CE3FF" x="3" y="0" width="3" height="3"></rect>
+                                    <rect fill="#8CE3FF" x="3" y="3" width="3" height="3"></rect>
+                                    <rect fill="#8CE3FF" x="0" y="3" width="3" height="3"></rect>
+                                    <rect opacity="0.455223881" fill="#34B6D9" x="0" y="0" width="3" height="3"></rect>
+                                    <rect opacity="0.455223881" fill="#34B6D9" x="2" y="0" width="4" height="4"></rect>
+                                    <rect opacity="0.455223881" fill="#34B6D9" x="3" y="3" width="3" height="3"></rect>
+                                    <rect opacity="0.455223881" fill="#34B6D9" x="0" y="1" width="5" height="5"></rect>
+                                </g>
+                                <g transform="translate(39.000000, 4.000000) rotate(-180.000000) translate(-39.000000, -4.000000) translate(36.000000, 1.000000)" id="Rectangle-12" sketch:type="MSShapeGroup">
+                                    <rect fill="#8CE3FF" x="0" y="0" width="3" height="3"></rect>
+                                    <rect fill="#8CE3FF" x="3" y="0" width="3" height="3"></rect>
+                                    <rect fill="#8CE3FF" x="3" y="3" width="3" height="3"></rect>
+                                    <rect fill="#8CE3FF" x="0" y="3" width="3" height="3"></rect>
+                                    <rect opacity="0.455223881" fill="#34B6D9" x="0" y="0" width="3" height="3"></rect>
+                                    <rect opacity="0.455223881" fill="#34B6D9" x="2" y="0" width="4" height="4"></rect>
+                                    <rect opacity="0.455223881" fill="#34B6D9" x="3" y="3" width="3" height="3"></rect>
+                                    <rect opacity="0.455223881" fill="#34B6D9" x="0" y="1" width="5" height="5"></rect>
+                                </g>
+                                <g transform="translate(21.000000, 4.000000) rotate(-270.000000) translate(-21.000000, -4.000000) translate(18.000000, 1.000000)" id="Rectangle-12" sketch:type="MSShapeGroup">
+                                    <rect fill="#8CE3FF" x="0" y="0" width="3" height="3"></rect>
+                                    <rect fill="#8CE3FF" x="3" y="0" width="3" height="3"></rect>
+                                    <rect fill="#8CE3FF" x="3" y="3" width="3" height="3"></rect>
+                                    <rect fill="#8CE3FF" x="0" y="3" width="3" height="3"></rect>
+                                    <rect opacity="0.455223881" fill="#34B6D9" x="0" y="0" width="3" height="3"></rect>
+                                    <rect opacity="0.455223881" fill="#34B6D9" x="2" y="0" width="4" height="4"></rect>
+                                    <rect opacity="0.455223881" fill="#34B6D9" x="3" y="3" width="3" height="3"></rect>
+                                    <rect opacity="0.455223881" fill="#34B6D9" x="0" y="1" width="5" height="5"></rect>
+                                </g>
+                                <g transform="translate(45.000000, 4.000000) rotate(-270.000000) translate(-45.000000, -4.000000) translate(42.000000, 1.000000)" id="Rectangle-12" sketch:type="MSShapeGroup">
+                                    <rect fill="#8CE3FF" x="0" y="0" width="3" height="3"></rect>
+                                    <rect fill="#8CE3FF" x="3" y="0" width="3" height="3"></rect>
+                                    <rect fill="#8CE3FF" x="3" y="3" width="3" height="3"></rect>
+                                    <rect fill="#8CE3FF" x="0" y="3" width="3" height="3"></rect>
+                                    <rect opacity="0.455223881" fill="#34B6D9" x="0" y="0" width="3" height="3"></rect>
+                                    <rect opacity="0.455223881" fill="#34B6D9" x="2" y="0" width="4" height="4"></rect>
+                                    <rect opacity="0.455223881" fill="#34B6D9" x="3" y="3" width="3" height="3"></rect>
+                                    <rect opacity="0.455223881" fill="#34B6D9" x="0" y="1" width="5" height="5"></rect>
+                                </g>
+                            </g>
+                            <g id="Group" transform="translate(24.000000, 22.000000) rotate(-180.000000) translate(-24.000000, -22.000000) translate(0.000000, 18.000000)">
+                                <rect id="Rectangle-12" fill="#8CE3FF" sketch:type="MSShapeGroup" x="0" y="1" width="3" height="3"></rect>
+                                <rect id="Rectangle-12" fill="#8CE3FF" sketch:type="MSShapeGroup" x="24" y="1" width="3" height="3"></rect>
+                                <rect id="Rectangle-12" fill="#8CE3FF" sketch:type="MSShapeGroup" x="3" y="1" width="3" height="3"></rect>
+                                <rect id="Rectangle-12" fill="#8CE3FF" sketch:type="MSShapeGroup" x="27" y="1" width="3" height="3"></rect>
+                                <rect id="Rectangle-12" fill="#8CE3FF" sketch:type="MSShapeGroup" x="3" y="4" width="3" height="3"></rect>
+                                <rect id="Rectangle-12" fill="#8CE3FF" sketch:type="MSShapeGroup" x="27" y="4" width="3" height="3"></rect>
+                                <rect id="Rectangle-12" fill="#8CE3FF" sketch:type="MSShapeGroup" x="0" y="4" width="3" height="3"></rect>
+                                <rect id="Rectangle-12" fill="#8CE3FF" sketch:type="MSShapeGroup" x="24" y="4" width="3" height="3"></rect>
+                                <rect id="Rectangle-12" opacity="0.455223881" fill="#34B6D9" sketch:type="MSShapeGroup" x="0" y="1" width="3" height="3"></rect>
+                                <rect id="Rectangle-12" opacity="0.455223881" fill="#34B6D9" sketch:type="MSShapeGroup" x="24" y="1" width="3" height="3"></rect>
+                                <rect id="Rectangle-12" opacity="0.455223881" fill="#34B6D9" sketch:type="MSShapeGroup" x="2" y="1" width="4" height="4"></rect>
+                                <rect id="Rectangle-12" opacity="0.455223881" fill="#34B6D9" sketch:type="MSShapeGroup" x="26" y="1" width="4" height="4"></rect>
+                                <rect id="Rectangle-12" opacity="0.455223881" fill="#34B6D9" sketch:type="MSShapeGroup" x="3" y="4" width="3" height="3"></rect>
+                                <rect id="Rectangle-12" opacity="0.455223881" fill="#34B6D9" sketch:type="MSShapeGroup" x="27" y="4" width="3" height="3"></rect>
+                                <rect id="Rectangle-12" opacity="0.455223881" fill="#34B6D9" sketch:type="MSShapeGroup" x="0" y="2" width="5" height="5"></rect>
+                                <rect id="Rectangle-12" opacity="0.455223881" fill="#34B6D9" sketch:type="MSShapeGroup" x="24" y="2" width="5" height="5"></rect>
+                                <g transform="translate(9.000000, 4.000000) rotate(-90.000000) translate(-9.000000, -4.000000) translate(6.000000, 1.000000)" id="Rectangle-12" sketch:type="MSShapeGroup">
+                                    <rect fill="#8CE3FF" x="0" y="0" width="3" height="3"></rect>
+                                    <rect fill="#8CE3FF" x="3" y="0" width="3" height="3"></rect>
+                                    <rect fill="#8CE3FF" x="3" y="3" width="3" height="3"></rect>
+                                    <rect fill="#8CE3FF" x="0" y="3" width="3" height="3"></rect>
+                                    <rect opacity="0.455223881" fill="#34B6D9" x="0" y="0" width="3" height="3"></rect>
+                                    <rect opacity="0.455223881" fill="#34B6D9" x="2" y="0" width="4" height="4"></rect>
+                                    <rect opacity="0.455223881" fill="#34B6D9" x="3" y="3" width="3" height="3"></rect>
+                                    <rect opacity="0.455223881" fill="#34B6D9" x="0" y="1" width="5" height="5"></rect>
+                                </g>
+                                <g transform="translate(33.000000, 4.000000) rotate(-90.000000) translate(-33.000000, -4.000000) translate(30.000000, 1.000000)" id="Rectangle-12" sketch:type="MSShapeGroup">
+                                    <rect fill="#8CE3FF" x="0" y="0" width="3" height="3"></rect>
+                                    <rect fill="#8CE3FF" x="3" y="0" width="3" height="3"></rect>
+                                    <rect fill="#8CE3FF" x="3" y="3" width="3" height="3"></rect>
+                                    <rect fill="#8CE3FF" x="0" y="3" width="3" height="3"></rect>
+                                    <rect opacity="0.455223881" fill="#34B6D9" x="0" y="0" width="3" height="3"></rect>
+                                    <rect opacity="0.455223881" fill="#34B6D9" x="2" y="0" width="4" height="4"></rect>
+                                    <rect opacity="0.455223881" fill="#34B6D9" x="3" y="3" width="3" height="3"></rect>
+                                    <rect opacity="0.455223881" fill="#34B6D9" x="0" y="1" width="5" height="5"></rect>
+                                </g>
+                                <g transform="translate(15.000000, 4.000000) rotate(-180.000000) translate(-15.000000, -4.000000) translate(12.000000, 1.000000)" id="Rectangle-12" sketch:type="MSShapeGroup">
+                                    <rect fill="#8CE3FF" x="0" y="0" width="3" height="3"></rect>
+                                    <rect fill="#8CE3FF" x="3" y="0" width="3" height="3"></rect>
+                                    <rect fill="#8CE3FF" x="3" y="3" width="3" height="3"></rect>
+                                    <rect fill="#8CE3FF" x="0" y="3" width="3" height="3"></rect>
+                                    <rect opacity="0.455223881" fill="#34B6D9" x="0" y="0" width="3" height="3"></rect>
+                                    <rect opacity="0.455223881" fill="#34B6D9" x="2" y="0" width="4" height="4"></rect>
+                                    <rect opacity="0.455223881" fill="#34B6D9" x="3" y="3" width="3" height="3"></rect>
+                                    <rect opacity="0.455223881" fill="#34B6D9" x="0" y="1" width="5" height="5"></rect>
+                                </g>
+                                <g transform="translate(39.000000, 4.000000) rotate(-180.000000) translate(-39.000000, -4.000000) translate(36.000000, 1.000000)" id="Rectangle-12" sketch:type="MSShapeGroup">
+                                    <rect fill="#8CE3FF" x="0" y="0" width="3" height="3"></rect>
+                                    <rect fill="#8CE3FF" x="3" y="0" width="3" height="3"></rect>
+                                    <rect fill="#8CE3FF" x="3" y="3" width="3" height="3"></rect>
+                                    <rect fill="#8CE3FF" x="0" y="3" width="3" height="3"></rect>
+                                    <rect opacity="0.455223881" fill="#34B6D9" x="0" y="0" width="3" height="3"></rect>
+                                    <rect opacity="0.455223881" fill="#34B6D9" x="2" y="0" width="4" height="4"></rect>
+                                    <rect opacity="0.455223881" fill="#34B6D9" x="3" y="3" width="3" height="3"></rect>
+                                    <rect opacity="0.455223881" fill="#34B6D9" x="0" y="1" width="5" height="5"></rect>
+                                </g>
+                                <g transform="translate(21.000000, 4.000000) rotate(-270.000000) translate(-21.000000, -4.000000) translate(18.000000, 1.000000)" id="Rectangle-12" sketch:type="MSShapeGroup">
+                                    <rect fill="#8CE3FF" x="0" y="0" width="3" height="3"></rect>
+                                    <rect fill="#8CE3FF" x="3" y="0" width="3" height="3"></rect>
+                                    <rect fill="#8CE3FF" x="3" y="3" width="3" height="3"></rect>
+                                    <rect fill="#8CE3FF" x="0" y="3" width="3" height="3"></rect>
+                                    <rect opacity="0.455223881" fill="#34B6D9" x="0" y="0" width="3" height="3"></rect>
+                                    <rect opacity="0.455223881" fill="#34B6D9" x="2" y="0" width="4" height="4"></rect>
+                                    <rect opacity="0.455223881" fill="#34B6D9" x="3" y="3" width="3" height="3"></rect>
+                                    <rect opacity="0.455223881" fill="#34B6D9" x="0" y="1" width="5" height="5"></rect>
+                                </g>
+                                <g transform="translate(45.000000, 4.000000) rotate(-270.000000) translate(-45.000000, -4.000000) translate(42.000000, 1.000000)" id="Rectangle-12" sketch:type="MSShapeGroup">
+                                    <rect fill="#8CE3FF" x="0" y="0" width="3" height="3"></rect>
+                                    <rect fill="#8CE3FF" x="3" y="0" width="3" height="3"></rect>
+                                    <rect fill="#8CE3FF" x="3" y="3" width="3" height="3"></rect>
+                                    <rect fill="#8CE3FF" x="0" y="3" width="3" height="3"></rect>
+                                    <rect opacity="0.455223881" fill="#34B6D9" x="0" y="0" width="3" height="3"></rect>
+                                    <rect opacity="0.455223881" fill="#34B6D9" x="2" y="0" width="4" height="4"></rect>
+                                    <rect opacity="0.455223881" fill="#34B6D9" x="3" y="3" width="3" height="3"></rect>
+                                    <rect opacity="0.455223881" fill="#34B6D9" x="0" y="1" width="5" height="5"></rect>
+                                </g>
+                            </g>
+                            <g id="Group" transform="translate(24.000000, 58.000000) rotate(-180.000000) translate(-24.000000, -58.000000) translate(0.000000, 54.000000)">
+                                <rect id="Rectangle-12" fill="#8CE3FF" sketch:type="MSShapeGroup" x="0" y="1" width="3" height="3"></rect>
+                                <rect id="Rectangle-12" fill="#8CE3FF" sketch:type="MSShapeGroup" x="24" y="1" width="3" height="3"></rect>
+                                <rect id="Rectangle-12" fill="#8CE3FF" sketch:type="MSShapeGroup" x="3" y="1" width="3" height="3"></rect>
+                                <rect id="Rectangle-12" fill="#8CE3FF" sketch:type="MSShapeGroup" x="27" y="1" width="3" height="3"></rect>
+                                <rect id="Rectangle-12" fill="#8CE3FF" sketch:type="MSShapeGroup" x="3" y="4" width="3" height="3"></rect>
+                                <rect id="Rectangle-12" fill="#8CE3FF" sketch:type="MSShapeGroup" x="27" y="4" width="3" height="3"></rect>
+                                <rect id="Rectangle-12" fill="#8CE3FF" sketch:type="MSShapeGroup" x="0" y="4" width="3" height="3"></rect>
+                                <rect id="Rectangle-12" fill="#8CE3FF" sketch:type="MSShapeGroup" x="24" y="4" width="3" height="3"></rect>
+                                <rect id="Rectangle-12" opacity="0.455223881" fill="#34B6D9" sketch:type="MSShapeGroup" x="0" y="1" width="3" height="3"></rect>
+                                <rect id="Rectangle-12" opacity="0.455223881" fill="#34B6D9" sketch:type="MSShapeGroup" x="24" y="1" width="3" height="3"></rect>
+                                <rect id="Rectangle-12" opacity="0.455223881" fill="#34B6D9" sketch:type="MSShapeGroup" x="2" y="1" width="4" height="4"></rect>
+                                <rect id="Rectangle-12" opacity="0.455223881" fill="#34B6D9" sketch:type="MSShapeGroup" x="26" y="1" width="4" height="4"></rect>
+                                <rect id="Rectangle-12" opacity="0.455223881" fill="#34B6D9" sketch:type="MSShapeGroup" x="3" y="4" width="3" height="3"></rect>
+                                <rect id="Rectangle-12" opacity="0.455223881" fill="#34B6D9" sketch:type="MSShapeGroup" x="27" y="4" width="3" height="3"></rect>
+                                <rect id="Rectangle-12" opacity="0.455223881" fill="#34B6D9" sketch:type="MSShapeGroup" x="0" y="2" width="5" height="5"></rect>
+                                <rect id="Rectangle-12" opacity="0.455223881" fill="#34B6D9" sketch:type="MSShapeGroup" x="24" y="2" width="5" height="5"></rect>
+                                <g transform="translate(9.000000, 4.000000) rotate(-90.000000) translate(-9.000000, -4.000000) translate(6.000000, 1.000000)" id="Rectangle-12" sketch:type="MSShapeGroup">
+                                    <rect fill="#8CE3FF" x="0" y="0" width="3" height="3"></rect>
+                                    <rect fill="#8CE3FF" x="3" y="0" width="3" height="3"></rect>
+                                    <rect fill="#8CE3FF" x="3" y="3" width="3" height="3"></rect>
+                                    <rect fill="#8CE3FF" x="0" y="3" width="3" height="3"></rect>
+                                    <rect opacity="0.455223881" fill="#34B6D9" x="0" y="0" width="3" height="3"></rect>
+                                    <rect opacity="0.455223881" fill="#34B6D9" x="2" y="0" width="4" height="4"></rect>
+                                    <rect opacity="0.455223881" fill="#34B6D9" x="3" y="3" width="3" height="3"></rect>
+                                    <rect opacity="0.455223881" fill="#34B6D9" x="0" y="1" width="5" height="5"></rect>
+                                </g>
+                                <g transform="translate(33.000000, 4.000000) rotate(-90.000000) translate(-33.000000, -4.000000) translate(30.000000, 1.000000)" id="Rectangle-12" sketch:type="MSShapeGroup">
+                                    <rect fill="#8CE3FF" x="0" y="0" width="3" height="3"></rect>
+                                    <rect fill="#8CE3FF" x="3" y="0" width="3" height="3"></rect>
+                                    <rect fill="#8CE3FF" x="3" y="3" width="3" height="3"></rect>
+                                    <rect fill="#8CE3FF" x="0" y="3" width="3" height="3"></rect>
+                                    <rect opacity="0.455223881" fill="#34B6D9" x="0" y="0" width="3" height="3"></rect>
+                                    <rect opacity="0.455223881" fill="#34B6D9" x="2" y="0" width="4" height="4"></rect>
+                                    <rect opacity="0.455223881" fill="#34B6D9" x="3" y="3" width="3" height="3"></rect>
+                                    <rect opacity="0.455223881" fill="#34B6D9" x="0" y="1" width="5" height="5"></rect>
+                                </g>
+                                <g transform="translate(15.000000, 4.000000) rotate(-180.000000) translate(-15.000000, -4.000000) translate(12.000000, 1.000000)" id="Rectangle-12" sketch:type="MSShapeGroup">
+                                    <rect fill="#8CE3FF" x="0" y="0" width="3" height="3"></rect>
+                                    <rect fill="#8CE3FF" x="3" y="0" width="3" height="3"></rect>
+                                    <rect fill="#8CE3FF" x="3" y="3" width="3" height="3"></rect>
+                                    <rect fill="#8CE3FF" x="0" y="3" width="3" height="3"></rect>
+                                    <rect opacity="0.455223881" fill="#34B6D9" x="0" y="0" width="3" height="3"></rect>
+                                    <rect opacity="0.455223881" fill="#34B6D9" x="2" y="0" width="4" height="4"></rect>
+                                    <rect opacity="0.455223881" fill="#34B6D9" x="3" y="3" width="3" height="3"></rect>
+                                    <rect opacity="0.455223881" fill="#34B6D9" x="0" y="1" width="5" height="5"></rect>
+                                </g>
+                                <g transform="translate(39.000000, 4.000000) rotate(-180.000000) translate(-39.000000, -4.000000) translate(36.000000, 1.000000)" id="Rectangle-12" sketch:type="MSShapeGroup">
+                                    <rect fill="#8CE3FF" x="0" y="0" width="3" height="3"></rect>
+                                    <rect fill="#8CE3FF" x="3" y="0" width="3" height="3"></rect>
+                                    <rect fill="#8CE3FF" x="3" y="3" width="3" height="3"></rect>
+                                    <rect fill="#8CE3FF" x="0" y="3" width="3" height="3"></rect>
+                                    <rect opacity="0.455223881" fill="#34B6D9" x="0" y="0" width="3" height="3"></rect>
+                                    <rect opacity="0.455223881" fill="#34B6D9" x="2" y="0" width="4" height="4"></rect>
+                                    <rect opacity="0.455223881" fill="#34B6D9" x="3" y="3" width="3" height="3"></rect>
+                                    <rect opacity="0.455223881" fill="#34B6D9" x="0" y="1" width="5" height="5"></rect>
+                                </g>
+                                <g transform="translate(21.000000, 4.000000) rotate(-270.000000) translate(-21.000000, -4.000000) translate(18.000000, 1.000000)" id="Rectangle-12" sketch:type="MSShapeGroup">
+                                    <rect fill="#8CE3FF" x="0" y="0" width="3" height="3"></rect>
+                                    <rect fill="#8CE3FF" x="3" y="0" width="3" height="3"></rect>
+                                    <rect fill="#8CE3FF" x="3" y="3" width="3" height="3"></rect>
+                                    <rect fill="#8CE3FF" x="0" y="3" width="3" height="3"></rect>
+                                    <rect opacity="0.455223881" fill="#34B6D9" x="0" y="0" width="3" height="3"></rect>
+                                    <rect opacity="0.455223881" fill="#34B6D9" x="2" y="0" width="4" height="4"></rect>
+                                    <rect opacity="0.455223881" fill="#34B6D9" x="3" y="3" width="3" height="3"></rect>
+                                    <rect opacity="0.455223881" fill="#34B6D9" x="0" y="1" width="5" height="5"></rect>
+                                </g>
+                                <g transform="translate(45.000000, 4.000000) rotate(-270.000000) translate(-45.000000, -4.000000) translate(42.000000, 1.000000)" id="Rectangle-12" sketch:type="MSShapeGroup">
+                                    <rect fill="#8CE3FF" x="0" y="0" width="3" height="3"></rect>
+                                    <rect fill="#8CE3FF" x="3" y="0" width="3" height="3"></rect>
+                                    <rect fill="#8CE3FF" x="3" y="3" width="3" height="3"></rect>
+                                    <rect fill="#8CE3FF" x="0" y="3" width="3" height="3"></rect>
+                                    <rect opacity="0.455223881" fill="#34B6D9" x="0" y="0" width="3" height="3"></rect>
+                                    <rect opacity="0.455223881" fill="#34B6D9" x="2" y="0" width="4" height="4"></rect>
+                                    <rect opacity="0.455223881" fill="#34B6D9" x="3" y="3" width="3" height="3"></rect>
+                                    <rect opacity="0.455223881" fill="#34B6D9" x="0" y="1" width="5" height="5"></rect>
+                                </g>
+                            </g>
+                            <g id="Group-17" transform="translate(0.000000, 24.000000)">
+                                <rect id="Rectangle-12" fill="#8CE3FF" sketch:type="MSShapeGroup" x="0" y="1" width="3" height="3"></rect>
+                                <rect id="Rectangle-12" fill="#8CE3FF" sketch:type="MSShapeGroup" x="24" y="1" width="3" height="3"></rect>
+                                <rect id="Rectangle-12" fill="#8CE3FF" sketch:type="MSShapeGroup" x="3" y="1" width="3" height="3"></rect>
+                                <rect id="Rectangle-12" fill="#8CE3FF" sketch:type="MSShapeGroup" x="27" y="1" width="3" height="3"></rect>
+                                <rect id="Rectangle-12" fill="#8CE3FF" sketch:type="MSShapeGroup" x="3" y="4" width="3" height="3"></rect>
+                                <rect id="Rectangle-12" fill="#8CE3FF" sketch:type="MSShapeGroup" x="27" y="4" width="3" height="3"></rect>
+                                <rect id="Rectangle-12" fill="#8CE3FF" sketch:type="MSShapeGroup" x="0" y="4" width="3" height="3"></rect>
+                                <rect id="Rectangle-12" fill="#8CE3FF" sketch:type="MSShapeGroup" x="24" y="4" width="3" height="3"></rect>
+                                <rect id="Rectangle-12" opacity="0.455223881" fill="#34B6D9" sketch:type="MSShapeGroup" x="0" y="1" width="3" height="3"></rect>
+                                <rect id="Rectangle-12" opacity="0.455223881" fill="#34B6D9" sketch:type="MSShapeGroup" x="24" y="1" width="3" height="3"></rect>
+                                <rect id="Rectangle-12" opacity="0.455223881" fill="#34B6D9" sketch:type="MSShapeGroup" x="2" y="1" width="4" height="4"></rect>
+                                <rect id="Rectangle-12" opacity="0.455223881" fill="#34B6D9" sketch:type="MSShapeGroup" x="26" y="1" width="4" height="4"></rect>
+                                <rect id="Rectangle-12" opacity="0.455223881" fill="#34B6D9" sketch:type="MSShapeGroup" x="3" y="4" width="3" height="3"></rect>
+                                <rect id="Rectangle-12" opacity="0.455223881" fill="#34B6D9" sketch:type="MSShapeGroup" x="27" y="4" width="3" height="3"></rect>
+                                <rect id="Rectangle-12" opacity="0.455223881" fill="#34B6D9" sketch:type="MSShapeGroup" x="0" y="2" width="5" height="5"></rect>
+                                <rect id="Rectangle-12" opacity="0.455223881" fill="#34B6D9" sketch:type="MSShapeGroup" x="24" y="2" width="5" height="5"></rect>
+                                <g id="Group" transform="translate(9.000000, 4.000000) rotate(-90.000000) translate(-9.000000, -4.000000) translate(6.000000, 1.000000)" sketch:type="MSShapeGroup">
+                                    <rect id="Rectangle-12" fill="#8CE3FF" x="0" y="0" width="3" height="3"></rect>
+                                    <rect id="Rectangle-12" fill="#8CE3FF" x="3" y="0" width="3" height="3"></rect>
+                                    <rect id="Rectangle-12" fill="#8CE3FF" x="3" y="3" width="3" height="3"></rect>
+                                    <rect id="Rectangle-12" fill="#8CE3FF" x="0" y="3" width="3" height="3"></rect>
+                                    <rect id="Rectangle-12" opacity="0.455223881" fill="#34B6D9" x="0" y="0" width="3" height="3"></rect>
+                                    <rect id="Rectangle-12" opacity="0.455223881" fill="#34B6D9" x="2" y="0" width="4" height="4"></rect>
+                                    <rect id="Rectangle-12" opacity="0.455223881" fill="#34B6D9" x="3" y="3" width="3" height="3"></rect>
+                                    <rect id="Rectangle-12" opacity="0.455223881" fill="#34B6D9" x="0" y="1" width="5" height="5"></rect>
+                                </g>
+                                <g id="Group" transform="translate(33.000000, 4.000000) rotate(-90.000000) translate(-33.000000, -4.000000) translate(30.000000, 1.000000)" sketch:type="MSShapeGroup">
+                                    <rect id="Rectangle-12" fill="#8CE3FF" x="0" y="0" width="3" height="3"></rect>
+                                    <rect id="Rectangle-12" fill="#8CE3FF" x="3" y="0" width="3" height="3"></rect>
+                                    <rect id="Rectangle-12" fill="#8CE3FF" x="3" y="3" width="3" height="3"></rect>
+                                    <rect id="Rectangle-12" fill="#8CE3FF" x="0" y="3" width="3" height="3"></rect>
+                                    <rect id="Rectangle-12" opacity="0.455223881" fill="#34B6D9" x="0" y="0" width="3" height="3"></rect>
+                                    <rect id="Rectangle-12" opacity="0.455223881" fill="#34B6D9" x="2" y="0" width="4" height="4"></rect>
+                                    <rect id="Rectangle-12" opacity="0.455223881" fill="#34B6D9" x="3" y="3" width="3" height="3"></rect>
+                                    <rect id="Rectangle-12" opacity="0.455223881" fill="#34B6D9" x="0" y="1" width="5" height="5"></rect>
+                                </g>
+                                <g id="Group" transform="translate(15.000000, 4.000000) rotate(-180.000000) translate(-15.000000, -4.000000) translate(12.000000, 1.000000)" sketch:type="MSShapeGroup">
+                                    <rect id="Rectangle-12" fill="#8CE3FF" x="0" y="0" width="3" height="3"></rect>
+                                    <rect id="Rectangle-12" fill="#8CE3FF" x="3" y="0" width="3" height="3"></rect>
+                                    <rect id="Rectangle-12" fill="#8CE3FF" x="3" y="3" width="3" height="3"></rect>
+                                    <rect id="Rectangle-12" fill="#8CE3FF" x="0" y="3" width="3" height="3"></rect>
+                                    <rect id="Rectangle-12" opacity="0.455223881" fill="#34B6D9" x="0" y="0" width="3" height="3"></rect>
+                                    <rect id="Rectangle-12" opacity="0.455223881" fill="#34B6D9" x="2" y="0" width="4" height="4"></rect>
+                                    <rect id="Rectangle-12" opacity="0.455223881" fill="#34B6D9" x="3" y="3" width="3" height="3"></rect>
+                                    <rect id="Rectangle-12" opacity="0.455223881" fill="#34B6D9" x="0" y="1" width="5" height="5"></rect>
+                                </g>
+                                <g id="Group" transform="translate(39.000000, 4.000000) rotate(-180.000000) translate(-39.000000, -4.000000) translate(36.000000, 1.000000)" sketch:type="MSShapeGroup">
+                                    <rect id="Rectangle-12" fill="#8CE3FF" x="0" y="0" width="3" height="3"></rect>
+                                    <rect id="Rectangle-12" fill="#8CE3FF" x="3" y="0" width="3" height="3"></rect>
+                                    <rect id="Rectangle-12" fill="#8CE3FF" x="3" y="3" width="3" height="3"></rect>
+                                    <rect id="Rectangle-12" fill="#8CE3FF" x="0" y="3" width="3" height="3"></rect>
+                                    <rect id="Rectangle-12" opacity="0.455223881" fill="#34B6D9" x="0" y="0" width="3" height="3"></rect>
+                                    <rect id="Rectangle-12" opacity="0.455223881" fill="#34B6D9" x="2" y="0" width="4" height="4"></rect>
+                                    <rect id="Rectangle-12" opacity="0.455223881" fill="#34B6D9" x="3" y="3" width="3" height="3"></rect>
+                                    <rect id="Rectangle-12" opacity="0.455223881" fill="#34B6D9" x="0" y="1" width="5" height="5"></rect>
+                                </g>
+                                <g id="Group" transform="translate(21.000000, 4.000000) rotate(-270.000000) translate(-21.000000, -4.000000) translate(18.000000, 1.000000)" sketch:type="MSShapeGroup">
+                                    <rect id="Rectangle-12" fill="#8CE3FF" x="0" y="0" width="3" height="3"></rect>
+                                    <rect id="Rectangle-12" fill="#8CE3FF" x="3" y="0" width="3" height="3"></rect>
+                                    <rect id="Rectangle-12" fill="#8CE3FF" x="3" y="3" width="3" height="3"></rect>
+                                    <rect id="Rectangle-12" fill="#8CE3FF" x="0" y="3" width="3" height="3"></rect>
+                                    <rect id="Rectangle-12" opacity="0.455223881" fill="#34B6D9" x="0" y="0" width="3" height="3"></rect>
+                                    <rect id="Rectangle-12" opacity="0.455223881" fill="#34B6D9" x="2" y="0" width="4" height="4"></rect>
+                                    <rect id="Rectangle-12" opacity="0.455223881" fill="#34B6D9" x="3" y="3" width="3" height="3"></rect>
+                                    <rect id="Rectangle-12" opacity="0.455223881" fill="#34B6D9" x="0" y="1" width="5" height="5"></rect>
+                                </g>
+                                <g id="Group" transform="translate(45.000000, 4.000000) rotate(-270.000000) translate(-45.000000, -4.000000) translate(42.000000, 1.000000)" sketch:type="MSShapeGroup">
+                                    <rect id="Rectangle-12" fill="#8CE3FF" x="0" y="0" width="3" height="3"></rect>
+                                    <rect id="Rectangle-12" fill="#8CE3FF" x="3" y="0" width="3" height="3"></rect>
+                                    <rect id="Rectangle-12" fill="#8CE3FF" x="3" y="3" width="3" height="3"></rect>
+                                    <rect id="Rectangle-12" fill="#8CE3FF" x="0" y="3" width="3" height="3"></rect>
+                                    <rect id="Rectangle-12" opacity="0.455223881" fill="#34B6D9" x="0" y="0" width="3" height="3"></rect>
+                                    <rect id="Rectangle-12" opacity="0.455223881" fill="#34B6D9" x="2" y="0" width="4" height="4"></rect>
+                                    <rect id="Rectangle-12" opacity="0.455223881" fill="#34B6D9" x="3" y="3" width="3" height="3"></rect>
+                                    <rect id="Rectangle-12" opacity="0.455223881" fill="#34B6D9" x="0" y="1" width="5" height="5"></rect>
+                                </g>
+                            </g>
+                            <g id="Group-17" transform="translate(0.000000, 60.000000)">
+                                <rect id="Rectangle-12" fill="#8CE3FF" sketch:type="MSShapeGroup" x="0" y="1" width="3" height="3"></rect>
+                                <rect id="Rectangle-12" fill="#8CE3FF" sketch:type="MSShapeGroup" x="24" y="1" width="3" height="3"></rect>
+                                <rect id="Rectangle-12" fill="#8CE3FF" sketch:type="MSShapeGroup" x="3" y="1" width="3" height="3"></rect>
+                                <rect id="Rectangle-12" fill="#8CE3FF" sketch:type="MSShapeGroup" x="27" y="1" width="3" height="3"></rect>
+                                <rect id="Rectangle-12" fill="#8CE3FF" sketch:type="MSShapeGroup" x="3" y="4" width="3" height="3"></rect>
+                                <rect id="Rectangle-12" fill="#8CE3FF" sketch:type="MSShapeGroup" x="27" y="4" width="3" height="3"></rect>
+                                <rect id="Rectangle-12" fill="#8CE3FF" sketch:type="MSShapeGroup" x="0" y="4" width="3" height="3"></rect>
+                                <rect id="Rectangle-12" fill="#8CE3FF" sketch:type="MSShapeGroup" x="24" y="4" width="3" height="3"></rect>
+                                <rect id="Rectangle-12" opacity="0.455223881" fill="#34B6D9" sketch:type="MSShapeGroup" x="0" y="1" width="3" height="3"></rect>
+                                <rect id="Rectangle-12" opacity="0.455223881" fill="#34B6D9" sketch:type="MSShapeGroup" x="24" y="1" width="3" height="3"></rect>
+                                <rect id="Rectangle-12" opacity="0.455223881" fill="#34B6D9" sketch:type="MSShapeGroup" x="2" y="1" width="4" height="4"></rect>
+                                <rect id="Rectangle-12" opacity="0.455223881" fill="#34B6D9" sketch:type="MSShapeGroup" x="26" y="1" width="4" height="4"></rect>
+                                <rect id="Rectangle-12" opacity="0.455223881" fill="#34B6D9" sketch:type="MSShapeGroup" x="3" y="4" width="3" height="3"></rect>
+                                <rect id="Rectangle-12" opacity="0.455223881" fill="#34B6D9" sketch:type="MSShapeGroup" x="27" y="4" width="3" height="3"></rect>
+                                <rect id="Rectangle-12" opacity="0.455223881" fill="#34B6D9" sketch:type="MSShapeGroup" x="0" y="2" width="5" height="5"></rect>
+                                <rect id="Rectangle-12" opacity="0.455223881" fill="#34B6D9" sketch:type="MSShapeGroup" x="24" y="2" width="5" height="5"></rect>
+                                <g id="Group" transform="translate(9.000000, 4.000000) rotate(-90.000000) translate(-9.000000, -4.000000) translate(6.000000, 1.000000)" sketch:type="MSShapeGroup">
+                                    <rect id="Rectangle-12" fill="#8CE3FF" x="0" y="0" width="3" height="3"></rect>
+                                    <rect id="Rectangle-12" fill="#8CE3FF" x="3" y="0" width="3" height="3"></rect>
+                                    <rect id="Rectangle-12" fill="#8CE3FF" x="3" y="3" width="3" height="3"></rect>
+                                    <rect id="Rectangle-12" fill="#8CE3FF" x="0" y="3" width="3" height="3"></rect>
+                                    <rect id="Rectangle-12" opacity="0.455223881" fill="#34B6D9" x="0" y="0" width="3" height="3"></rect>
+                                    <rect id="Rectangle-12" opacity="0.455223881" fill="#34B6D9" x="2" y="0" width="4" height="4"></rect>
+                                    <rect id="Rectangle-12" opacity="0.455223881" fill="#34B6D9" x="3" y="3" width="3" height="3"></rect>
+                                    <rect id="Rectangle-12" opacity="0.455223881" fill="#34B6D9" x="0" y="1" width="5" height="5"></rect>
+                                </g>
+                                <g id="Group" transform="translate(33.000000, 4.000000) rotate(-90.000000) translate(-33.000000, -4.000000) translate(30.000000, 1.000000)" sketch:type="MSShapeGroup">
+                                    <rect id="Rectangle-12" fill="#8CE3FF" x="0" y="0" width="3" height="3"></rect>
+                                    <rect id="Rectangle-12" fill="#8CE3FF" x="3" y="0" width="3" height="3"></rect>
+                                    <rect id="Rectangle-12" fill="#8CE3FF" x="3" y="3" width="3" height="3"></rect>
+                                    <rect id="Rectangle-12" fill="#8CE3FF" x="0" y="3" width="3" height="3"></rect>
+                                    <rect id="Rectangle-12" opacity="0.455223881" fill="#34B6D9" x="0" y="0" width="3" height="3"></rect>
+                                    <rect id="Rectangle-12" opacity="0.455223881" fill="#34B6D9" x="2" y="0" width="4" height="4"></rect>
+                                    <rect id="Rectangle-12" opacity="0.455223881" fill="#34B6D9" x="3" y="3" width="3" height="3"></rect>
+                                    <rect id="Rectangle-12" opacity="0.455223881" fill="#34B6D9" x="0" y="1" width="5" height="5"></rect>
+                                </g>
+                                <g id="Group" transform="translate(15.000000, 4.000000) rotate(-180.000000) translate(-15.000000, -4.000000) translate(12.000000, 1.000000)" sketch:type="MSShapeGroup">
+                                    <rect id="Rectangle-12" fill="#8CE3FF" x="0" y="0" width="3" height="3"></rect>
+                                    <rect id="Rectangle-12" fill="#8CE3FF" x="3" y="0" width="3" height="3"></rect>
+                                    <rect id="Rectangle-12" fill="#8CE3FF" x="3" y="3" width="3" height="3"></rect>
+                                    <rect id="Rectangle-12" fill="#8CE3FF" x="0" y="3" width="3" height="3"></rect>
+                                    <rect id="Rectangle-12" opacity="0.455223881" fill="#34B6D9" x="0" y="0" width="3" height="3"></rect>
+                                    <rect id="Rectangle-12" opacity="0.455223881" fill="#34B6D9" x="2" y="0" width="4" height="4"></rect>
+                                    <rect id="Rectangle-12" opacity="0.455223881" fill="#34B6D9" x="3" y="3" width="3" height="3"></rect>
+                                    <rect id="Rectangle-12" opacity="0.455223881" fill="#34B6D9" x="0" y="1" width="5" height="5"></rect>
+                                </g>
+                                <g id="Group" transform="translate(39.000000, 4.000000) rotate(-180.000000) translate(-39.000000, -4.000000) translate(36.000000, 1.000000)" sketch:type="MSShapeGroup">
+                                    <rect id="Rectangle-12" fill="#8CE3FF" x="0" y="0" width="3" height="3"></rect>
+                                    <rect id="Rectangle-12" fill="#8CE3FF" x="3" y="0" width="3" height="3"></rect>
+                                    <rect id="Rectangle-12" fill="#8CE3FF" x="3" y="3" width="3" height="3"></rect>
+                                    <rect id="Rectangle-12" fill="#8CE3FF" x="0" y="3" width="3" height="3"></rect>
+                                    <rect id="Rectangle-12" opacity="0.455223881" fill="#34B6D9" x="0" y="0" width="3" height="3"></rect>
+                                    <rect id="Rectangle-12" opacity="0.455223881" fill="#34B6D9" x="2" y="0" width="4" height="4"></rect>
+                                    <rect id="Rectangle-12" opacity="0.455223881" fill="#34B6D9" x="3" y="3" width="3" height="3"></rect>
+                                    <rect id="Rectangle-12" opacity="0.455223881" fill="#34B6D9" x="0" y="1" width="5" height="5"></rect>
+                                </g>
+                                <g id="Group" transform="translate(21.000000, 4.000000) rotate(-270.000000) translate(-21.000000, -4.000000) translate(18.000000, 1.000000)" sketch:type="MSShapeGroup">
+                                    <rect id="Rectangle-12" fill="#8CE3FF" x="0" y="0" width="3" height="3"></rect>
+                                    <rect id="Rectangle-12" fill="#8CE3FF" x="3" y="0" width="3" height="3"></rect>
+                                    <rect id="Rectangle-12" fill="#8CE3FF" x="3" y="3" width="3" height="3"></rect>
+                                    <rect id="Rectangle-12" fill="#8CE3FF" x="0" y="3" width="3" height="3"></rect>
+                                    <rect id="Rectangle-12" opacity="0.455223881" fill="#34B6D9" x="0" y="0" width="3" height="3"></rect>
+                                    <rect id="Rectangle-12" opacity="0.455223881" fill="#34B6D9" x="2" y="0" width="4" height="4"></rect>
+                                    <rect id="Rectangle-12" opacity="0.455223881" fill="#34B6D9" x="3" y="3" width="3" height="3"></rect>
+                                    <rect id="Rectangle-12" opacity="0.455223881" fill="#34B6D9" x="0" y="1" width="5" height="5"></rect>
+                                </g>
+                                <g id="Group" transform="translate(45.000000, 4.000000) rotate(-270.000000) translate(-45.000000, -4.000000) translate(42.000000, 1.000000)" sketch:type="MSShapeGroup">
+                                    <rect id="Rectangle-12" fill="#8CE3FF" x="0" y="0" width="3" height="3"></rect>
+                                    <rect id="Rectangle-12" fill="#8CE3FF" x="3" y="0" width="3" height="3"></rect>
+                                    <rect id="Rectangle-12" fill="#8CE3FF" x="3" y="3" width="3" height="3"></rect>
+                                    <rect id="Rectangle-12" fill="#8CE3FF" x="0" y="3" width="3" height="3"></rect>
+                                    <rect id="Rectangle-12" opacity="0.455223881" fill="#34B6D9" x="0" y="0" width="3" height="3"></rect>
+                                    <rect id="Rectangle-12" opacity="0.455223881" fill="#34B6D9" x="2" y="0" width="4" height="4"></rect>
+                                    <rect id="Rectangle-12" opacity="0.455223881" fill="#34B6D9" x="3" y="3" width="3" height="3"></rect>
+                                    <rect id="Rectangle-12" opacity="0.455223881" fill="#34B6D9" x="0" y="1" width="5" height="5"></rect>
+                                </g>
+                            </g>
+                            <g id="Group-16" transform="translate(24.000000, 34.000000) rotate(-180.000000) translate(-24.000000, -34.000000) translate(0.000000, 30.000000)">
+                                <rect id="Rectangle-12" fill="#8CE3FF" sketch:type="MSShapeGroup" x="0" y="1" width="3" height="3"></rect>
+                                <rect id="Rectangle-12" fill="#8CE3FF" sketch:type="MSShapeGroup" x="24" y="1" width="3" height="3"></rect>
+                                <rect id="Rectangle-12" fill="#8CE3FF" sketch:type="MSShapeGroup" x="3" y="1" width="3" height="3"></rect>
+                                <rect id="Rectangle-12" fill="#8CE3FF" sketch:type="MSShapeGroup" x="27" y="1" width="3" height="3"></rect>
+                                <rect id="Rectangle-12" fill="#8CE3FF" sketch:type="MSShapeGroup" x="3" y="4" width="3" height="3"></rect>
+                                <rect id="Rectangle-12" fill="#8CE3FF" sketch:type="MSShapeGroup" x="27" y="4" width="3" height="3"></rect>
+                                <rect id="Rectangle-12" fill="#8CE3FF" sketch:type="MSShapeGroup" x="0" y="4" width="3" height="3"></rect>
+                                <rect id="Rectangle-12" fill="#8CE3FF" sketch:type="MSShapeGroup" x="24" y="4" width="3" height="3"></rect>
+                                <rect id="Rectangle-12" opacity="0.455223881" fill="#34B6D9" sketch:type="MSShapeGroup" x="0" y="1" width="3" height="3"></rect>
+                                <rect id="Rectangle-12" opacity="0.455223881" fill="#34B6D9" sketch:type="MSShapeGroup" x="24" y="1" width="3" height="3"></rect>
+                                <rect id="Rectangle-12" opacity="0.455223881" fill="#34B6D9" sketch:type="MSShapeGroup" x="2" y="1" width="4" height="4"></rect>
+                                <rect id="Rectangle-12" opacity="0.455223881" fill="#34B6D9" sketch:type="MSShapeGroup" x="26" y="1" width="4" height="4"></rect>
+                                <rect id="Rectangle-12" opacity="0.455223881" fill="#34B6D9" sketch:type="MSShapeGroup" x="3" y="4" width="3" height="3"></rect>
+                                <rect id="Rectangle-12" opacity="0.455223881" fill="#34B6D9" sketch:type="MSShapeGroup" x="27" y="4" width="3" height="3"></rect>
+                                <rect id="Rectangle-12" opacity="0.455223881" fill="#34B6D9" sketch:type="MSShapeGroup" x="0" y="2" width="5" height="5"></rect>
+                                <rect id="Rectangle-12" opacity="0.455223881" fill="#34B6D9" sketch:type="MSShapeGroup" x="24" y="2" width="5" height="5"></rect>
+                                <g id="Group" transform="translate(9.000000, 4.000000) rotate(-90.000000) translate(-9.000000, -4.000000) translate(6.000000, 1.000000)" sketch:type="MSShapeGroup">
+                                    <rect id="Rectangle-12" fill="#8CE3FF" x="0" y="0" width="3" height="3"></rect>
+                                    <rect id="Rectangle-12" fill="#8CE3FF" x="3" y="0" width="3" height="3"></rect>
+                                    <rect id="Rectangle-12" fill="#8CE3FF" x="3" y="3" width="3" height="3"></rect>
+                                    <rect id="Rectangle-12" fill="#8CE3FF" x="0" y="3" width="3" height="3"></rect>
+                                    <rect id="Rectangle-12" opacity="0.455223881" fill="#34B6D9" x="0" y="0" width="3" height="3"></rect>
+                                    <rect id="Rectangle-12" opacity="0.455223881" fill="#34B6D9" x="2" y="0" width="4" height="4"></rect>
+                                    <rect id="Rectangle-12" opacity="0.455223881" fill="#34B6D9" x="3" y="3" width="3" height="3"></rect>
+                                    <rect id="Rectangle-12" opacity="0.455223881" fill="#34B6D9" x="0" y="1" width="5" height="5"></rect>
+                                </g>
+                                <g id="Group" transform="translate(33.000000, 4.000000) rotate(-90.000000) translate(-33.000000, -4.000000) translate(30.000000, 1.000000)" sketch:type="MSShapeGroup">
+                                    <rect id="Rectangle-12" fill="#8CE3FF" x="0" y="0" width="3" height="3"></rect>
+                                    <rect id="Rectangle-12" fill="#8CE3FF" x="3" y="0" width="3" height="3"></rect>
+                                    <rect id="Rectangle-12" fill="#8CE3FF" x="3" y="3" width="3" height="3"></rect>
+                                    <rect id="Rectangle-12" fill="#8CE3FF" x="0" y="3" width="3" height="3"></rect>
+                                    <rect id="Rectangle-12" opacity="0.455223881" fill="#34B6D9" x="0" y="0" width="3" height="3"></rect>
+                                    <rect id="Rectangle-12" opacity="0.455223881" fill="#34B6D9" x="2" y="0" width="4" height="4"></rect>
+                                    <rect id="Rectangle-12" opacity="0.455223881" fill="#34B6D9" x="3" y="3" width="3" height="3"></rect>
+                                    <rect id="Rectangle-12" opacity="0.455223881" fill="#34B6D9" x="0" y="1" width="5" height="5"></rect>
+                                </g>
+                                <g id="Group" transform="translate(15.000000, 4.000000) rotate(-180.000000) translate(-15.000000, -4.000000) translate(12.000000, 1.000000)" sketch:type="MSShapeGroup">
+                                    <rect id="Rectangle-12" fill="#8CE3FF" x="0" y="0" width="3" height="3"></rect>
+                                    <rect id="Rectangle-12" fill="#8CE3FF" x="3" y="0" width="3" height="3"></rect>
+                                    <rect id="Rectangle-12" fill="#8CE3FF" x="3" y="3" width="3" height="3"></rect>
+                                    <rect id="Rectangle-12" fill="#8CE3FF" x="0" y="3" width="3" height="3"></rect>
+                                    <rect id="Rectangle-12" opacity="0.455223881" fill="#34B6D9" x="0" y="0" width="3" height="3"></rect>
+                                    <rect id="Rectangle-12" opacity="0.455223881" fill="#34B6D9" x="2" y="0" width="4" height="4"></rect>
+                                    <rect id="Rectangle-12" opacity="0.455223881" fill="#34B6D9" x="3" y="3" width="3" height="3"></rect>
+                                    <rect id="Rectangle-12" opacity="0.455223881" fill="#34B6D9" x="0" y="1" width="5" height="5"></rect>
+                                </g>
+                                <g id="Group" transform="translate(39.000000, 4.000000) rotate(-180.000000) translate(-39.000000, -4.000000) translate(36.000000, 1.000000)" sketch:type="MSShapeGroup">
+                                    <rect id="Rectangle-12" fill="#8CE3FF" x="0" y="0" width="3" height="3"></rect>
+                                    <rect id="Rectangle-12" fill="#8CE3FF" x="3" y="0" width="3" height="3"></rect>
+                                    <rect id="Rectangle-12" fill="#8CE3FF" x="3" y="3" width="3" height="3"></rect>
+                                    <rect id="Rectangle-12" fill="#8CE3FF" x="0" y="3" width="3" height="3"></rect>
+                                    <rect id="Rectangle-12" opacity="0.455223881" fill="#34B6D9" x="0" y="0" width="3" height="3"></rect>
+                                    <rect id="Rectangle-12" opacity="0.455223881" fill="#34B6D9" x="2" y="0" width="4" height="4"></rect>
+                                    <rect id="Rectangle-12" opacity="0.455223881" fill="#34B6D9" x="3" y="3" width="3" height="3"></rect>
+                                    <rect id="Rectangle-12" opacity="0.455223881" fill="#34B6D9" x="0" y="1" width="5" height="5"></rect>
+                                </g>
+                                <g id="Group" transform="translate(21.000000, 4.000000) rotate(-270.000000) translate(-21.000000, -4.000000) translate(18.000000, 1.000000)" sketch:type="MSShapeGroup">
+                                    <rect id="Rectangle-12" fill="#8CE3FF" x="0" y="0" width="3" height="3"></rect>
+                                    <rect id="Rectangle-12" fill="#8CE3FF" x="3" y="0" width="3" height="3"></rect>
+                                    <rect id="Rectangle-12" fill="#8CE3FF" x="3" y="3" width="3" height="3"></rect>
+                                    <rect id="Rectangle-12" fill="#8CE3FF" x="0" y="3" width="3" height="3"></rect>
+                                    <rect id="Rectangle-12" opacity="0.455223881" fill="#34B6D9" x="0" y="0" width="3" height="3"></rect>
+                                    <rect id="Rectangle-12" opacity="0.455223881" fill="#34B6D9" x="2" y="0" width="4" height="4"></rect>
+                                    <rect id="Rectangle-12" opacity="0.455223881" fill="#34B6D9" x="3" y="3" width="3" height="3"></rect>
+                                    <rect id="Rectangle-12" opacity="0.455223881" fill="#34B6D9" x="0" y="1" width="5" height="5"></rect>
+                                </g>
+                                <g id="Group" transform="translate(45.000000, 4.000000) rotate(-270.000000) translate(-45.000000, -4.000000) translate(42.000000, 1.000000)" sketch:type="MSShapeGroup">
+                                    <rect id="Rectangle-12" fill="#8CE3FF" x="0" y="0" width="3" height="3"></rect>
+                                    <rect id="Rectangle-12" fill="#8CE3FF" x="3" y="0" width="3" height="3"></rect>
+                                    <rect id="Rectangle-12" fill="#8CE3FF" x="3" y="3" width="3" height="3"></rect>
+                                    <rect id="Rectangle-12" fill="#8CE3FF" x="0" y="3" width="3" height="3"></rect>
+                                    <rect id="Rectangle-12" opacity="0.455223881" fill="#34B6D9" x="0" y="0" width="3" height="3"></rect>
+                                    <rect id="Rectangle-12" opacity="0.455223881" fill="#34B6D9" x="2" y="0" width="4" height="4"></rect>
+                                    <rect id="Rectangle-12" opacity="0.455223881" fill="#34B6D9" x="3" y="3" width="3" height="3"></rect>
+                                    <rect id="Rectangle-12" opacity="0.455223881" fill="#34B6D9" x="0" y="1" width="5" height="5"></rect>
+                                </g>
+                            </g>
+                            <g id="Group-16" transform="translate(24.000000, 70.000000) rotate(-180.000000) translate(-24.000000, -70.000000) translate(0.000000, 66.000000)">
+                                <rect id="Rectangle-12" fill="#8CE3FF" sketch:type="MSShapeGroup" x="0" y="1" width="3" height="3"></rect>
+                                <rect id="Rectangle-12" fill="#8CE3FF" sketch:type="MSShapeGroup" x="24" y="1" width="3" height="3"></rect>
+                                <rect id="Rectangle-12" fill="#8CE3FF" sketch:type="MSShapeGroup" x="3" y="1" width="3" height="3"></rect>
+                                <rect id="Rectangle-12" fill="#8CE3FF" sketch:type="MSShapeGroup" x="27" y="1" width="3" height="3"></rect>
+                                <rect id="Rectangle-12" fill="#8CE3FF" sketch:type="MSShapeGroup" x="3" y="4" width="3" height="3"></rect>
+                                <rect id="Rectangle-12" fill="#8CE3FF" sketch:type="MSShapeGroup" x="27" y="4" width="3" height="3"></rect>
+                                <rect id="Rectangle-12" fill="#8CE3FF" sketch:type="MSShapeGroup" x="0" y="4" width="3" height="3"></rect>
+                                <rect id="Rectangle-12" fill="#8CE3FF" sketch:type="MSShapeGroup" x="24" y="4" width="3" height="3"></rect>
+                                <rect id="Rectangle-12" opacity="0.455223881" fill="#34B6D9" sketch:type="MSShapeGroup" x="0" y="1" width="3" height="3"></rect>
+                                <rect id="Rectangle-12" opacity="0.455223881" fill="#34B6D9" sketch:type="MSShapeGroup" x="24" y="1" width="3" height="3"></rect>
+                                <rect id="Rectangle-12" opacity="0.455223881" fill="#34B6D9" sketch:type="MSShapeGroup" x="2" y="1" width="4" height="4"></rect>
+                                <rect id="Rectangle-12" opacity="0.455223881" fill="#34B6D9" sketch:type="MSShapeGroup" x="26" y="1" width="4" height="4"></rect>
+                                <rect id="Rectangle-12" opacity="0.455223881" fill="#34B6D9" sketch:type="MSShapeGroup" x="3" y="4" width="3" height="3"></rect>
+                                <rect id="Rectangle-12" opacity="0.455223881" fill="#34B6D9" sketch:type="MSShapeGroup" x="27" y="4" width="3" height="3"></rect>
+                                <rect id="Rectangle-12" opacity="0.455223881" fill="#34B6D9" sketch:type="MSShapeGroup" x="0" y="2" width="5" height="5"></rect>
+                                <rect id="Rectangle-12" opacity="0.455223881" fill="#34B6D9" sketch:type="MSShapeGroup" x="24" y="2" width="5" height="5"></rect>
+                                <g id="Group" transform="translate(9.000000, 4.000000) rotate(-90.000000) translate(-9.000000, -4.000000) translate(6.000000, 1.000000)" sketch:type="MSShapeGroup">
+                                    <rect id="Rectangle-12" fill="#8CE3FF" x="0" y="0" width="3" height="3"></rect>
+                                    <rect id="Rectangle-12" fill="#8CE3FF" x="3" y="0" width="3" height="3"></rect>
+                                    <rect id="Rectangle-12" fill="#8CE3FF" x="3" y="3" width="3" height="3"></rect>
+                                    <rect id="Rectangle-12" fill="#8CE3FF" x="0" y="3" width="3" height="3"></rect>
+                                    <rect id="Rectangle-12" opacity="0.455223881" fill="#34B6D9" x="0" y="0" width="3" height="3"></rect>
+                                    <rect id="Rectangle-12" opacity="0.455223881" fill="#34B6D9" x="2" y="0" width="4" height="4"></rect>
+                                    <rect id="Rectangle-12" opacity="0.455223881" fill="#34B6D9" x="3" y="3" width="3" height="3"></rect>
+                                    <rect id="Rectangle-12" opacity="0.455223881" fill="#34B6D9" x="0" y="1" width="5" height="5"></rect>
+                                </g>
+                                <g id="Group" transform="translate(33.000000, 4.000000) rotate(-90.000000) translate(-33.000000, -4.000000) translate(30.000000, 1.000000)" sketch:type="MSShapeGroup">
+                                    <rect id="Rectangle-12" fill="#8CE3FF" x="0" y="0" width="3" height="3"></rect>
+                                    <rect id="Rectangle-12" fill="#8CE3FF" x="3" y="0" width="3" height="3"></rect>
+                                    <rect id="Rectangle-12" fill="#8CE3FF" x="3" y="3" width="3" height="3"></rect>
+                                    <rect id="Rectangle-12" fill="#8CE3FF" x="0" y="3" width="3" height="3"></rect>
+                                    <rect id="Rectangle-12" opacity="0.455223881" fill="#34B6D9" x="0" y="0" width="3" height="3"></rect>
+                                    <rect id="Rectangle-12" opacity="0.455223881" fill="#34B6D9" x="2" y="0" width="4" height="4"></rect>
+                                    <rect id="Rectangle-12" opacity="0.455223881" fill="#34B6D9" x="3" y="3" width="3" height="3"></rect>
+                                    <rect id="Rectangle-12" opacity="0.455223881" fill="#34B6D9" x="0" y="1" width="5" height="5"></rect>
+                                </g>
+                                <g id="Group" transform="translate(15.000000, 4.000000) rotate(-180.000000) translate(-15.000000, -4.000000) translate(12.000000, 1.000000)" sketch:type="MSShapeGroup">
+                                    <rect id="Rectangle-12" fill="#8CE3FF" x="0" y="0" width="3" height="3"></rect>
+                                    <rect id="Rectangle-12" fill="#8CE3FF" x="3" y="0" width="3" height="3"></rect>
+                                    <rect id="Rectangle-12" fill="#8CE3FF" x="3" y="3" width="3" height="3"></rect>
+                                    <rect id="Rectangle-12" fill="#8CE3FF" x="0" y="3" width="3" height="3"></rect>
+                                    <rect id="Rectangle-12" opacity="0.455223881" fill="#34B6D9" x="0" y="0" width="3" height="3"></rect>
+                                    <rect id="Rectangle-12" opacity="0.455223881" fill="#34B6D9" x="2" y="0" width="4" height="4"></rect>
+                                    <rect id="Rectangle-12" opacity="0.455223881" fill="#34B6D9" x="3" y="3" width="3" height="3"></rect>
+                                    <rect id="Rectangle-12" opacity="0.455223881" fill="#34B6D9" x="0" y="1" width="5" height="5"></rect>
+                                </g>
+                                <g id="Group" transform="translate(39.000000, 4.000000) rotate(-180.000000) translate(-39.000000, -4.000000) translate(36.000000, 1.000000)" sketch:type="MSShapeGroup">
+                                    <rect id="Rectangle-12" fill="#8CE3FF" x="0" y="0" width="3" height="3"></rect>
+                                    <rect id="Rectangle-12" fill="#8CE3FF" x="3" y="0" width="3" height="3"></rect>
+                                    <rect id="Rectangle-12" fill="#8CE3FF" x="3" y="3" width="3" height="3"></rect>
+                                    <rect id="Rectangle-12" fill="#8CE3FF" x="0" y="3" width="3" height="3"></rect>
+                                    <rect id="Rectangle-12" opacity="0.455223881" fill="#34B6D9" x="0" y="0" width="3" height="3"></rect>
+                                    <rect id="Rectangle-12" opacity="0.455223881" fill="#34B6D9" x="2" y="0" width="4" height="4"></rect>
+                                    <rect id="Rectangle-12" opacity="0.455223881" fill="#34B6D9" x="3" y="3" width="3" height="3"></rect>
+                                    <rect id="Rectangle-12" opacity="0.455223881" fill="#34B6D9" x="0" y="1" width="5" height="5"></rect>
+                                </g>
+                                <g id="Group" transform="translate(21.000000, 4.000000) rotate(-270.000000) translate(-21.000000, -4.000000) translate(18.000000, 1.000000)" sketch:type="MSShapeGroup">
+                                    <rect id="Rectangle-12" fill="#8CE3FF" x="0" y="0" width="3" height="3"></rect>
+                                    <rect id="Rectangle-12" fill="#8CE3FF" x="3" y="0" width="3" height="3"></rect>
+                                    <rect id="Rectangle-12" fill="#8CE3FF" x="3" y="3" width="3" height="3"></rect>
+                                    <rect id="Rectangle-12" fill="#8CE3FF" x="0" y="3" width="3" height="3"></rect>
+                                    <rect id="Rectangle-12" opacity="0.455223881" fill="#34B6D9" x="0" y="0" width="3" height="3"></rect>
+                                    <rect id="Rectangle-12" opacity="0.455223881" fill="#34B6D9" x="2" y="0" width="4" height="4"></rect>
+                                    <rect id="Rectangle-12" opacity="0.455223881" fill="#34B6D9" x="3" y="3" width="3" height="3"></rect>
+                                    <rect id="Rectangle-12" opacity="0.455223881" fill="#34B6D9" x="0" y="1" width="5" height="5"></rect>
+                                </g>
+                                <g id="Group" transform="translate(45.000000, 4.000000) rotate(-270.000000) translate(-45.000000, -4.000000) translate(42.000000, 1.000000)" sketch:type="MSShapeGroup">
+                                    <rect id="Rectangle-12" fill="#8CE3FF" x="0" y="0" width="3" height="3"></rect>
+                                    <rect id="Rectangle-12" fill="#8CE3FF" x="3" y="0" width="3" height="3"></rect>
+                                    <rect id="Rectangle-12" fill="#8CE3FF" x="3" y="3" width="3" height="3"></rect>
+                                    <rect id="Rectangle-12" fill="#8CE3FF" x="0" y="3" width="3" height="3"></rect>
+                                    <rect id="Rectangle-12" opacity="0.455223881" fill="#34B6D9" x="0" y="0" width="3" height="3"></rect>
+                                    <rect id="Rectangle-12" opacity="0.455223881" fill="#34B6D9" x="2" y="0" width="4" height="4"></rect>
+                                    <rect id="Rectangle-12" opacity="0.455223881" fill="#34B6D9" x="3" y="3" width="3" height="3"></rect>
+                                    <rect id="Rectangle-12" opacity="0.455223881" fill="#34B6D9" x="0" y="1" width="5" height="5"></rect>
+                                </g>
+                            </g>
+                        </g>
+                    </g>
+                </g>
+            </g>
+        </g>
+    </g>
+</svg>

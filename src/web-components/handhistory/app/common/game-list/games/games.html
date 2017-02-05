@@ -1,0 +1,32 @@
+<div ng-show="$ctrl.visible">
+    <hr class="HandHistory-divider"/>
+
+    <section class="HandHistory-gameItem" ng-repeat="replay in $ctrl.replays track by $index">
+        <div class="Grid-row" ng-click="$ctrl.gameCollapseClick($index)">
+            <div class="Grid-col--auto">
+                <div class="Media">
+                    <div class="Media-object--left">
+                        <span class="HandHistory-gameItem-circle" ng-class="replay.game_type == 'tourney' ? 'Circle--filled--info':'Circle--filled--success'">
+                            <i ng-class="replay.game_type == 'tourney' ? 'fa fa-trophy Button-icon' : 'fa fa-usd Button-icon'"></i>
+                        </span>
+                    </div>
+                    <div class="Media-body">
+                        <h1 class="HandHistory-gameItem-gameType">{{ $ctrl.getGameStyle(replay.game_style) }}</h1>
+                        <h2 class="HandHistory-gameItem-title">{{ replay.title }}</h2>
+                    </div>
+                </div>
+            </div>
+            <div class="Grid-col--auto Grid--alignRight">
+                <div class="HandHistory-gameItem-kpi">
+                    Prizepool:<strong class="HandHistory-gameItem-kpi-value">{{ replay.prizepool }}</strong>|
+                    Entries:<strong class="HandHistory-gameItem-kpi-value">{{ replay.entries }}</strong>|
+                    Finished in:<strong class="HandHistory-gameItem-kpi-value">{{ replay.finished_in }}</strong>
+                </div>
+            </div>
+        </div>
+        <div class="HandHistory-gameItem-counter" ng-click="$ctrl.click(replay.details)">{{ replay.game_items }}</div>
+
+        <game-details details="replay.details" visible="$ctrl.gameCollapse[$index]"></game-details>
+
+    </section>
+</div>
