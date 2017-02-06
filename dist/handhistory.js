@@ -7,7 +7,6 @@ webpackJsonp([0],[
 	Object.defineProperty(exports, "__esModule", {
 	    value: true
 	});
-	exports.AppModule = undefined;
 
 	var _angular = __webpack_require__(66);
 
@@ -25,7 +24,7 @@ webpackJsonp([0],[
 
 	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
-	var AppModule = exports.AppModule = _angular2.default.module('angular-web-handgroups', [_common.CommonModule, _components.ComponentsModule]).component('handGroups', _app.AppComponent).service('AppService', _app2.AppService).name;
+	exports.default = AppModule = _angular2.default.module('angular-web-handgroups', [_common.CommonModule, _components.ComponentsModule]).component('handGroups', _app.AppComponent).service('AppService', _app2.AppService);
 
 	// styles
 
