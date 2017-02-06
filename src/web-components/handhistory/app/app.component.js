@@ -14,7 +14,7 @@ class AppController {
             pagesize: 10,    // TODO implement a way of changing default page size
         };
 
-        this.service.getHandHistory(this.queryParams).then(res => {
+        this.service.getHandHistory(this.queryParams, this.userId).then(res => {
             this.handhistory = res.data;
             if (res.lastdate) this.queryParams['lastdate'] = res.lastdate;
             this.gameListLoading = false;   // after data is loaded stop the spinner
@@ -35,7 +35,7 @@ class AppController {
         delete this.queryParams['lastdate'];
 
         // get Hand History data for defined parameters
-        this.service.getHandHistory(this.queryParams).then(res => {
+        this.service.getHandHistory(this.queryParams, this.userId).then(res => {
             this.handhistory = res.data;
             if (res.lastdate) this.queryParams['lastdate'] = res.lastdate;
             this.gameListLoading = false;
@@ -56,7 +56,7 @@ class AppController {
         delete this.queryParams['lastdate'];
 
         // get Hand History data for defined query parameters
-        this.service.getHandHistory(this.queryParams).then(res => {
+        this.service.getHandHistory(this.queryParams, this.userId).then(res => {
             this.handhistory = res.data;
             if (res.lastdate) this.queryParams['lastdate'] = res.lastdate;
             this.gameListLoading = false;
@@ -69,7 +69,7 @@ class AppController {
         this.gameListLoading = this.scrollLoading = true;
 
         // Call HandHistory Service with query params
-        this.service.getHandHistory(this.queryParams).then(res => {
+        this.service.getHandHistory(this.queryParams, this.userId).then(res => {
             // Push returned data to existing handhistory
             if (res.data) this.handhistory = this.handhistory.concat(res.data);
             if (res.lastdate) this.queryParams['lastdate'] = res.lastdate;
@@ -81,5 +81,8 @@ class AppController {
 
 export const AppComponent = {
     template: templateUrl,
-    controller: AppController
+    controller: AppController,
+    bindings: {
+        userId: '<'
+    }
 };

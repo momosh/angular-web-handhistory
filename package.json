@@ -11,9 +11,10 @@
     "clean:start": "npm clean && npm start",
     "handhistory:dev": "npm run clean:client && npm run clean:dist && COMPONENT='handhistory' webpack --config webpack.config.dev.js --progress --profile --colors --display-error-details --display-cached",
     "handhistory:prod": "npm run clean:client && npm run clean:dist && COMPONENT='handhistory' webpack --config webpack.config.prod.js --progress --profile --colors --display-error-details --display-cached",
-    "serve:handhistory": "COMPONENT='handhistory' webpack-dev-server --config webpack.config.dev.js --open --progress --profile --watch --content-base client/",
+    "serve:handhistory": "COMPONENT='handhistory' webpack-dev-server --config webpack.config.dev.js --progress --profile --watch --content-base client/",
     "start:handhistory": "npm run handhistory:dev && npm run serve:handhistory",
-    "start": "npm run start:handhistory"
+    "start:handhistory:open": "npm run handhistory:dev && npm run serve:handhistory -- --open",
+    "start": "npm run start:handhistory:open"
   },
   "repository": {
     "type": "git",

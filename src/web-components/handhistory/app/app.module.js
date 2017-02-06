@@ -10,7 +10,7 @@ import {AppService} from './app.service';
 import './app.less';
 
 export const AppModule = angular
-    .module('app', [
+    .module('angular-web-handgroups', [
         CommonModule,
         ComponentsModule
     ])

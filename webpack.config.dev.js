@@ -7,7 +7,7 @@ const commonConfig = require('./webpack.config.common');
 const ENV = process.env.ENV = process.env.NODE_ENV = 'development';
 const HOST = process.env.HOST || 'localhost';
 const PORT = process.env.PORT || 3000;
-const API_URL = process.env.API_URL || 'http://www.dev.jivaro.com:3031/handgroup/';
+const API_URL = process.env.API_URL || 'http://www.dev.jivaro.com:3031/handgroups/58469919b95ff5581ff414bc';
 
 const METADATA = webpackMerge(commonConfig(process.env.COMPONENT).metadata, {
     host: HOST,
