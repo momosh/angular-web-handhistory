@@ -9,7 +9,7 @@ import {AppService} from './app.service';
 // styles
 import './app.less';
 
-export default AppModule = angular
+angular
     .module('angular-web-handgroups', [
         CommonModule,
         ComponentsModule
