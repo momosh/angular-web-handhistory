@@ -48,35 +48,6 @@ module.exports = webpackMerge.smart(commonConfig(process.env.COMPONENT), {
                 'PORT': JSON.stringify(METADATA.port),
                 'API_URL': JSON.stringify(METADATA.apiUrl)
             }
-        }),
-        // Reduces bundles total size
-        new webpack.optimize.UglifyJsPlugin({
-            beautify: false,
-            output: {
-                comments: false
-            },
-            mangle: {
-                // You can specify all variables that should not be mangled.
-                // For example if your vendor dependency doesn't use modules
-                // and relies on global variables. Most of angular modules relies on
-                // angular global variable, so we should keep it unchanged
-                except: ['$super', '$', 'exports', 'require', 'angular'],
-                screw_ie8: true
-            },
-            sourceMap: false,
-            compress: {
-                screw_ie8: true,
-                warnings: false,
-                conditionals: true,
-                unused: true,
-                comparisons: true,
-                sequences: true,
-                dead_code: true,
-                evaluate: true,
-                if_return: true,
-                join_vars: true,
-                negate_iife: false // we need this for lazy v8
-            }
         })
     ]
 });
