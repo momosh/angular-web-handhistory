@@ -541,7 +541,7 @@
 .DeckCard--X,
 .DeckCard--x,
 .DeckCard--back {
-  background-image: url(/dist/assets/images/33342208ab4e1be99de6316e7e114d1e.svg);
+  background-image: url(/client/assets/images/deck-cards/back.svg);
 }
 .cards-4 .Replayer-holeCards .DeckCard {
   box-shadow: -1px 1px 2px 0 rgba(0, 0, 0, 0.5);
@@ -560,172 +560,172 @@
 }
 /* .replayerCardGenerator(D); */
 .DeckCard--Jd {
-  background-image: url(/dist/assets/images/906438994e6703d1acf8555bda15f88b.svg);
+  background-image: url(/client/assets/images/deck-cards/DJ.svg);
 }
 .DeckCard--Qd {
-  background-image: url(/dist/assets/images/6b7e4a8120cd93f42bdae046fbabcb49.svg);
+  background-image: url(/client/assets/images/deck-cards/DQ.svg);
 }
 .DeckCard--Kd {
-  background-image: url(/dist/assets/images/94eb8aa3fc1f39c18581032556a57392.svg);
+  background-image: url(/client/assets/images/deck-cards/DK.svg);
 }
 .DeckCard--Ad {
-  background-image: url(/dist/assets/images/b8a4ff43f5bce1b43dee8647724dc2d8.svg);
+  background-image: url(/client/assets/images/deck-cards/DA.svg);
 }
 .DeckCard--Td {
-  background-image: url(/dist/assets/images/e49fd9e0f49c4abba30a725e469abe3c.svg);
+  background-image: url(/client/assets/images/deck-cards/D10.svg);
 }
 .DeckCard--10d {
-  background-image: url(/dist/assets/images/e49fd9e0f49c4abba30a725e469abe3c.svg);
+  background-image: url(/client/assets/images/deck-cards/D10.svg);
 }
 .DeckCard--9d {
-  background-image: url(/dist/assets/images/036dc109b7b9061add4ad9ad8a7b526e.svg);
+  background-image: url(/client/assets/images/deck-cards/D9.svg);
 }
 .DeckCard--8d {
-  background-image: url(/dist/assets/images/29294d3eef128098a20972e97ceb3939.svg);
+  background-image: url(/client/assets/images/deck-cards/D8.svg);
 }
 .DeckCard--7d {
-  background-image: url(/dist/assets/images/54c9483c75a41c8b205aa15a3d372df8.svg);
+  background-image: url(/client/assets/images/deck-cards/D7.svg);
 }
 .DeckCard--6d {
-  background-image: url(/dist/assets/images/d2fbeb5fea78896c3355cb79923302bb.svg);
+  background-image: url(/client/assets/images/deck-cards/D6.svg);
 }
 .DeckCard--5d {
-  background-image: url(/dist/assets/images/254e0a1712794126e57a4a490aa51804.svg);
+  background-image: url(/client/assets/images/deck-cards/D5.svg);
 }
 .DeckCard--4d {
-  background-image: url(/dist/assets/images/9708a376fdf8d77b52ac8bed176e9a11.svg);
+  background-image: url(/client/assets/images/deck-cards/D4.svg);
 }
 .DeckCard--3d {
-  background-image: url(/dist/assets/images/c405cfe2f0ccd6fd41284b5feedd2f8f.svg);
+  background-image: url(/client/assets/images/deck-cards/D3.svg);
 }
 .DeckCard--2d {
-  background-image: url(/dist/assets/images/c48d09da87ec105770902413ba83e854.svg);
+  background-image: url(/client/assets/images/deck-cards/D2.svg);
 }
 .DeckCard--Js {
-  background-image: url(/dist/assets/images/2e456859c7842db9da5dad74d9d858a7.svg);
+  background-image: url(/client/assets/images/deck-cards/SJ.svg);
 }
 .DeckCard--Qs {
-  background-image: url(/dist/assets/images/1164678b6f642c43c783d36aaeef6768.svg);
+  background-image: url(/client/assets/images/deck-cards/SQ.svg);
 }
 .DeckCard--Ks {
-  background-image: url(/dist/assets/images/62ca69aa9e3a5998c9b1d963856d01e4.svg);
+  background-image: url(/client/assets/images/deck-cards/SK.svg);
 }
 .DeckCard--As {
-  background-image: url(/dist/assets/images/434663305806a8aa09a5c0e77e26b866.svg);
+  background-image: url(/client/assets/images/deck-cards/SA.svg);
 }
 .DeckCard--Ts {
-  background-image: url(/dist/assets/images/3e3f83954e715cb19fc6fb38c0f58497.svg);
+  background-image: url(/client/assets/images/deck-cards/S10.svg);
 }
 .DeckCard--10s {
-  background-image: url(/dist/assets/images/3e3f83954e715cb19fc6fb38c0f58497.svg);
+  background-image: url(/client/assets/images/deck-cards/S10.svg);
 }
 .DeckCard--9s {
-  background-image: url(/dist/assets/images/352af9692ee2a7434e2fa6f3dc5e2069.svg);
+  background-image: url(/client/assets/images/deck-cards/S9.svg);
 }
 .DeckCard--8s {
-  background-image: url(/dist/assets/images/632585487ac736db5ea87de7c55e6878.svg);
+  background-image: url(/client/assets/images/deck-cards/S8.svg);
 }
 .DeckCard--7s {
-  background-image: url(/dist/assets/images/f57ec958369211e225f700ed6597cbe5.svg);
+  background-image: url(/client/assets/images/deck-cards/S7.svg);
 }
 .DeckCard--6s {
-  background-image: url(/dist/assets/images/075de99ded4cdd6db547202993ecfbf2.svg);
+  background-image: url(/client/assets/images/deck-cards/S6.svg);
 }
 .DeckCard--5s {
-  background-image: url(/dist/assets/images/cecebea7bb85057e042010de2e227d41.svg);
+  background-image: url(/client/assets/images/deck-cards/S5.svg);
 }
 .DeckCard--4s {
-  background-image: url(/dist/assets/images/95b954909ffe8fda821c996fdb1a3f99.svg);
+  background-image: url(/client/assets/images/deck-cards/S4.svg);
 }
 .DeckCard--3s {
-  background-image: url(/dist/assets/images/13aa1f521000af6214661f92fd2312e2.svg);
+  background-image: url(/client/assets/images/deck-cards/S3.svg);
 }
 .DeckCard--2s {
-  background-image: url(/dist/assets/images/996142e269c2d24e8e677faaae41c737.svg);
+  background-image: url(/client/assets/images/deck-cards/S2.svg);
 }
 .DeckCard--Jc {
-  background-image: url(/dist/assets/images/51c179dde64b6c6645b8c5835f9422ba.svg);
+  background-image: url(/client/assets/images/deck-cards/CJ.svg);
 }
 .DeckCard--Qc {
-  background-image: url(/dist/assets/images/64c3c684f48f13773c5556d378ac52db.svg);
+  background-image: url(/client/assets/images/deck-cards/CQ.svg);
 }
 .DeckCard--Kc {
-  background-image: url(/dist/assets/images/5c20853f762b43fceaeef46e5af6b1be.svg);
+  background-image: url(/client/assets/images/deck-cards/CK.svg);
 }
 .DeckCard--Ac {
-  background-image: url(/dist/assets/images/fd70e72629c5a5bfce541333c0f1b361.svg);
+  background-image: url(/client/assets/images/deck-cards/CA.svg);
 }
 .DeckCard--Tc {
-  background-image: url(/dist/assets/images/653512b1f3efde9db789e006032d52c6.svg);
+  background-image: url(/client/assets/images/deck-cards/C10.svg);
 }
 .DeckCard--10c {
-  background-image: url(/dist/assets/images/653512b1f3efde9db789e006032d52c6.svg);
+  background-image: url(/client/assets/images/deck-cards/C10.svg);
 }
 .DeckCard--9c {
-  background-image: url(/dist/assets/images/a9609b86ad7dc65c01a0f041742a4270.svg);
+  background-image: url(/client/assets/images/deck-cards/C9.svg);
 }
 .DeckCard--8c {
-  background-image: url(/dist/assets/images/a8d966169e1cdfec2c81bb550be72a0e.svg);
+  background-image: url(/client/assets/images/deck-cards/C8.svg);
 }
 .DeckCard--7c {
-  background-image: url(/dist/assets/images/5865423fa2ee8bc44f679ca685e25b50.svg);
+  background-image: url(/client/assets/images/deck-cards/C7.svg);
 }
 .DeckCard--6c {
-  background-image: url(/dist/assets/images/c88ccdcfee4f7c74e48869f8f73f37df.svg);
+  background-image: url(/client/assets/images/deck-cards/C6.svg);
 }
 .DeckCard--5c {
-  background-image: url(/dist/assets/images/abc1c7617be710bf2f8e78410319db3f.svg);
+  background-image: url(/client/assets/images/deck-cards/C5.svg);
 }
 .DeckCard--4c {
-  background-image: url(/dist/assets/images/dca649ba865871e5715d953ca7fb3fe8.svg);
+  background-image: url(/client/assets/images/deck-cards/C4.svg);
 }
 .DeckCard--3c {
-  background-image: url(/dist/assets/images/cb6d6e71ad8eed944bed7c45be46ba5c.svg);
+  background-image: url(/client/assets/images/deck-cards/C3.svg);
 }
 .DeckCard--2c {
-  background-image: url(/dist/assets/images/1db64907885977dbc07f98bc777572d9.svg);
+  background-image: url(/client/assets/images/deck-cards/C2.svg);
 }
 .DeckCard--Jh {
-  background-image: url(/dist/assets/images/2015014b2e6faea2fa02c2edcafc51fe.svg);
+  background-image: url(/client/assets/images/deck-cards/HJ.svg);
 }
 .DeckCard--Qh {
-  background-image: url(/dist/assets/images/dcf6be71e22eeb8427c3a3afa438248c.svg);
+  background-image: url(/client/assets/images/deck-cards/HQ.svg);
 }
 .DeckCard--Kh {
-  background-image: url(/dist/assets/images/6ccb71511adfc612c9927cd56c6cb427.svg);
+  background-image: url(/client/assets/images/deck-cards/HK.svg);
 }
 .DeckCard--Ah {
-  background-image: url(/dist/assets/images/ed90ac905709ff65dc74be623e06dea9.svg);
+  background-image: url(/client/assets/images/deck-cards/HA.svg);
 }
 .DeckCard--Th {
-  background-image: url(/dist/assets/images/527090a2039f1ecb1e17f6ab7f54ded8.svg);
+  background-image: url(/client/assets/images/deck-cards/H10.svg);
 }
 .DeckCard--10h {
-  background-image: url(/dist/assets/images/527090a2039f1ecb1e17f6ab7f54ded8.svg);
+  background-image: url(/client/assets/images/deck-cards/H10.svg);
 }
 .DeckCard--9h {
-  background-image: url(/dist/assets/images/54c6ae5863d1bda27c21c180ce80ddde.svg);
+  background-image: url(/client/assets/images/deck-cards/H9.svg);
 }
 .DeckCard--8h {
-  background-image: url(/dist/assets/images/cb93d4bada60fb82ac97b3bab7ec82f6.svg);
+  background-image: url(/client/assets/images/deck-cards/H8.svg);
 }
 .DeckCard--7h {
-  background-image: url(/dist/assets/images/d2f5440e0ae420ca5ee457703a2f1a77.svg);
+  background-image: url(/client/assets/images/deck-cards/H7.svg);
 }
 .DeckCard--6h {
-  background-image: url(/dist/assets/images/293532a57c37c2bc85dee73b63d71ec8.svg);
+  background-image: url(/client/assets/images/deck-cards/H6.svg);
 }
 .DeckCard--5h {
-  background-image: url(/dist/assets/images/9d4835157122006a8018985c0f766279.svg);
+  background-image: url(/client/assets/images/deck-cards/H5.svg);
 }
 .DeckCard--4h {
-  background-image: url(/dist/assets/images/79930e3d7a054dc47e832eca596f3dc5.svg);
+  background-image: url(/client/assets/images/deck-cards/H4.svg);
 }
 .DeckCard--3h {
-  background-image: url(/dist/assets/images/593d9a3cc10ffe0a4d7b0fece57f5b14.svg);
+  background-image: url(/client/assets/images/deck-cards/H3.svg);
 }
 .DeckCard--2h {
-  background-image: url(/dist/assets/images/efaa0d66464b681a2303cee4cc4c9aad.svg);
+  background-image: url(/client/assets/images/deck-cards/H2.svg);
 }
 /********************************************
 	Circle
@@ -2827,8 +2827,8 @@ fieldset {
  * -------------------------- */
 @font-face {
   font-family: 'FontAwesome';
-  src: url(/dist/assets/fonts/674f50d287a8c48dc19ba404d20fe713.eot);
-  src: url(/dist/assets/fonts/674f50d287a8c48dc19ba404d20fe713.eot?#iefix&v=4.7.0) format('embedded-opentype'), url(/dist/assets/fonts/af7ae505a9eed503f8b8e6982036873e.woff2) format('woff2'), url(/dist/assets/fonts/fee66e712a8a08eef5805a46892932ad.woff) format('woff'), url(/dist/assets/fonts/b06871f281fee6b241d60582ae9369b9.ttf) format('truetype'), url(/dist/assets/fonts/912ec66d7572ff821749319396470bde.svg#fontawesomeregular) format('svg');
+  src: url(/client/assets/fonts/fontawesome-webfont.eot);
+  src: url(/client/assets/fonts/fontawesome-webfont.eot?#iefix&v=4.7.0) format('embedded-opentype'), url(/client/assets/fonts/fontawesome-webfont.woff2) format('woff2'), url(/client/assets/fonts/fontawesome-webfont.woff) format('woff'), url(/client/assets/fonts/fontawesome-webfont.ttf) format('truetype'), url(/client/assets/fonts/fontawesome-webfont.svg#fontawesomeregular) format('svg');
   font-weight: normal;
   font-style: normal;
 }

@@ -1,6 +1,5 @@
 <filter-bar
-    on-game-type-select="$ctrl.gameTypeClickHandler($event)"
-    on-game-outcome-select="$ctrl.gameOutcomeClickHandler($event)">
+    on-filter-click="$ctrl.filterClickHandler($event)">
 </filter-bar>
 
 <game-list
@@ -15,3 +14,11 @@
     size="4"
     text="Loading">
 </spinner>
+
+<!--Nothing to load notification-->
+<div class="HandHistory-noLoad" ng-show="$ctrl.nothingToLoad">
+    <p class="u-textCenter">
+        <i class="fa fa-fw fa-eject"></i>
+        Nothing left to Load
+    </p>
+</div>

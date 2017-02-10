@@ -22,12 +22,13 @@ class FilterController {
         if (this.filterModel.cash) this.filterModel.cash = false;
 
         this.filterModel.tourney = !this.filterModel.tourney;
-        this.onGameTypeSelect(
+        this.onFilterClick(
             this.EventEmmiter({
                 type: 'tourney',
                 query: this.filterModel.tourney
             })
         );
+        this.sendScrollPosiotionResetEvent();
     }
 
     cashClick() {
@@ -35,12 +36,13 @@ class FilterController {
         if (this.filterModel.tourney) this.filterModel.tourney = false;
 
         this.filterModel.cash = !this.filterModel.cash;
-        this.onGameTypeSelect(
+        this.onFilterClick(
             this.EventEmmiter({
                 type: 'cash',
                 query: this.filterModel.cash
             })
-        )
+        );
+        this.sendScrollPosiotionResetEvent();
     }
 
     wonClick() {
@@ -48,12 +50,13 @@ class FilterController {
         if (this.filterModel.lost) this.filterModel.lost = false;
 
         this.filterModel.won = !this.filterModel.won;
-        this.onGameOutcomeSelect(
+        this.onFilterClick(
             this.EventEmmiter({
                 outcome: 'won',
                 query: this.filterModel.won
             })
-        )
+        );
+        this.sendScrollPosiotionResetEvent();
     }
 
     lostClick() {
@@ -61,12 +64,13 @@ class FilterController {
         if (this.filterModel.won) this.filterModel.won = false;
 
         this.filterModel.lost = !this.filterModel.lost;
-        this.onGameOutcomeSelect(
+        this.onFilterClick(
             this.EventEmmiter({
                 outcome: 'lost',
                 query: this.filterModel.lost
             })
         );
+        this.sendScrollPosiotionResetEvent();
     }
 
     colapseAllClick() {
@@ -74,13 +78,16 @@ class FilterController {
         // Emit Event for Game List Component
         this.$rootScope.$emit('COLLAPSE_ALL', this.collapseButtonText);
     }
+
+    sendScrollPosiotionResetEvent() {
+        this.$rootScope.$emit('SCROLL_RST', true);
+    }
 }
 
 export const FilterComponent = {
     template: templateUrl,
     controller: FilterController,
     bindings: {
-        onGameTypeSelect: '&',
-        onGameOutcomeSelect: '&'
+        onFilterClick: '&'
     }
 };

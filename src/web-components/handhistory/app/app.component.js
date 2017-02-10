@@ -21,15 +21,27 @@ class AppController {
         });
     }
 
-    gameTypeClickHandler({ type, query }) {
+    filterClickHandler(event) {
         this.gameListLoading = true;    // start Spinner
         this.nothingToLoad = false;     // new cycle for data loading
 
-        // remove query param if not in $event
-        if (!query) {
-            delete this.queryParams['gametype'];
-        } else {
-            this.queryParams['gametype'] = type;
+        // handles Game Type clicks (Tourney or Cash)
+        if (event.type) {
+            // remove query param for game type if not in $event
+            if (!event.query) {
+                delete this.queryParams['gametype'];
+            } else {
+                this.queryParams['gametype'] = event.type;
+            }
+        }
+        // handles Game Outcome clicks (Won or Lost)
+        if (event.outcome) {
+            // remove query param if not in $event
+            if (!event.query) {
+                delete this.queryParams['outcome'];
+            } else {
+                this.queryParams['outcome'] = event.outcome;
+            }
         }
 
         delete this.queryParams['lastdate'];
@@ -42,31 +54,12 @@ class AppController {
         });
     }
 
-    gameOutcomeClickHandler({ outcome, query }) {
-        this.gameListLoading = true;
-        this.nothingToLoad = false;
-
-        // remove query param if not in $event
-        if (!query) {
-            delete this.queryParams['outcome'];
-        } else {
-            this.queryParams['outcome'] = outcome;
-        }
-
-        delete this.queryParams['lastdate'];
-
-        // get Hand History data for defined query parameters
-        this.service.getHandHistory(this.queryParams, this.userId).then(res => {
-            this.handhistory = res.data;
-            if (res.lastdate) this.queryParams['lastdate'] = res.lastdate;
-            this.gameListLoading = false;
-        });
-    }
-
     loadOnScroll() {
-        if (this.nothingToLoad) { return; } // break infinite scroll if previous load was empty
+        // break infinite scroll if previous load was empty, previous load on scroll
+        // event hasn't finished yet or onInit load is active
+        if (this.nothingToLoad || this.scrollStillLoading || this.gameListLoading) { return; }
 
-        this.gameListLoading = this.scrollLoading = true;
+        this.gameListLoading = this.scrollLoading = true;   //  set flags for loading spinner
 
         // Call HandHistory Service with query params
         this.service.getHandHistory(this.queryParams, this.userId).then(res => {
@@ -75,7 +68,10 @@ class AppController {
             if (res.lastdate) this.queryParams['lastdate'] = res.lastdate;
             if (res.data.length == 0) this.nothingToLoad = true;    // if no data is returned there is nothing to load
             this.gameListLoading = this.scrollLoading = false;
+            this.scrollStillLoading = false;     // after everything is done, alow next load on scroll event
         });
+
+        this.scrollStillLoading = true;     // flag that prevents overloading on scroll event
     }
 }
 

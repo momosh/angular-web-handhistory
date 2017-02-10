@@ -7,12 +7,14 @@ const commonConfig = require('./webpack.config.common');
 const ENV = process.env.ENV = process.env.NODE_ENV = 'development';
 const HOST = process.env.HOST || 'localhost';
 const PORT = process.env.PORT || 3000;
-const API_URL = process.env.API_URL || 'http://www.dev.jivaro.com:3031/handgroups/58469919b95ff5581ff414bc';
+const API_URL = process.env.API_URL || 'http://www.dev.jivaro.com:3031/api/handgroups/';
+const USER_ID = process.env.USER_ID || '58469919b95ff5581ff414bc';
 
 const METADATA = webpackMerge(commonConfig(process.env.COMPONENT).metadata, {
     host: HOST,
     port: PORT,
     apiUrl: API_URL,
+    userId: USER_ID,
     ENV: ENV
 });
 
@@ -39,6 +41,10 @@ module.exports = webpackMerge.smart(commonConfig(process.env.COMPONENT), {
     },
 
     plugins: [
+
+        new webpack.optimize.CommonsChunkPlugin({
+            name: [process.env.COMPONENT, 'vendor']
+        }),
         // Adds webpack HMR support. It act's like livereload,
         // reloading page after webpack rebuilt modules.
         // It also updates stylesheets and inline assets without page reloading.
@@ -50,7 +56,8 @@ module.exports = webpackMerge.smart(commonConfig(process.env.COMPONENT), {
                 'NODE_ENV': JSON.stringify(METADATA.ENV),
                 'HOST': JSON.stringify(METADATA.host),
                 'PORT': JSON.stringify(METADATA.port),
-                'API_URL': JSON.stringify(METADATA.apiUrl)
+                'API_URL': JSON.stringify(METADATA.apiUrl),
+                'USER_ID': JSON.stringify(METADATA.userId)
             }
         })
     ],
@@ -65,15 +72,5 @@ module.exports = webpackMerge.smart(commonConfig(process.env.COMPONENT), {
             aggregateTimeout: 300,
             poll: 1000
         }
-    },
-
-    // Fix for the ES6-shim
-    node: {
-      global: true,
-      crypto: 'empty',
-      process: true,
-      module: false,
-      clearImmediate: false,
-      setImmediate: false
     }
 });

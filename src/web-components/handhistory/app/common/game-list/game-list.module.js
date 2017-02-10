@@ -1,5 +1,3 @@
-import angular from 'angular';
-
 import {GameModule} from './games/games.module';
 import {GameListComponent} from './game-list.component';
 import {GameListScroll} from './game-list-scroll.directive';

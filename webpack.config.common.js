@@ -28,8 +28,12 @@ module.exports = function (component) {
             loaders: [
                 {
                     test: /\.js$/,
-                    exclude: /node_modules/,
-                    loader: 'ng-annotate!babel'
+                    exclude: /(node_modules|bower_components)/,
+                    loader: 'babel-loader',
+                    query: {
+                        presets: ['es2015', 'stage-0'],
+                        plugins: ['transform-runtime']
+                    }
                 },
                 {
                     test: /\.html$/,
@@ -58,9 +62,6 @@ module.exports = function (component) {
         },
 
         plugins: [
-            new webpack.optimize.CommonsChunkPlugin({
-                name: [[component], 'vendor']
-            }),
             new HtmlWebpackPlugin({
                 template: `./src/web-components/${component}/index.html`,
                 inject: 'body',

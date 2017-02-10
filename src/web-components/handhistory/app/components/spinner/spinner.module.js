@@ -1,5 +1,3 @@
-import angular from 'angular';
-
 import {SpinnerComponent} from './spinner.component';
 
 export const SpinnerModule = angular

@@ -5,9 +5,9 @@ const commonConfig = require('./webpack.config.common');
 
 // Webpack constants
 const ENV = process.env.ENV = process.env.NODE_ENV = 'production';
-const HOST = process.env.HOST || 'localhost';
+const HOST = process.env.HOST || '';
 const PORT = process.env.PORT || 8080;
-const API_URL = process.env.API_URL || '/api/handgroup/';
+const API_URL = process.env.API_URL || '/api/handgroups/';
 
 const METADATA = webpackMerge(commonConfig(process.env.COMPONENT).metadata, {
     host: HOST,

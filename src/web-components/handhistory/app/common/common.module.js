@@ -1,4 +1,3 @@
-import angular from 'angular';
 import {FilterModule} from './filter/filter.module';
 import {GameListModule} from './game-list/game-list.module';
 

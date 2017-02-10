@@ -1,5 +1,4 @@
 export class AppService {
-    urlString = process.env.API_URL;
 
     constructor($http) {
         'ngInject';
@@ -7,19 +6,22 @@ export class AppService {
     }
 
     getHandHistory(params, id) {
-        // set url target string based on ENV
+        // Set url target string based on ENV
+        let url = '';
         if (process.env.ENV === 'production') {
-            this.urlString = this.urlString + id;
+            url = process.env.API_URL + id;
+        } else {
+            url = process.env.API_URL + process.env.USER_ID;
         }
-        // if query parameters are defined, pass them to http.get call
-        if (params) {
+
+        if (params) {   // if query parameters are defined, pass them to http.get call
             let config = {
                 params: params
             };
-            return this.$http.get(this.urlString, config)
+            return this.$http.get(url, config)
                 .then(res => { return res.data; });
         } else {
-            return this.$http.get(this.urlString)
+            return this.$http.get(url)
                 .then(res => { return res.data; });
         }
     }

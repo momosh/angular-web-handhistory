@@ -1,4 +1,3 @@
-import angular from 'angular';
 import {GamesComponent} from './games.component';
 import {GameDetailsModule} from './game-details/game-details.module';
 
