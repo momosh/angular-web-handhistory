@@ -1,0 +1,10 @@
+<div class="Modal-container animate-if"
+    ng-if="$ctrl.visible"
+    esc-action="$ctrl.close()"
+    tabindex="0">
+
+    <div class="Modal" ng-transclude="body"
+        ng-style="$ctrl.styles"
+        click-outside="$ctrl.close()">
+    </div>
+</div>

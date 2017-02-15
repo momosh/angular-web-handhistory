@@ -1,569 +1,6 @@
 /******/ (function(modules) { // webpackBootstrap
-/******/ 	// install a JSONP callback for chunk loading
-/******/ 	var parentJsonpFunction = window["webpackJsonp"];
-/******/ 	window["webpackJsonp"] = function webpackJsonpCallback(chunkIds, moreModules) {
-/******/ 		// add "moreModules" to the modules object,
-/******/ 		// then flag all "chunkIds" as loaded and fire callback
-/******/ 		var moduleId, chunkId, i = 0, callbacks = [];
-/******/ 		for(;i < chunkIds.length; i++) {
-/******/ 			chunkId = chunkIds[i];
-/******/ 			if(installedChunks[chunkId])
-/******/ 				callbacks.push.apply(callbacks, installedChunks[chunkId]);
-/******/ 			installedChunks[chunkId] = 0;
-/******/ 		}
-/******/ 		for(moduleId in moreModules) {
-/******/ 			modules[moduleId] = moreModules[moduleId];
-/******/ 		}
-/******/ 		if(parentJsonpFunction) parentJsonpFunction(chunkIds, moreModules);
-/******/ 		while(callbacks.length)
-/******/ 			callbacks.shift().call(null, __webpack_require__);
-/******/ 		if(moreModules[0]) {
-/******/ 			installedModules[0] = 0;
-/******/ 			return __webpack_require__(0);
-/******/ 		}
-/******/ 	};
-/******/ 	var parentHotUpdateCallback = this["webpackHotUpdate"];
-/******/ 	this["webpackHotUpdate"] = 
-/******/ 	function webpackHotUpdateCallback(chunkId, moreModules) { // eslint-disable-line no-unused-vars
-/******/ 		hotAddUpdateChunk(chunkId, moreModules);
-/******/ 		if(parentHotUpdateCallback) parentHotUpdateCallback(chunkId, moreModules);
-/******/ 	}
-/******/ 	
-/******/ 	function hotDownloadUpdateChunk(chunkId) { // eslint-disable-line no-unused-vars
-/******/ 		var head = document.getElementsByTagName("head")[0];
-/******/ 		var script = document.createElement("script");
-/******/ 		script.type = "text/javascript";
-/******/ 		script.charset = "utf-8";
-/******/ 		script.src = __webpack_require__.p + "" + chunkId + "." + hotCurrentHash + ".hot-update.js";
-/******/ 		head.appendChild(script);
-/******/ 	}
-/******/ 	
-/******/ 	function hotDownloadManifest(callback) { // eslint-disable-line no-unused-vars
-/******/ 		if(typeof XMLHttpRequest === "undefined")
-/******/ 			return callback(new Error("No browser support"));
-/******/ 		try {
-/******/ 			var request = new XMLHttpRequest();
-/******/ 			var requestPath = __webpack_require__.p + "" + hotCurrentHash + ".hot-update.json";
-/******/ 			request.open("GET", requestPath, true);
-/******/ 			request.timeout = 10000;
-/******/ 			request.send(null);
-/******/ 		} catch(err) {
-/******/ 			return callback(err);
-/******/ 		}
-/******/ 		request.onreadystatechange = function() {
-/******/ 			if(request.readyState !== 4) return;
-/******/ 			if(request.status === 0) {
-/******/ 				// timeout
-/******/ 				callback(new Error("Manifest request to " + requestPath + " timed out."));
-/******/ 			} else if(request.status === 404) {
-/******/ 				// no update available
-/******/ 				callback();
-/******/ 			} else if(request.status !== 200 && request.status !== 304) {
-/******/ 				// other failure
-/******/ 				callback(new Error("Manifest request to " + requestPath + " failed."));
-/******/ 			} else {
-/******/ 				// success
-/******/ 				try {
-/******/ 					var update = JSON.parse(request.responseText);
-/******/ 				} catch(e) {
-/******/ 					callback(e);
-/******/ 					return;
-/******/ 				}
-/******/ 				callback(null, update);
-/******/ 			}
-/******/ 		};
-/******/ 	}
-
-/******/ 	
-/******/ 	
-/******/ 	// Copied from https://github.com/facebook/react/blob/bef45b0/src/shared/utils/canDefineProperty.js
-/******/ 	var canDefineProperty = false;
-/******/ 	try {
-/******/ 		Object.defineProperty({}, "x", {
-/******/ 			get: function() {}
-/******/ 		});
-/******/ 		canDefineProperty = true;
-/******/ 	} catch(x) {
-/******/ 		// IE will fail on defineProperty
-/******/ 	}
-/******/ 	
-/******/ 	var hotApplyOnUpdate = true;
-/******/ 	var hotCurrentHash = "099dfc55d2e608532eff"; // eslint-disable-line no-unused-vars
-/******/ 	var hotCurrentModuleData = {};
-/******/ 	var hotCurrentParents = []; // eslint-disable-line no-unused-vars
-/******/ 	
-/******/ 	function hotCreateRequire(moduleId) { // eslint-disable-line no-unused-vars
-/******/ 		var me = installedModules[moduleId];
-/******/ 		if(!me) return __webpack_require__;
-/******/ 		var fn = function(request) {
-/******/ 			if(me.hot.active) {
-/******/ 				if(installedModules[request]) {
-/******/ 					if(installedModules[request].parents.indexOf(moduleId) < 0)
-/******/ 						installedModules[request].parents.push(moduleId);
-/******/ 					if(me.children.indexOf(request) < 0)
-/******/ 						me.children.push(request);
-/******/ 				} else hotCurrentParents = [moduleId];
-/******/ 			} else {
-/******/ 				console.warn("[HMR] unexpected require(" + request + ") from disposed module " + moduleId);
-/******/ 				hotCurrentParents = [];
-/******/ 			}
-/******/ 			return __webpack_require__(request);
-/******/ 		};
-/******/ 		for(var name in __webpack_require__) {
-/******/ 			if(Object.prototype.hasOwnProperty.call(__webpack_require__, name)) {
-/******/ 				if(canDefineProperty) {
-/******/ 					Object.defineProperty(fn, name, (function(name) {
-/******/ 						return {
-/******/ 							configurable: true,
-/******/ 							enumerable: true,
-/******/ 							get: function() {
-/******/ 								return __webpack_require__[name];
-/******/ 							},
-/******/ 							set: function(value) {
-/******/ 								__webpack_require__[name] = value;
-/******/ 							}
-/******/ 						};
-/******/ 					}(name)));
-/******/ 				} else {
-/******/ 					fn[name] = __webpack_require__[name];
-/******/ 				}
-/******/ 			}
-/******/ 		}
-/******/ 	
-/******/ 		function ensure(chunkId, callback) {
-/******/ 			if(hotStatus === "ready")
-/******/ 				hotSetStatus("prepare");
-/******/ 			hotChunksLoading++;
-/******/ 			__webpack_require__.e(chunkId, function() {
-/******/ 				try {
-/******/ 					callback.call(null, fn);
-/******/ 				} finally {
-/******/ 					finishChunkLoading();
-/******/ 				}
-/******/ 	
-/******/ 				function finishChunkLoading() {
-/******/ 					hotChunksLoading--;
-/******/ 					if(hotStatus === "prepare") {
-/******/ 						if(!hotWaitingFilesMap[chunkId]) {
-/******/ 							hotEnsureUpdateChunk(chunkId);
-/******/ 						}
-/******/ 						if(hotChunksLoading === 0 && hotWaitingFiles === 0) {
-/******/ 							hotUpdateDownloaded();
-/******/ 						}
-/******/ 					}
-/******/ 				}
-/******/ 			});
-/******/ 		}
-/******/ 		if(canDefineProperty) {
-/******/ 			Object.defineProperty(fn, "e", {
-/******/ 				enumerable: true,
-/******/ 				value: ensure
-/******/ 			});
-/******/ 		} else {
-/******/ 			fn.e = ensure;
-/******/ 		}
-/******/ 		return fn;
-/******/ 	}
-/******/ 	
-/******/ 	function hotCreateModule(moduleId) { // eslint-disable-line no-unused-vars
-/******/ 		var hot = {
-/******/ 			// private stuff
-/******/ 			_acceptedDependencies: {},
-/******/ 			_declinedDependencies: {},
-/******/ 			_selfAccepted: false,
-/******/ 			_selfDeclined: false,
-/******/ 			_disposeHandlers: [],
-/******/ 	
-/******/ 			// Module API
-/******/ 			active: true,
-/******/ 			accept: function(dep, callback) {
-/******/ 				if(typeof dep === "undefined")
-/******/ 					hot._selfAccepted = true;
-/******/ 				else if(typeof dep === "function")
-/******/ 					hot._selfAccepted = dep;
-/******/ 				else if(typeof dep === "object")
-/******/ 					for(var i = 0; i < dep.length; i++)
-/******/ 						hot._acceptedDependencies[dep[i]] = callback;
-/******/ 				else
-/******/ 					hot._acceptedDependencies[dep] = callback;
-/******/ 			},
-/******/ 			decline: function(dep) {
-/******/ 				if(typeof dep === "undefined")
-/******/ 					hot._selfDeclined = true;
-/******/ 				else if(typeof dep === "number")
-/******/ 					hot._declinedDependencies[dep] = true;
-/******/ 				else
-/******/ 					for(var i = 0; i < dep.length; i++)
-/******/ 						hot._declinedDependencies[dep[i]] = true;
-/******/ 			},
-/******/ 			dispose: function(callback) {
-/******/ 				hot._disposeHandlers.push(callback);
-/******/ 			},
-/******/ 			addDisposeHandler: function(callback) {
-/******/ 				hot._disposeHandlers.push(callback);
-/******/ 			},
-/******/ 			removeDisposeHandler: function(callback) {
-/******/ 				var idx = hot._disposeHandlers.indexOf(callback);
-/******/ 				if(idx >= 0) hot._disposeHandlers.splice(idx, 1);
-/******/ 			},
-/******/ 	
-/******/ 			// Management API
-/******/ 			check: hotCheck,
-/******/ 			apply: hotApply,
-/******/ 			status: function(l) {
-/******/ 				if(!l) return hotStatus;
-/******/ 				hotStatusHandlers.push(l);
-/******/ 			},
-/******/ 			addStatusHandler: function(l) {
-/******/ 				hotStatusHandlers.push(l);
-/******/ 			},
-/******/ 			removeStatusHandler: function(l) {
-/******/ 				var idx = hotStatusHandlers.indexOf(l);
-/******/ 				if(idx >= 0) hotStatusHandlers.splice(idx, 1);
-/******/ 			},
-/******/ 	
-/******/ 			//inherit from previous dispose call
-/******/ 			data: hotCurrentModuleData[moduleId]
-/******/ 		};
-/******/ 		return hot;
-/******/ 	}
-/******/ 	
-/******/ 	var hotStatusHandlers = [];
-/******/ 	var hotStatus = "idle";
-/******/ 	
-/******/ 	function hotSetStatus(newStatus) {
-/******/ 		hotStatus = newStatus;
-/******/ 		for(var i = 0; i < hotStatusHandlers.length; i++)
-/******/ 			hotStatusHandlers[i].call(null, newStatus);
-/******/ 	}
-/******/ 	
-/******/ 	// while downloading
-/******/ 	var hotWaitingFiles = 0;
-/******/ 	var hotChunksLoading = 0;
-/******/ 	var hotWaitingFilesMap = {};
-/******/ 	var hotRequestedFilesMap = {};
-/******/ 	var hotAvailibleFilesMap = {};
-/******/ 	var hotCallback;
-/******/ 	
-/******/ 	// The update info
-/******/ 	var hotUpdate, hotUpdateNewHash;
-/******/ 	
-/******/ 	function toModuleId(id) {
-/******/ 		var isNumber = (+id) + "" === id;
-/******/ 		return isNumber ? +id : id;
-/******/ 	}
-/******/ 	
-/******/ 	function hotCheck(apply, callback) {
-/******/ 		if(hotStatus !== "idle") throw new Error("check() is only allowed in idle status");
-/******/ 		if(typeof apply === "function") {
-/******/ 			hotApplyOnUpdate = false;
-/******/ 			callback = apply;
-/******/ 		} else {
-/******/ 			hotApplyOnUpdate = apply;
-/******/ 			callback = callback || function(err) {
-/******/ 				if(err) throw err;
-/******/ 			};
-/******/ 		}
-/******/ 		hotSetStatus("check");
-/******/ 		hotDownloadManifest(function(err, update) {
-/******/ 			if(err) return callback(err);
-/******/ 			if(!update) {
-/******/ 				hotSetStatus("idle");
-/******/ 				callback(null, null);
-/******/ 				return;
-/******/ 			}
-/******/ 	
-/******/ 			hotRequestedFilesMap = {};
-/******/ 			hotAvailibleFilesMap = {};
-/******/ 			hotWaitingFilesMap = {};
-/******/ 			for(var i = 0; i < update.c.length; i++)
-/******/ 				hotAvailibleFilesMap[update.c[i]] = true;
-/******/ 			hotUpdateNewHash = update.h;
-/******/ 	
-/******/ 			hotSetStatus("prepare");
-/******/ 			hotCallback = callback;
-/******/ 			hotUpdate = {};
-/******/ 			for(var chunkId in installedChunks)
-/******/ 			{ // eslint-disable-line no-lone-blocks
-/******/ 				/*globals chunkId */
-/******/ 				hotEnsureUpdateChunk(chunkId);
-/******/ 			}
-/******/ 			if(hotStatus === "prepare" && hotChunksLoading === 0 && hotWaitingFiles === 0) {
-/******/ 				hotUpdateDownloaded();
-/******/ 			}
-/******/ 		});
-/******/ 	}
-/******/ 	
-/******/ 	function hotAddUpdateChunk(chunkId, moreModules) { // eslint-disable-line no-unused-vars
-/******/ 		if(!hotAvailibleFilesMap[chunkId] || !hotRequestedFilesMap[chunkId])
-/******/ 			return;
-/******/ 		hotRequestedFilesMap[chunkId] = false;
-/******/ 		for(var moduleId in moreModules) {
-/******/ 			if(Object.prototype.hasOwnProperty.call(moreModules, moduleId)) {
-/******/ 				hotUpdate[moduleId] = moreModules[moduleId];
-/******/ 			}
-/******/ 		}
-/******/ 		if(--hotWaitingFiles === 0 && hotChunksLoading === 0) {
-/******/ 			hotUpdateDownloaded();
-/******/ 		}
-/******/ 	}
-/******/ 	
-/******/ 	function hotEnsureUpdateChunk(chunkId) {
-/******/ 		if(!hotAvailibleFilesMap[chunkId]) {
-/******/ 			hotWaitingFilesMap[chunkId] = true;
-/******/ 		} else {
-/******/ 			hotRequestedFilesMap[chunkId] = true;
-/******/ 			hotWaitingFiles++;
-/******/ 			hotDownloadUpdateChunk(chunkId);
-/******/ 		}
-/******/ 	}
-/******/ 	
-/******/ 	function hotUpdateDownloaded() {
-/******/ 		hotSetStatus("ready");
-/******/ 		var callback = hotCallback;
-/******/ 		hotCallback = null;
-/******/ 		if(!callback) return;
-/******/ 		if(hotApplyOnUpdate) {
-/******/ 			hotApply(hotApplyOnUpdate, callback);
-/******/ 		} else {
-/******/ 			var outdatedModules = [];
-/******/ 			for(var id in hotUpdate) {
-/******/ 				if(Object.prototype.hasOwnProperty.call(hotUpdate, id)) {
-/******/ 					outdatedModules.push(toModuleId(id));
-/******/ 				}
-/******/ 			}
-/******/ 			callback(null, outdatedModules);
-/******/ 		}
-/******/ 	}
-/******/ 	
-/******/ 	function hotApply(options, callback) {
-/******/ 		if(hotStatus !== "ready") throw new Error("apply() is only allowed in ready status");
-/******/ 		if(typeof options === "function") {
-/******/ 			callback = options;
-/******/ 			options = {};
-/******/ 		} else if(options && typeof options === "object") {
-/******/ 			callback = callback || function(err) {
-/******/ 				if(err) throw err;
-/******/ 			};
-/******/ 		} else {
-/******/ 			options = {};
-/******/ 			callback = callback || function(err) {
-/******/ 				if(err) throw err;
-/******/ 			};
-/******/ 		}
-/******/ 	
-/******/ 		function getAffectedStuff(module) {
-/******/ 			var outdatedModules = [module];
-/******/ 			var outdatedDependencies = {};
-/******/ 	
-/******/ 			var queue = outdatedModules.slice();
-/******/ 			while(queue.length > 0) {
-/******/ 				var moduleId = queue.pop();
-/******/ 				var module = installedModules[moduleId];
-/******/ 				if(!module || module.hot._selfAccepted)
-/******/ 					continue;
-/******/ 				if(module.hot._selfDeclined) {
-/******/ 					return new Error("Aborted because of self decline: " + moduleId);
-/******/ 				}
-/******/ 				if(moduleId === 0) {
-/******/ 					return;
-/******/ 				}
-/******/ 				for(var i = 0; i < module.parents.length; i++) {
-/******/ 					var parentId = module.parents[i];
-/******/ 					var parent = installedModules[parentId];
-/******/ 					if(parent.hot._declinedDependencies[moduleId]) {
-/******/ 						return new Error("Aborted because of declined dependency: " + moduleId + " in " + parentId);
-/******/ 					}
-/******/ 					if(outdatedModules.indexOf(parentId) >= 0) continue;
-/******/ 					if(parent.hot._acceptedDependencies[moduleId]) {
-/******/ 						if(!outdatedDependencies[parentId])
-/******/ 							outdatedDependencies[parentId] = [];
-/******/ 						addAllToSet(outdatedDependencies[parentId], [moduleId]);
-/******/ 						continue;
-/******/ 					}
-/******/ 					delete outdatedDependencies[parentId];
-/******/ 					outdatedModules.push(parentId);
-/******/ 					queue.push(parentId);
-/******/ 				}
-/******/ 			}
-/******/ 	
-/******/ 			return [outdatedModules, outdatedDependencies];
-/******/ 		}
-/******/ 	
-/******/ 		function addAllToSet(a, b) {
-/******/ 			for(var i = 0; i < b.length; i++) {
-/******/ 				var item = b[i];
-/******/ 				if(a.indexOf(item) < 0)
-/******/ 					a.push(item);
-/******/ 			}
-/******/ 		}
-/******/ 	
-/******/ 		// at begin all updates modules are outdated
-/******/ 		// the "outdated" status can propagate to parents if they don't accept the children
-/******/ 		var outdatedDependencies = {};
-/******/ 		var outdatedModules = [];
-/******/ 		var appliedUpdate = {};
-/******/ 		for(var id in hotUpdate) {
-/******/ 			if(Object.prototype.hasOwnProperty.call(hotUpdate, id)) {
-/******/ 				var moduleId = toModuleId(id);
-/******/ 				var result = getAffectedStuff(moduleId);
-/******/ 				if(!result) {
-/******/ 					if(options.ignoreUnaccepted)
-/******/ 						continue;
-/******/ 					hotSetStatus("abort");
-/******/ 					return callback(new Error("Aborted because " + moduleId + " is not accepted"));
-/******/ 				}
-/******/ 				if(result instanceof Error) {
-/******/ 					hotSetStatus("abort");
-/******/ 					return callback(result);
-/******/ 				}
-/******/ 				appliedUpdate[moduleId] = hotUpdate[moduleId];
-/******/ 				addAllToSet(outdatedModules, result[0]);
-/******/ 				for(var moduleId in result[1]) {
-/******/ 					if(Object.prototype.hasOwnProperty.call(result[1], moduleId)) {
-/******/ 						if(!outdatedDependencies[moduleId])
-/******/ 							outdatedDependencies[moduleId] = [];
-/******/ 						addAllToSet(outdatedDependencies[moduleId], result[1][moduleId]);
-/******/ 					}
-/******/ 				}
-/******/ 			}
-/******/ 		}
-/******/ 	
-/******/ 		// Store self accepted outdated modules to require them later by the module system
-/******/ 		var outdatedSelfAcceptedModules = [];
-/******/ 		for(var i = 0; i < outdatedModules.length; i++) {
-/******/ 			var moduleId = outdatedModules[i];
-/******/ 			if(installedModules[moduleId] && installedModules[moduleId].hot._selfAccepted)
-/******/ 				outdatedSelfAcceptedModules.push({
-/******/ 					module: moduleId,
-/******/ 					errorHandler: installedModules[moduleId].hot._selfAccepted
-/******/ 				});
-/******/ 		}
-/******/ 	
-/******/ 		// Now in "dispose" phase
-/******/ 		hotSetStatus("dispose");
-/******/ 		var queue = outdatedModules.slice();
-/******/ 		while(queue.length > 0) {
-/******/ 			var moduleId = queue.pop();
-/******/ 			var module = installedModules[moduleId];
-/******/ 			if(!module) continue;
-/******/ 	
-/******/ 			var data = {};
-/******/ 	
-/******/ 			// Call dispose handlers
-/******/ 			var disposeHandlers = module.hot._disposeHandlers;
-/******/ 			for(var j = 0; j < disposeHandlers.length; j++) {
-/******/ 				var cb = disposeHandlers[j];
-/******/ 				cb(data);
-/******/ 			}
-/******/ 			hotCurrentModuleData[moduleId] = data;
-/******/ 	
-/******/ 			// disable module (this disables requires from this module)
-/******/ 			module.hot.active = false;
-/******/ 	
-/******/ 			// remove module from cache
-/******/ 			delete installedModules[moduleId];
-/******/ 	
-/******/ 			// remove "parents" references from all children
-/******/ 			for(var j = 0; j < module.children.length; j++) {
-/******/ 				var child = installedModules[module.children[j]];
-/******/ 				if(!child) continue;
-/******/ 				var idx = child.parents.indexOf(moduleId);
-/******/ 				if(idx >= 0) {
-/******/ 					child.parents.splice(idx, 1);
-/******/ 				}
-/******/ 			}
-/******/ 		}
-/******/ 	
-/******/ 		// remove outdated dependency from module children
-/******/ 		for(var moduleId in outdatedDependencies) {
-/******/ 			if(Object.prototype.hasOwnProperty.call(outdatedDependencies, moduleId)) {
-/******/ 				var module = installedModules[moduleId];
-/******/ 				var moduleOutdatedDependencies = outdatedDependencies[moduleId];
-/******/ 				for(var j = 0; j < moduleOutdatedDependencies.length; j++) {
-/******/ 					var dependency = moduleOutdatedDependencies[j];
-/******/ 					var idx = module.children.indexOf(dependency);
-/******/ 					if(idx >= 0) module.children.splice(idx, 1);
-/******/ 				}
-/******/ 			}
-/******/ 		}
-/******/ 	
-/******/ 		// Not in "apply" phase
-/******/ 		hotSetStatus("apply");
-/******/ 	
-/******/ 		hotCurrentHash = hotUpdateNewHash;
-/******/ 	
-/******/ 		// insert new code
-/******/ 		for(var moduleId in appliedUpdate) {
-/******/ 			if(Object.prototype.hasOwnProperty.call(appliedUpdate, moduleId)) {
-/******/ 				modules[moduleId] = appliedUpdate[moduleId];
-/******/ 			}
-/******/ 		}
-/******/ 	
-/******/ 		// call accept handlers
-/******/ 		var error = null;
-/******/ 		for(var moduleId in outdatedDependencies) {
-/******/ 			if(Object.prototype.hasOwnProperty.call(outdatedDependencies, moduleId)) {
-/******/ 				var module = installedModules[moduleId];
-/******/ 				var moduleOutdatedDependencies = outdatedDependencies[moduleId];
-/******/ 				var callbacks = [];
-/******/ 				for(var i = 0; i < moduleOutdatedDependencies.length; i++) {
-/******/ 					var dependency = moduleOutdatedDependencies[i];
-/******/ 					var cb = module.hot._acceptedDependencies[dependency];
-/******/ 					if(callbacks.indexOf(cb) >= 0) continue;
-/******/ 					callbacks.push(cb);
-/******/ 				}
-/******/ 				for(var i = 0; i < callbacks.length; i++) {
-/******/ 					var cb = callbacks[i];
-/******/ 					try {
-/******/ 						cb(outdatedDependencies);
-/******/ 					} catch(err) {
-/******/ 						if(!error)
-/******/ 							error = err;
-/******/ 					}
-/******/ 				}
-/******/ 			}
-/******/ 		}
-/******/ 	
-/******/ 		// Load self accepted modules
-/******/ 		for(var i = 0; i < outdatedSelfAcceptedModules.length; i++) {
-/******/ 			var item = outdatedSelfAcceptedModules[i];
-/******/ 			var moduleId = item.module;
-/******/ 			hotCurrentParents = [moduleId];
-/******/ 			try {
-/******/ 				__webpack_require__(moduleId);
-/******/ 			} catch(err) {
-/******/ 				if(typeof item.errorHandler === "function") {
-/******/ 					try {
-/******/ 						item.errorHandler(err);
-/******/ 					} catch(err) {
-/******/ 						if(!error)
-/******/ 							error = err;
-/******/ 					}
-/******/ 				} else if(!error)
-/******/ 					error = err;
-/******/ 			}
-/******/ 		}
-/******/ 	
-/******/ 		// handle errors in accept handlers and self accepted module load
-/******/ 		if(error) {
-/******/ 			hotSetStatus("fail");
-/******/ 			return callback(error);
-/******/ 		}
-/******/ 	
-/******/ 		hotSetStatus("idle");
-/******/ 		callback(null, outdatedModules);
-/******/ 	}
-
 /******/ 	// The module cache
 /******/ 	var installedModules = {};
-
-/******/ 	// object to store loaded and loading chunks
-/******/ 	// "0" means "already loaded"
-/******/ 	// Array means "loading", array contains callbacks
-/******/ 	var installedChunks = {
-/******/ 		0:0
-/******/ 	};
 
 /******/ 	// The require function
 /******/ 	function __webpack_require__(moduleId) {
@@ -576,14 +13,11 @@
 /******/ 		var module = installedModules[moduleId] = {
 /******/ 			exports: {},
 /******/ 			id: moduleId,
-/******/ 			loaded: false,
-/******/ 			hot: hotCreateModule(moduleId),
-/******/ 			parents: hotCurrentParents,
-/******/ 			children: []
+/******/ 			loaded: false
 /******/ 		};
 
 /******/ 		// Execute the module function
-/******/ 		modules[moduleId].call(module.exports, module, module.exports, hotCreateRequire(moduleId));
+/******/ 		modules[moduleId].call(module.exports, module, module.exports, __webpack_require__);
 
 /******/ 		// Flag the module as loaded
 /******/ 		module.loaded = true;
@@ -592,29 +26,6 @@
 /******/ 		return module.exports;
 /******/ 	}
 
-/******/ 	// This file contains only the entry chunk.
-/******/ 	// The chunk loading function for additional chunks
-/******/ 	__webpack_require__.e = function requireEnsure(chunkId, callback) {
-/******/ 		// "0" is the signal for "already loaded"
-/******/ 		if(installedChunks[chunkId] === 0)
-/******/ 			return callback.call(null, __webpack_require__);
-
-/******/ 		// an array means "currently loading".
-/******/ 		if(installedChunks[chunkId] !== undefined) {
-/******/ 			installedChunks[chunkId].push(callback);
-/******/ 		} else {
-/******/ 			// start chunk loading
-/******/ 			installedChunks[chunkId] = [callback];
-/******/ 			var head = document.getElementsByTagName('head')[0];
-/******/ 			var script = document.createElement('script');
-/******/ 			script.type = 'text/javascript';
-/******/ 			script.charset = 'utf-8';
-/******/ 			script.async = true;
-
-/******/ 			script.src = __webpack_require__.p + "" + chunkId + "." + ({"1":"handhistory"}[chunkId]||chunkId) + ".bundle.js";
-/******/ 			head.appendChild(script);
-/******/ 		}
-/******/ 	};
 
 /******/ 	// expose the modules object (__webpack_modules__)
 /******/ 	__webpack_require__.m = modules;
@@ -623,13 +34,10 @@
 /******/ 	__webpack_require__.c = installedModules;
 
 /******/ 	// __webpack_public_path__
-/******/ 	__webpack_require__.p = "/client";
-
-/******/ 	// __webpack_hash__
-/******/ 	__webpack_require__.h = function() { return hotCurrentHash; };
+/******/ 	__webpack_require__.p = "/dist";
 
 /******/ 	// Load entry module and return exports
-/******/ 	return hotCreateRequire(0)(0);
+/******/ 	return __webpack_require__(0);
 /******/ })
 /************************************************************************/
 /******/ ({
@@ -639,24 +47,32 @@
 
 	'use strict';
 
-	var _angular = __webpack_require__(1);
+	var _angular = __webpack_require__(200);
 
 	var _angular2 = _interopRequireDefault(_angular);
+
+	var _angularAnimate = __webpack_require__(202);
+
+	var _angularAnimate2 = _interopRequireDefault(_angularAnimate);
+
+	var _jivaroWebReplayer = __webpack_require__(204);
+
+	var _jivaroWebReplayer2 = _interopRequireDefault(_jivaroWebReplayer);
 
 	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
 /***/ },
 
-/***/ 1:
+/***/ 200:
 /***/ function(module, exports, __webpack_require__) {
 
-	__webpack_require__(15);
+	__webpack_require__(201);
 	module.exports = angular;
 
 
 /***/ },
 
-/***/ 15:
+/***/ 201:
 /***/ function(module, exports) {
 
 	/**
@@ -33641,6 +33057,4194 @@
 	})(window);
 
 	!window.angular.$$csp().noInlineStyle && window.angular.element(document.head).prepend('<style type="text/css">@charset "UTF-8";[ng\\:cloak],[ng-cloak],[data-ng-cloak],[x-ng-cloak],.ng-cloak,.x-ng-cloak,.ng-hide:not(.ng-hide-animate){display:none !important;}ng\\:form{display:block;}.ng-animate-shim{visibility:hidden;}.ng-anchor{position:absolute;}</style>');
+
+/***/ },
+
+/***/ 202:
+/***/ function(module, exports, __webpack_require__) {
+
+	__webpack_require__(203);
+	module.exports = 'ngAnimate';
+
+
+/***/ },
+
+/***/ 203:
+/***/ function(module, exports) {
+
+	/**
+	 * @license AngularJS v1.6.2
+	 * (c) 2010-2017 Google, Inc. http://angularjs.org
+	 * License: MIT
+	 */
+	(function(window, angular) {'use strict';
+
+	var ELEMENT_NODE = 1;
+	var COMMENT_NODE = 8;
+
+	var ADD_CLASS_SUFFIX = '-add';
+	var REMOVE_CLASS_SUFFIX = '-remove';
+	var EVENT_CLASS_PREFIX = 'ng-';
+	var ACTIVE_CLASS_SUFFIX = '-active';
+	var PREPARE_CLASS_SUFFIX = '-prepare';
+
+	var NG_ANIMATE_CLASSNAME = 'ng-animate';
+	var NG_ANIMATE_CHILDREN_DATA = '$$ngAnimateChildren';
+
+	// Detect proper transitionend/animationend event names.
+	var CSS_PREFIX = '', TRANSITION_PROP, TRANSITIONEND_EVENT, ANIMATION_PROP, ANIMATIONEND_EVENT;
+
+	// If unprefixed events are not supported but webkit-prefixed are, use the latter.
+	// Otherwise, just use W3C names, browsers not supporting them at all will just ignore them.
+	// Note: Chrome implements `window.onwebkitanimationend` and doesn't implement `window.onanimationend`
+	// but at the same time dispatches the `animationend` event and not `webkitAnimationEnd`.
+	// Register both events in case `window.onanimationend` is not supported because of that,
+	// do the same for `transitionend` as Safari is likely to exhibit similar behavior.
+	// Also, the only modern browser that uses vendor prefixes for transitions/keyframes is webkit
+	// therefore there is no reason to test anymore for other vendor prefixes:
+	// http://caniuse.com/#search=transition
+	if ((window.ontransitionend === undefined) && (window.onwebkittransitionend !== undefined)) {
+	  CSS_PREFIX = '-webkit-';
+	  TRANSITION_PROP = 'WebkitTransition';
+	  TRANSITIONEND_EVENT = 'webkitTransitionEnd transitionend';
+	} else {
+	  TRANSITION_PROP = 'transition';
+	  TRANSITIONEND_EVENT = 'transitionend';
+	}
+
+	if ((window.onanimationend === undefined) && (window.onwebkitanimationend !== undefined)) {
+	  CSS_PREFIX = '-webkit-';
+	  ANIMATION_PROP = 'WebkitAnimation';
+	  ANIMATIONEND_EVENT = 'webkitAnimationEnd animationend';
+	} else {
+	  ANIMATION_PROP = 'animation';
+	  ANIMATIONEND_EVENT = 'animationend';
+	}
+
+	var DURATION_KEY = 'Duration';
+	var PROPERTY_KEY = 'Property';
+	var DELAY_KEY = 'Delay';
+	var TIMING_KEY = 'TimingFunction';
+	var ANIMATION_ITERATION_COUNT_KEY = 'IterationCount';
+	var ANIMATION_PLAYSTATE_KEY = 'PlayState';
+	var SAFE_FAST_FORWARD_DURATION_VALUE = 9999;
+
+	var ANIMATION_DELAY_PROP = ANIMATION_PROP + DELAY_KEY;
+	var ANIMATION_DURATION_PROP = ANIMATION_PROP + DURATION_KEY;
+	var TRANSITION_DELAY_PROP = TRANSITION_PROP + DELAY_KEY;
+	var TRANSITION_DURATION_PROP = TRANSITION_PROP + DURATION_KEY;
+
+	var ngMinErr = angular.$$minErr('ng');
+	function assertArg(arg, name, reason) {
+	  if (!arg) {
+	    throw ngMinErr('areq', 'Argument \'{0}\' is {1}', (name || '?'), (reason || 'required'));
+	  }
+	  return arg;
+	}
+
+	function mergeClasses(a,b) {
+	  if (!a && !b) return '';
+	  if (!a) return b;
+	  if (!b) return a;
+	  if (isArray(a)) a = a.join(' ');
+	  if (isArray(b)) b = b.join(' ');
+	  return a + ' ' + b;
+	}
+
+	function packageStyles(options) {
+	  var styles = {};
+	  if (options && (options.to || options.from)) {
+	    styles.to = options.to;
+	    styles.from = options.from;
+	  }
+	  return styles;
+	}
+
+	function pendClasses(classes, fix, isPrefix) {
+	  var className = '';
+	  classes = isArray(classes)
+	      ? classes
+	      : classes && isString(classes) && classes.length
+	          ? classes.split(/\s+/)
+	          : [];
+	  forEach(classes, function(klass, i) {
+	    if (klass && klass.length > 0) {
+	      className += (i > 0) ? ' ' : '';
+	      className += isPrefix ? fix + klass
+	                            : klass + fix;
+	    }
+	  });
+	  return className;
+	}
+
+	function removeFromArray(arr, val) {
+	  var index = arr.indexOf(val);
+	  if (val >= 0) {
+	    arr.splice(index, 1);
+	  }
+	}
+
+	function stripCommentsFromElement(element) {
+	  if (element instanceof jqLite) {
+	    switch (element.length) {
+	      case 0:
+	        return element;
+
+	      case 1:
+	        // there is no point of stripping anything if the element
+	        // is the only element within the jqLite wrapper.
+	        // (it's important that we retain the element instance.)
+	        if (element[0].nodeType === ELEMENT_NODE) {
+	          return element;
+	        }
+	        break;
+
+	      default:
+	        return jqLite(extractElementNode(element));
+	    }
+	  }
+
+	  if (element.nodeType === ELEMENT_NODE) {
+	    return jqLite(element);
+	  }
+	}
+
+	function extractElementNode(element) {
+	  if (!element[0]) return element;
+	  for (var i = 0; i < element.length; i++) {
+	    var elm = element[i];
+	    if (elm.nodeType === ELEMENT_NODE) {
+	      return elm;
+	    }
+	  }
+	}
+
+	function $$addClass($$jqLite, element, className) {
+	  forEach(element, function(elm) {
+	    $$jqLite.addClass(elm, className);
+	  });
+	}
+
+	function $$removeClass($$jqLite, element, className) {
+	  forEach(element, function(elm) {
+	    $$jqLite.removeClass(elm, className);
+	  });
+	}
+
+	function applyAnimationClassesFactory($$jqLite) {
+	  return function(element, options) {
+	    if (options.addClass) {
+	      $$addClass($$jqLite, element, options.addClass);
+	      options.addClass = null;
+	    }
+	    if (options.removeClass) {
+	      $$removeClass($$jqLite, element, options.removeClass);
+	      options.removeClass = null;
+	    }
+	  };
+	}
+
+	function prepareAnimationOptions(options) {
+	  options = options || {};
+	  if (!options.$$prepared) {
+	    var domOperation = options.domOperation || noop;
+	    options.domOperation = function() {
+	      options.$$domOperationFired = true;
+	      domOperation();
+	      domOperation = noop;
+	    };
+	    options.$$prepared = true;
+	  }
+	  return options;
+	}
+
+	function applyAnimationStyles(element, options) {
+	  applyAnimationFromStyles(element, options);
+	  applyAnimationToStyles(element, options);
+	}
+
+	function applyAnimationFromStyles(element, options) {
+	  if (options.from) {
+	    element.css(options.from);
+	    options.from = null;
+	  }
+	}
+
+	function applyAnimationToStyles(element, options) {
+	  if (options.to) {
+	    element.css(options.to);
+	    options.to = null;
+	  }
+	}
+
+	function mergeAnimationDetails(element, oldAnimation, newAnimation) {
+	  var target = oldAnimation.options || {};
+	  var newOptions = newAnimation.options || {};
+
+	  var toAdd = (target.addClass || '') + ' ' + (newOptions.addClass || '');
+	  var toRemove = (target.removeClass || '') + ' ' + (newOptions.removeClass || '');
+	  var classes = resolveElementClasses(element.attr('class'), toAdd, toRemove);
+
+	  if (newOptions.preparationClasses) {
+	    target.preparationClasses = concatWithSpace(newOptions.preparationClasses, target.preparationClasses);
+	    delete newOptions.preparationClasses;
+	  }
+
+	  // noop is basically when there is no callback; otherwise something has been set
+	  var realDomOperation = target.domOperation !== noop ? target.domOperation : null;
+
+	  extend(target, newOptions);
+
+	  // TODO(matsko or sreeramu): proper fix is to maintain all animation callback in array and call at last,but now only leave has the callback so no issue with this.
+	  if (realDomOperation) {
+	    target.domOperation = realDomOperation;
+	  }
+
+	  if (classes.addClass) {
+	    target.addClass = classes.addClass;
+	  } else {
+	    target.addClass = null;
+	  }
+
+	  if (classes.removeClass) {
+	    target.removeClass = classes.removeClass;
+	  } else {
+	    target.removeClass = null;
+	  }
+
+	  oldAnimation.addClass = target.addClass;
+	  oldAnimation.removeClass = target.removeClass;
+
+	  return target;
+	}
+
+	function resolveElementClasses(existing, toAdd, toRemove) {
+	  var ADD_CLASS = 1;
+	  var REMOVE_CLASS = -1;
+
+	  var flags = {};
+	  existing = splitClassesToLookup(existing);
+
+	  toAdd = splitClassesToLookup(toAdd);
+	  forEach(toAdd, function(value, key) {
+	    flags[key] = ADD_CLASS;
+	  });
+
+	  toRemove = splitClassesToLookup(toRemove);
+	  forEach(toRemove, function(value, key) {
+	    flags[key] = flags[key] === ADD_CLASS ? null : REMOVE_CLASS;
+	  });
+
+	  var classes = {
+	    addClass: '',
+	    removeClass: ''
+	  };
+
+	  forEach(flags, function(val, klass) {
+	    var prop, allow;
+	    if (val === ADD_CLASS) {
+	      prop = 'addClass';
+	      allow = !existing[klass] || existing[klass + REMOVE_CLASS_SUFFIX];
+	    } else if (val === REMOVE_CLASS) {
+	      prop = 'removeClass';
+	      allow = existing[klass] || existing[klass + ADD_CLASS_SUFFIX];
+	    }
+	    if (allow) {
+	      if (classes[prop].length) {
+	        classes[prop] += ' ';
+	      }
+	      classes[prop] += klass;
+	    }
+	  });
+
+	  function splitClassesToLookup(classes) {
+	    if (isString(classes)) {
+	      classes = classes.split(' ');
+	    }
+
+	    var obj = {};
+	    forEach(classes, function(klass) {
+	      // sometimes the split leaves empty string values
+	      // incase extra spaces were applied to the options
+	      if (klass.length) {
+	        obj[klass] = true;
+	      }
+	    });
+	    return obj;
+	  }
+
+	  return classes;
+	}
+
+	function getDomNode(element) {
+	  return (element instanceof jqLite) ? element[0] : element;
+	}
+
+	function applyGeneratedPreparationClasses(element, event, options) {
+	  var classes = '';
+	  if (event) {
+	    classes = pendClasses(event, EVENT_CLASS_PREFIX, true);
+	  }
+	  if (options.addClass) {
+	    classes = concatWithSpace(classes, pendClasses(options.addClass, ADD_CLASS_SUFFIX));
+	  }
+	  if (options.removeClass) {
+	    classes = concatWithSpace(classes, pendClasses(options.removeClass, REMOVE_CLASS_SUFFIX));
+	  }
+	  if (classes.length) {
+	    options.preparationClasses = classes;
+	    element.addClass(classes);
+	  }
+	}
+
+	function clearGeneratedClasses(element, options) {
+	  if (options.preparationClasses) {
+	    element.removeClass(options.preparationClasses);
+	    options.preparationClasses = null;
+	  }
+	  if (options.activeClasses) {
+	    element.removeClass(options.activeClasses);
+	    options.activeClasses = null;
+	  }
+	}
+
+	function blockTransitions(node, duration) {
+	  // we use a negative delay value since it performs blocking
+	  // yet it doesn't kill any existing transitions running on the
+	  // same element which makes this safe for class-based animations
+	  var value = duration ? '-' + duration + 's' : '';
+	  applyInlineStyle(node, [TRANSITION_DELAY_PROP, value]);
+	  return [TRANSITION_DELAY_PROP, value];
+	}
+
+	function blockKeyframeAnimations(node, applyBlock) {
+	  var value = applyBlock ? 'paused' : '';
+	  var key = ANIMATION_PROP + ANIMATION_PLAYSTATE_KEY;
+	  applyInlineStyle(node, [key, value]);
+	  return [key, value];
+	}
+
+	function applyInlineStyle(node, styleTuple) {
+	  var prop = styleTuple[0];
+	  var value = styleTuple[1];
+	  node.style[prop] = value;
+	}
+
+	function concatWithSpace(a,b) {
+	  if (!a) return b;
+	  if (!b) return a;
+	  return a + ' ' + b;
+	}
+
+	var $$rAFSchedulerFactory = ['$$rAF', function($$rAF) {
+	  var queue, cancelFn;
+
+	  function scheduler(tasks) {
+	    // we make a copy since RAFScheduler mutates the state
+	    // of the passed in array variable and this would be difficult
+	    // to track down on the outside code
+	    queue = queue.concat(tasks);
+	    nextTick();
+	  }
+
+	  queue = scheduler.queue = [];
+
+	  /* waitUntilQuiet does two things:
+	   * 1. It will run the FINAL `fn` value only when an uncanceled RAF has passed through
+	   * 2. It will delay the next wave of tasks from running until the quiet `fn` has run.
+	   *
+	   * The motivation here is that animation code can request more time from the scheduler
+	   * before the next wave runs. This allows for certain DOM properties such as classes to
+	   * be resolved in time for the next animation to run.
+	   */
+	  scheduler.waitUntilQuiet = function(fn) {
+	    if (cancelFn) cancelFn();
+
+	    cancelFn = $$rAF(function() {
+	      cancelFn = null;
+	      fn();
+	      nextTick();
+	    });
+	  };
+
+	  return scheduler;
+
+	  function nextTick() {
+	    if (!queue.length) return;
+
+	    var items = queue.shift();
+	    for (var i = 0; i < items.length; i++) {
+	      items[i]();
+	    }
+
+	    if (!cancelFn) {
+	      $$rAF(function() {
+	        if (!cancelFn) nextTick();
+	      });
+	    }
+	  }
+	}];
+
+	/**
+	 * @ngdoc directive
+	 * @name ngAnimateChildren
+	 * @restrict AE
+	 * @element ANY
+	 *
+	 * @description
+	 *
+	 * ngAnimateChildren allows you to specify that children of this element should animate even if any
+	 * of the children's parents are currently animating. By default, when an element has an active `enter`, `leave`, or `move`
+	 * (structural) animation, child elements that also have an active structural animation are not animated.
+	 *
+	 * Note that even if `ngAnimateChildren` is set, no child animations will run when the parent element is removed from the DOM (`leave` animation).
+	 *
+	 *
+	 * @param {string} ngAnimateChildren If the value is empty, `true` or `on`,
+	 *     then child animations are allowed. If the value is `false`, child animations are not allowed.
+	 *
+	 * @example
+	 * <example module="ngAnimateChildren" name="ngAnimateChildren" deps="angular-animate.js" animations="true">
+	     <file name="index.html">
+	       <div ng-controller="MainController as main">
+	         <label>Show container? <input type="checkbox" ng-model="main.enterElement" /></label>
+	         <label>Animate children? <input type="checkbox" ng-model="main.animateChildren" /></label>
+	         <hr>
+	         <div ng-animate-children="{{main.animateChildren}}">
+	           <div ng-if="main.enterElement" class="container">
+	             List of items:
+	             <div ng-repeat="item in [0, 1, 2, 3]" class="item">Item {{item}}</div>
+	           </div>
+	         </div>
+	       </div>
+	     </file>
+	     <file name="animations.css">
+
+	      .container.ng-enter,
+	      .container.ng-leave {
+	        transition: all ease 1.5s;
+	      }
+
+	      .container.ng-enter,
+	      .container.ng-leave-active {
+	        opacity: 0;
+	      }
+
+	      .container.ng-leave,
+	      .container.ng-enter-active {
+	        opacity: 1;
+	      }
+
+	      .item {
+	        background: firebrick;
+	        color: #FFF;
+	        margin-bottom: 10px;
+	      }
+
+	      .item.ng-enter,
+	      .item.ng-leave {
+	        transition: transform 1.5s ease;
+	      }
+
+	      .item.ng-enter {
+	        transform: translateX(50px);
+	      }
+
+	      .item.ng-enter-active {
+	        transform: translateX(0);
+	      }
+	    </file>
+	    <file name="script.js">
+	      angular.module('ngAnimateChildren', ['ngAnimate'])
+	        .controller('MainController', function MainController() {
+	          this.animateChildren = false;
+	          this.enterElement = false;
+	        });
+	    </file>
+	  </example>
+	 */
+	var $$AnimateChildrenDirective = ['$interpolate', function($interpolate) {
+	  return {
+	    link: function(scope, element, attrs) {
+	      var val = attrs.ngAnimateChildren;
+	      if (isString(val) && val.length === 0) { //empty attribute
+	        element.data(NG_ANIMATE_CHILDREN_DATA, true);
+	      } else {
+	        // Interpolate and set the value, so that it is available to
+	        // animations that run right after compilation
+	        setData($interpolate(val)(scope));
+	        attrs.$observe('ngAnimateChildren', setData);
+	      }
+
+	      function setData(value) {
+	        value = value === 'on' || value === 'true';
+	        element.data(NG_ANIMATE_CHILDREN_DATA, value);
+	      }
+	    }
+	  };
+	}];
+
+	/* exported $AnimateCssProvider */
+
+	var ANIMATE_TIMER_KEY = '$$animateCss';
+
+	/**
+	 * @ngdoc service
+	 * @name $animateCss
+	 * @kind object
+	 *
+	 * @description
+	 * The `$animateCss` service is a useful utility to trigger customized CSS-based transitions/keyframes
+	 * from a JavaScript-based animation or directly from a directive. The purpose of `$animateCss` is NOT
+	 * to side-step how `$animate` and ngAnimate work, but the goal is to allow pre-existing animations or
+	 * directives to create more complex animations that can be purely driven using CSS code.
+	 *
+	 * Note that only browsers that support CSS transitions and/or keyframe animations are capable of
+	 * rendering animations triggered via `$animateCss` (bad news for IE9 and lower).
+	 *
+	 * ## Usage
+	 * Once again, `$animateCss` is designed to be used inside of a registered JavaScript animation that
+	 * is powered by ngAnimate. It is possible to use `$animateCss` directly inside of a directive, however,
+	 * any automatic control over cancelling animations and/or preventing animations from being run on
+	 * child elements will not be handled by Angular. For this to work as expected, please use `$animate` to
+	 * trigger the animation and then setup a JavaScript animation that injects `$animateCss` to trigger
+	 * the CSS animation.
+	 *
+	 * The example below shows how we can create a folding animation on an element using `ng-if`:
+	 *
+	 * ```html
+	 * <!-- notice the `fold-animation` CSS class -->
+	 * <div ng-if="onOff" class="fold-animation">
+	 *   This element will go BOOM
+	 * </div>
+	 * <button ng-click="onOff=true">Fold In</button>
+	 * ```
+	 *
+	 * Now we create the **JavaScript animation** that will trigger the CSS transition:
+	 *
+	 * ```js
+	 * ngModule.animation('.fold-animation', ['$animateCss', function($animateCss) {
+	 *   return {
+	 *     enter: function(element, doneFn) {
+	 *       var height = element[0].offsetHeight;
+	 *       return $animateCss(element, {
+	 *         from: { height:'0px' },
+	 *         to: { height:height + 'px' },
+	 *         duration: 1 // one second
+	 *       });
+	 *     }
+	 *   }
+	 * }]);
+	 * ```
+	 *
+	 * ## More Advanced Uses
+	 *
+	 * `$animateCss` is the underlying code that ngAnimate uses to power **CSS-based animations** behind the scenes. Therefore CSS hooks
+	 * like `.ng-EVENT`, `.ng-EVENT-active`, `.ng-EVENT-stagger` are all features that can be triggered using `$animateCss` via JavaScript code.
+	 *
+	 * This also means that just about any combination of adding classes, removing classes, setting styles, dynamically setting a keyframe animation,
+	 * applying a hardcoded duration or delay value, changing the animation easing or applying a stagger animation are all options that work with
+	 * `$animateCss`. The service itself is smart enough to figure out the combination of options and examine the element styling properties in order
+	 * to provide a working animation that will run in CSS.
+	 *
+	 * The example below showcases a more advanced version of the `.fold-animation` from the example above:
+	 *
+	 * ```js
+	 * ngModule.animation('.fold-animation', ['$animateCss', function($animateCss) {
+	 *   return {
+	 *     enter: function(element, doneFn) {
+	 *       var height = element[0].offsetHeight;
+	 *       return $animateCss(element, {
+	 *         addClass: 'red large-text pulse-twice',
+	 *         easing: 'ease-out',
+	 *         from: { height:'0px' },
+	 *         to: { height:height + 'px' },
+	 *         duration: 1 // one second
+	 *       });
+	 *     }
+	 *   }
+	 * }]);
+	 * ```
+	 *
+	 * Since we're adding/removing CSS classes then the CSS transition will also pick those up:
+	 *
+	 * ```css
+	 * /&#42; since a hardcoded duration value of 1 was provided in the JavaScript animation code,
+	 * the CSS classes below will be transitioned despite them being defined as regular CSS classes &#42;/
+	 * .red { background:red; }
+	 * .large-text { font-size:20px; }
+	 *
+	 * /&#42; we can also use a keyframe animation and $animateCss will make it work alongside the transition &#42;/
+	 * .pulse-twice {
+	 *   animation: 0.5s pulse linear 2;
+	 *   -webkit-animation: 0.5s pulse linear 2;
+	 * }
+	 *
+	 * @keyframes pulse {
+	 *   from { transform: scale(0.5); }
+	 *   to { transform: scale(1.5); }
+	 * }
+	 *
+	 * @-webkit-keyframes pulse {
+	 *   from { -webkit-transform: scale(0.5); }
+	 *   to { -webkit-transform: scale(1.5); }
+	 * }
+	 * ```
+	 *
+	 * Given this complex combination of CSS classes, styles and options, `$animateCss` will figure everything out and make the animation happen.
+	 *
+	 * ## How the Options are handled
+	 *
+	 * `$animateCss` is very versatile and intelligent when it comes to figuring out what configurations to apply to the element to ensure the animation
+	 * works with the options provided. Say for example we were adding a class that contained a keyframe value and we wanted to also animate some inline
+	 * styles using the `from` and `to` properties.
+	 *
+	 * ```js
+	 * var animator = $animateCss(element, {
+	 *   from: { background:'red' },
+	 *   to: { background:'blue' }
+	 * });
+	 * animator.start();
+	 * ```
+	 *
+	 * ```css
+	 * .rotating-animation {
+	 *   animation:0.5s rotate linear;
+	 *   -webkit-animation:0.5s rotate linear;
+	 * }
+	 *
+	 * @keyframes rotate {
+	 *   from { transform: rotate(0deg); }
+	 *   to { transform: rotate(360deg); }
+	 * }
+	 *
+	 * @-webkit-keyframes rotate {
+	 *   from { -webkit-transform: rotate(0deg); }
+	 *   to { -webkit-transform: rotate(360deg); }
+	 * }
+	 * ```
+	 *
+	 * The missing pieces here are that we do not have a transition set (within the CSS code nor within the `$animateCss` options) and the duration of the animation is
+	 * going to be detected from what the keyframe styles on the CSS class are. In this event, `$animateCss` will automatically create an inline transition
+	 * style matching the duration detected from the keyframe style (which is present in the CSS class that is being added) and then prepare both the transition
+	 * and keyframe animations to run in parallel on the element. Then when the animation is underway the provided `from` and `to` CSS styles will be applied
+	 * and spread across the transition and keyframe animation.
+	 *
+	 * ## What is returned
+	 *
+	 * `$animateCss` works in two stages: a preparation phase and an animation phase. Therefore when `$animateCss` is first called it will NOT actually
+	 * start the animation. All that is going on here is that the element is being prepared for the animation (which means that the generated CSS classes are
+	 * added and removed on the element). Once `$animateCss` is called it will return an object with the following properties:
+	 *
+	 * ```js
+	 * var animator = $animateCss(element, { ... });
+	 * ```
+	 *
+	 * Now what do the contents of our `animator` variable look like:
+	 *
+	 * ```js
+	 * {
+	 *   // starts the animation
+	 *   start: Function,
+	 *
+	 *   // ends (aborts) the animation
+	 *   end: Function
+	 * }
+	 * ```
+	 *
+	 * To actually start the animation we need to run `animation.start()` which will then return a promise that we can hook into to detect when the animation ends.
+	 * If we choose not to run the animation then we MUST run `animation.end()` to perform a cleanup on the element (since some CSS classes and styles may have been
+	 * applied to the element during the preparation phase). Note that all other properties such as duration, delay, transitions and keyframes are just properties
+	 * and that changing them will not reconfigure the parameters of the animation.
+	 *
+	 * ### runner.done() vs runner.then()
+	 * It is documented that `animation.start()` will return a promise object and this is true, however, there is also an additional method available on the
+	 * runner called `.done(callbackFn)`. The done method works the same as `.finally(callbackFn)`, however, it does **not trigger a digest to occur**.
+	 * Therefore, for performance reasons, it's always best to use `runner.done(callback)` instead of `runner.then()`, `runner.catch()` or `runner.finally()`
+	 * unless you really need a digest to kick off afterwards.
+	 *
+	 * Keep in mind that, to make this easier, ngAnimate has tweaked the JS animations API to recognize when a runner instance is returned from $animateCss
+	 * (so there is no need to call `runner.done(doneFn)` inside of your JavaScript animation code).
+	 * Check the {@link ngAnimate.$animateCss#usage animation code above} to see how this works.
+	 *
+	 * @param {DOMElement} element the element that will be animated
+	 * @param {object} options the animation-related options that will be applied during the animation
+	 *
+	 * * `event` - The DOM event (e.g. enter, leave, move). When used, a generated CSS class of `ng-EVENT` and `ng-EVENT-active` will be applied
+	 * to the element during the animation. Multiple events can be provided when spaces are used as a separator. (Note that this will not perform any DOM operation.)
+	 * * `structural` - Indicates that the `ng-` prefix will be added to the event class. Setting to `false` or omitting will turn `ng-EVENT` and
+	 * `ng-EVENT-active` in `EVENT` and `EVENT-active`. Unused if `event` is omitted.
+	 * * `easing` - The CSS easing value that will be applied to the transition or keyframe animation (or both).
+	 * * `transitionStyle` - The raw CSS transition style that will be used (e.g. `1s linear all`).
+	 * * `keyframeStyle` - The raw CSS keyframe animation style that will be used (e.g. `1s my_animation linear`).
+	 * * `from` - The starting CSS styles (a key/value object) that will be applied at the start of the animation.
+	 * * `to` - The ending CSS styles (a key/value object) that will be applied across the animation via a CSS transition.
+	 * * `addClass` - A space separated list of CSS classes that will be added to the element and spread across the animation.
+	 * * `removeClass` - A space separated list of CSS classes that will be removed from the element and spread across the animation.
+	 * * `duration` - A number value representing the total duration of the transition and/or keyframe (note that a value of 1 is 1000ms). If a value of `0`
+	 * is provided then the animation will be skipped entirely.
+	 * * `delay` - A number value representing the total delay of the transition and/or keyframe (note that a value of 1 is 1000ms). If a value of `true` is
+	 * used then whatever delay value is detected from the CSS classes will be mirrored on the elements styles (e.g. by setting delay true then the style value
+	 * of the element will be `transition-delay: DETECTED_VALUE`). Using `true` is useful when you want the CSS classes and inline styles to all share the same
+	 * CSS delay value.
+	 * * `stagger` - A numeric time value representing the delay between successively animated elements
+	 * ({@link ngAnimate#css-staggering-animations Click here to learn how CSS-based staggering works in ngAnimate.})
+	 * * `staggerIndex` - The numeric index representing the stagger item (e.g. a value of 5 is equal to the sixth item in the stagger; therefore when a
+	 *   `stagger` option value of `0.1` is used then there will be a stagger delay of `600ms`)
+	 * * `applyClassesEarly` - Whether or not the classes being added or removed will be used when detecting the animation. This is set by `$animate` when enter/leave/move animations are fired to ensure that the CSS classes are resolved in time. (Note that this will prevent any transitions from occurring on the classes being added and removed.)
+	 * * `cleanupStyles` - Whether or not the provided `from` and `to` styles will be removed once
+	 *    the animation is closed. This is useful for when the styles are used purely for the sake of
+	 *    the animation and do not have a lasting visual effect on the element (e.g. a collapse and open animation).
+	 *    By default this value is set to `false`.
+	 *
+	 * @return {object} an object with start and end methods and details about the animation.
+	 *
+	 * * `start` - The method to start the animation. This will return a `Promise` when called.
+	 * * `end` - This method will cancel the animation and remove all applied CSS classes and styles.
+	 */
+	var ONE_SECOND = 1000;
+
+	var ELAPSED_TIME_MAX_DECIMAL_PLACES = 3;
+	var CLOSING_TIME_BUFFER = 1.5;
+
+	var DETECT_CSS_PROPERTIES = {
+	  transitionDuration:      TRANSITION_DURATION_PROP,
+	  transitionDelay:         TRANSITION_DELAY_PROP,
+	  transitionProperty:      TRANSITION_PROP + PROPERTY_KEY,
+	  animationDuration:       ANIMATION_DURATION_PROP,
+	  animationDelay:          ANIMATION_DELAY_PROP,
+	  animationIterationCount: ANIMATION_PROP + ANIMATION_ITERATION_COUNT_KEY
+	};
+
+	var DETECT_STAGGER_CSS_PROPERTIES = {
+	  transitionDuration:      TRANSITION_DURATION_PROP,
+	  transitionDelay:         TRANSITION_DELAY_PROP,
+	  animationDuration:       ANIMATION_DURATION_PROP,
+	  animationDelay:          ANIMATION_DELAY_PROP
+	};
+
+	function getCssKeyframeDurationStyle(duration) {
+	  return [ANIMATION_DURATION_PROP, duration + 's'];
+	}
+
+	function getCssDelayStyle(delay, isKeyframeAnimation) {
+	  var prop = isKeyframeAnimation ? ANIMATION_DELAY_PROP : TRANSITION_DELAY_PROP;
+	  return [prop, delay + 's'];
+	}
+
+	function computeCssStyles($window, element, properties) {
+	  var styles = Object.create(null);
+	  var detectedStyles = $window.getComputedStyle(element) || {};
+	  forEach(properties, function(formalStyleName, actualStyleName) {
+	    var val = detectedStyles[formalStyleName];
+	    if (val) {
+	      var c = val.charAt(0);
+
+	      // only numerical-based values have a negative sign or digit as the first value
+	      if (c === '-' || c === '+' || c >= 0) {
+	        val = parseMaxTime(val);
+	      }
+
+	      // by setting this to null in the event that the delay is not set or is set directly as 0
+	      // then we can still allow for negative values to be used later on and not mistake this
+	      // value for being greater than any other negative value.
+	      if (val === 0) {
+	        val = null;
+	      }
+	      styles[actualStyleName] = val;
+	    }
+	  });
+
+	  return styles;
+	}
+
+	function parseMaxTime(str) {
+	  var maxValue = 0;
+	  var values = str.split(/\s*,\s*/);
+	  forEach(values, function(value) {
+	    // it's always safe to consider only second values and omit `ms` values since
+	    // getComputedStyle will always handle the conversion for us
+	    if (value.charAt(value.length - 1) === 's') {
+	      value = value.substring(0, value.length - 1);
+	    }
+	    value = parseFloat(value) || 0;
+	    maxValue = maxValue ? Math.max(value, maxValue) : value;
+	  });
+	  return maxValue;
+	}
+
+	function truthyTimingValue(val) {
+	  return val === 0 || val != null;
+	}
+
+	function getCssTransitionDurationStyle(duration, applyOnlyDuration) {
+	  var style = TRANSITION_PROP;
+	  var value = duration + 's';
+	  if (applyOnlyDuration) {
+	    style += DURATION_KEY;
+	  } else {
+	    value += ' linear all';
+	  }
+	  return [style, value];
+	}
+
+	function createLocalCacheLookup() {
+	  var cache = Object.create(null);
+	  return {
+	    flush: function() {
+	      cache = Object.create(null);
+	    },
+
+	    count: function(key) {
+	      var entry = cache[key];
+	      return entry ? entry.total : 0;
+	    },
+
+	    get: function(key) {
+	      var entry = cache[key];
+	      return entry && entry.value;
+	    },
+
+	    put: function(key, value) {
+	      if (!cache[key]) {
+	        cache[key] = { total: 1, value: value };
+	      } else {
+	        cache[key].total++;
+	      }
+	    }
+	  };
+	}
+
+	// we do not reassign an already present style value since
+	// if we detect the style property value again we may be
+	// detecting styles that were added via the `from` styles.
+	// We make use of `isDefined` here since an empty string
+	// or null value (which is what getPropertyValue will return
+	// for a non-existing style) will still be marked as a valid
+	// value for the style (a falsy value implies that the style
+	// is to be removed at the end of the animation). If we had a simple
+	// "OR" statement then it would not be enough to catch that.
+	function registerRestorableStyles(backup, node, properties) {
+	  forEach(properties, function(prop) {
+	    backup[prop] = isDefined(backup[prop])
+	        ? backup[prop]
+	        : node.style.getPropertyValue(prop);
+	  });
+	}
+
+	var $AnimateCssProvider = ['$animateProvider', /** @this */ function($animateProvider) {
+	  var gcsLookup = createLocalCacheLookup();
+	  var gcsStaggerLookup = createLocalCacheLookup();
+
+	  this.$get = ['$window', '$$jqLite', '$$AnimateRunner', '$timeout',
+	               '$$forceReflow', '$sniffer', '$$rAFScheduler', '$$animateQueue',
+	       function($window,   $$jqLite,   $$AnimateRunner,   $timeout,
+	                $$forceReflow,   $sniffer,   $$rAFScheduler, $$animateQueue) {
+
+	    var applyAnimationClasses = applyAnimationClassesFactory($$jqLite);
+
+	    var parentCounter = 0;
+	    function gcsHashFn(node, extraClasses) {
+	      var KEY = '$$ngAnimateParentKey';
+	      var parentNode = node.parentNode;
+	      var parentID = parentNode[KEY] || (parentNode[KEY] = ++parentCounter);
+	      return parentID + '-' + node.getAttribute('class') + '-' + extraClasses;
+	    }
+
+	    function computeCachedCssStyles(node, className, cacheKey, properties) {
+	      var timings = gcsLookup.get(cacheKey);
+
+	      if (!timings) {
+	        timings = computeCssStyles($window, node, properties);
+	        if (timings.animationIterationCount === 'infinite') {
+	          timings.animationIterationCount = 1;
+	        }
+	      }
+
+	      // we keep putting this in multiple times even though the value and the cacheKey are the same
+	      // because we're keeping an internal tally of how many duplicate animations are detected.
+	      gcsLookup.put(cacheKey, timings);
+	      return timings;
+	    }
+
+	    function computeCachedCssStaggerStyles(node, className, cacheKey, properties) {
+	      var stagger;
+
+	      // if we have one or more existing matches of matching elements
+	      // containing the same parent + CSS styles (which is how cacheKey works)
+	      // then staggering is possible
+	      if (gcsLookup.count(cacheKey) > 0) {
+	        stagger = gcsStaggerLookup.get(cacheKey);
+
+	        if (!stagger) {
+	          var staggerClassName = pendClasses(className, '-stagger');
+
+	          $$jqLite.addClass(node, staggerClassName);
+
+	          stagger = computeCssStyles($window, node, properties);
+
+	          // force the conversion of a null value to zero incase not set
+	          stagger.animationDuration = Math.max(stagger.animationDuration, 0);
+	          stagger.transitionDuration = Math.max(stagger.transitionDuration, 0);
+
+	          $$jqLite.removeClass(node, staggerClassName);
+
+	          gcsStaggerLookup.put(cacheKey, stagger);
+	        }
+	      }
+
+	      return stagger || {};
+	    }
+
+	    var rafWaitQueue = [];
+	    function waitUntilQuiet(callback) {
+	      rafWaitQueue.push(callback);
+	      $$rAFScheduler.waitUntilQuiet(function() {
+	        gcsLookup.flush();
+	        gcsStaggerLookup.flush();
+
+	        // DO NOT REMOVE THIS LINE OR REFACTOR OUT THE `pageWidth` variable.
+	        // PLEASE EXAMINE THE `$$forceReflow` service to understand why.
+	        var pageWidth = $$forceReflow();
+
+	        // we use a for loop to ensure that if the queue is changed
+	        // during this looping then it will consider new requests
+	        for (var i = 0; i < rafWaitQueue.length; i++) {
+	          rafWaitQueue[i](pageWidth);
+	        }
+	        rafWaitQueue.length = 0;
+	      });
+	    }
+
+	    function computeTimings(node, className, cacheKey) {
+	      var timings = computeCachedCssStyles(node, className, cacheKey, DETECT_CSS_PROPERTIES);
+	      var aD = timings.animationDelay;
+	      var tD = timings.transitionDelay;
+	      timings.maxDelay = aD && tD
+	          ? Math.max(aD, tD)
+	          : (aD || tD);
+	      timings.maxDuration = Math.max(
+	          timings.animationDuration * timings.animationIterationCount,
+	          timings.transitionDuration);
+
+	      return timings;
+	    }
+
+	    return function init(element, initialOptions) {
+	      // all of the animation functions should create
+	      // a copy of the options data, however, if a
+	      // parent service has already created a copy then
+	      // we should stick to using that
+	      var options = initialOptions || {};
+	      if (!options.$$prepared) {
+	        options = prepareAnimationOptions(copy(options));
+	      }
+
+	      var restoreStyles = {};
+	      var node = getDomNode(element);
+	      if (!node
+	          || !node.parentNode
+	          || !$$animateQueue.enabled()) {
+	        return closeAndReturnNoopAnimator();
+	      }
+
+	      var temporaryStyles = [];
+	      var classes = element.attr('class');
+	      var styles = packageStyles(options);
+	      var animationClosed;
+	      var animationPaused;
+	      var animationCompleted;
+	      var runner;
+	      var runnerHost;
+	      var maxDelay;
+	      var maxDelayTime;
+	      var maxDuration;
+	      var maxDurationTime;
+	      var startTime;
+	      var events = [];
+
+	      if (options.duration === 0 || (!$sniffer.animations && !$sniffer.transitions)) {
+	        return closeAndReturnNoopAnimator();
+	      }
+
+	      var method = options.event && isArray(options.event)
+	            ? options.event.join(' ')
+	            : options.event;
+
+	      var isStructural = method && options.structural;
+	      var structuralClassName = '';
+	      var addRemoveClassName = '';
+
+	      if (isStructural) {
+	        structuralClassName = pendClasses(method, EVENT_CLASS_PREFIX, true);
+	      } else if (method) {
+	        structuralClassName = method;
+	      }
+
+	      if (options.addClass) {
+	        addRemoveClassName += pendClasses(options.addClass, ADD_CLASS_SUFFIX);
+	      }
+
+	      if (options.removeClass) {
+	        if (addRemoveClassName.length) {
+	          addRemoveClassName += ' ';
+	        }
+	        addRemoveClassName += pendClasses(options.removeClass, REMOVE_CLASS_SUFFIX);
+	      }
+
+	      // there may be a situation where a structural animation is combined together
+	      // with CSS classes that need to resolve before the animation is computed.
+	      // However this means that there is no explicit CSS code to block the animation
+	      // from happening (by setting 0s none in the class name). If this is the case
+	      // we need to apply the classes before the first rAF so we know to continue if
+	      // there actually is a detected transition or keyframe animation
+	      if (options.applyClassesEarly && addRemoveClassName.length) {
+	        applyAnimationClasses(element, options);
+	      }
+
+	      var preparationClasses = [structuralClassName, addRemoveClassName].join(' ').trim();
+	      var fullClassName = classes + ' ' + preparationClasses;
+	      var activeClasses = pendClasses(preparationClasses, ACTIVE_CLASS_SUFFIX);
+	      var hasToStyles = styles.to && Object.keys(styles.to).length > 0;
+	      var containsKeyframeAnimation = (options.keyframeStyle || '').length > 0;
+
+	      // there is no way we can trigger an animation if no styles and
+	      // no classes are being applied which would then trigger a transition,
+	      // unless there a is raw keyframe value that is applied to the element.
+	      if (!containsKeyframeAnimation
+	           && !hasToStyles
+	           && !preparationClasses) {
+	        return closeAndReturnNoopAnimator();
+	      }
+
+	      var cacheKey, stagger;
+	      if (options.stagger > 0) {
+	        var staggerVal = parseFloat(options.stagger);
+	        stagger = {
+	          transitionDelay: staggerVal,
+	          animationDelay: staggerVal,
+	          transitionDuration: 0,
+	          animationDuration: 0
+	        };
+	      } else {
+	        cacheKey = gcsHashFn(node, fullClassName);
+	        stagger = computeCachedCssStaggerStyles(node, preparationClasses, cacheKey, DETECT_STAGGER_CSS_PROPERTIES);
+	      }
+
+	      if (!options.$$skipPreparationClasses) {
+	        $$jqLite.addClass(element, preparationClasses);
+	      }
+
+	      var applyOnlyDuration;
+
+	      if (options.transitionStyle) {
+	        var transitionStyle = [TRANSITION_PROP, options.transitionStyle];
+	        applyInlineStyle(node, transitionStyle);
+	        temporaryStyles.push(transitionStyle);
+	      }
+
+	      if (options.duration >= 0) {
+	        applyOnlyDuration = node.style[TRANSITION_PROP].length > 0;
+	        var durationStyle = getCssTransitionDurationStyle(options.duration, applyOnlyDuration);
+
+	        // we set the duration so that it will be picked up by getComputedStyle later
+	        applyInlineStyle(node, durationStyle);
+	        temporaryStyles.push(durationStyle);
+	      }
+
+	      if (options.keyframeStyle) {
+	        var keyframeStyle = [ANIMATION_PROP, options.keyframeStyle];
+	        applyInlineStyle(node, keyframeStyle);
+	        temporaryStyles.push(keyframeStyle);
+	      }
+
+	      var itemIndex = stagger
+	          ? options.staggerIndex >= 0
+	              ? options.staggerIndex
+	              : gcsLookup.count(cacheKey)
+	          : 0;
+
+	      var isFirst = itemIndex === 0;
+
+	      // this is a pre-emptive way of forcing the setup classes to be added and applied INSTANTLY
+	      // without causing any combination of transitions to kick in. By adding a negative delay value
+	      // it forces the setup class' transition to end immediately. We later then remove the negative
+	      // transition delay to allow for the transition to naturally do it's thing. The beauty here is
+	      // that if there is no transition defined then nothing will happen and this will also allow
+	      // other transitions to be stacked on top of each other without any chopping them out.
+	      if (isFirst && !options.skipBlocking) {
+	        blockTransitions(node, SAFE_FAST_FORWARD_DURATION_VALUE);
+	      }
+
+	      var timings = computeTimings(node, fullClassName, cacheKey);
+	      var relativeDelay = timings.maxDelay;
+	      maxDelay = Math.max(relativeDelay, 0);
+	      maxDuration = timings.maxDuration;
+
+	      var flags = {};
+	      flags.hasTransitions          = timings.transitionDuration > 0;
+	      flags.hasAnimations           = timings.animationDuration > 0;
+	      flags.hasTransitionAll        = flags.hasTransitions && timings.transitionProperty === 'all';
+	      flags.applyTransitionDuration = hasToStyles && (
+	                                        (flags.hasTransitions && !flags.hasTransitionAll)
+	                                         || (flags.hasAnimations && !flags.hasTransitions));
+	      flags.applyAnimationDuration  = options.duration && flags.hasAnimations;
+	      flags.applyTransitionDelay    = truthyTimingValue(options.delay) && (flags.applyTransitionDuration || flags.hasTransitions);
+	      flags.applyAnimationDelay     = truthyTimingValue(options.delay) && flags.hasAnimations;
+	      flags.recalculateTimingStyles = addRemoveClassName.length > 0;
+
+	      if (flags.applyTransitionDuration || flags.applyAnimationDuration) {
+	        maxDuration = options.duration ? parseFloat(options.duration) : maxDuration;
+
+	        if (flags.applyTransitionDuration) {
+	          flags.hasTransitions = true;
+	          timings.transitionDuration = maxDuration;
+	          applyOnlyDuration = node.style[TRANSITION_PROP + PROPERTY_KEY].length > 0;
+	          temporaryStyles.push(getCssTransitionDurationStyle(maxDuration, applyOnlyDuration));
+	        }
+
+	        if (flags.applyAnimationDuration) {
+	          flags.hasAnimations = true;
+	          timings.animationDuration = maxDuration;
+	          temporaryStyles.push(getCssKeyframeDurationStyle(maxDuration));
+	        }
+	      }
+
+	      if (maxDuration === 0 && !flags.recalculateTimingStyles) {
+	        return closeAndReturnNoopAnimator();
+	      }
+
+	      if (options.delay != null) {
+	        var delayStyle;
+	        if (typeof options.delay !== 'boolean') {
+	          delayStyle = parseFloat(options.delay);
+	          // number in options.delay means we have to recalculate the delay for the closing timeout
+	          maxDelay = Math.max(delayStyle, 0);
+	        }
+
+	        if (flags.applyTransitionDelay) {
+	          temporaryStyles.push(getCssDelayStyle(delayStyle));
+	        }
+
+	        if (flags.applyAnimationDelay) {
+	          temporaryStyles.push(getCssDelayStyle(delayStyle, true));
+	        }
+	      }
+
+	      // we need to recalculate the delay value since we used a pre-emptive negative
+	      // delay value and the delay value is required for the final event checking. This
+	      // property will ensure that this will happen after the RAF phase has passed.
+	      if (options.duration == null && timings.transitionDuration > 0) {
+	        flags.recalculateTimingStyles = flags.recalculateTimingStyles || isFirst;
+	      }
+
+	      maxDelayTime = maxDelay * ONE_SECOND;
+	      maxDurationTime = maxDuration * ONE_SECOND;
+	      if (!options.skipBlocking) {
+	        flags.blockTransition = timings.transitionDuration > 0;
+	        flags.blockKeyframeAnimation = timings.animationDuration > 0 &&
+	                                       stagger.animationDelay > 0 &&
+	                                       stagger.animationDuration === 0;
+	      }
+
+	      if (options.from) {
+	        if (options.cleanupStyles) {
+	          registerRestorableStyles(restoreStyles, node, Object.keys(options.from));
+	        }
+	        applyAnimationFromStyles(element, options);
+	      }
+
+	      if (flags.blockTransition || flags.blockKeyframeAnimation) {
+	        applyBlocking(maxDuration);
+	      } else if (!options.skipBlocking) {
+	        blockTransitions(node, false);
+	      }
+
+	      // TODO(matsko): for 1.5 change this code to have an animator object for better debugging
+	      return {
+	        $$willAnimate: true,
+	        end: endFn,
+	        start: function() {
+	          if (animationClosed) return;
+
+	          runnerHost = {
+	            end: endFn,
+	            cancel: cancelFn,
+	            resume: null, //this will be set during the start() phase
+	            pause: null
+	          };
+
+	          runner = new $$AnimateRunner(runnerHost);
+
+	          waitUntilQuiet(start);
+
+	          // we don't have access to pause/resume the animation
+	          // since it hasn't run yet. AnimateRunner will therefore
+	          // set noop functions for resume and pause and they will
+	          // later be overridden once the animation is triggered
+	          return runner;
+	        }
+	      };
+
+	      function endFn() {
+	        close();
+	      }
+
+	      function cancelFn() {
+	        close(true);
+	      }
+
+	      function close(rejected) {
+	        // if the promise has been called already then we shouldn't close
+	        // the animation again
+	        if (animationClosed || (animationCompleted && animationPaused)) return;
+	        animationClosed = true;
+	        animationPaused = false;
+
+	        if (!options.$$skipPreparationClasses) {
+	          $$jqLite.removeClass(element, preparationClasses);
+	        }
+	        $$jqLite.removeClass(element, activeClasses);
+
+	        blockKeyframeAnimations(node, false);
+	        blockTransitions(node, false);
+
+	        forEach(temporaryStyles, function(entry) {
+	          // There is only one way to remove inline style properties entirely from elements.
+	          // By using `removeProperty` this works, but we need to convert camel-cased CSS
+	          // styles down to hyphenated values.
+	          node.style[entry[0]] = '';
+	        });
+
+	        applyAnimationClasses(element, options);
+	        applyAnimationStyles(element, options);
+
+	        if (Object.keys(restoreStyles).length) {
+	          forEach(restoreStyles, function(value, prop) {
+	            if (value) {
+	              node.style.setProperty(prop, value);
+	            } else {
+	              node.style.removeProperty(prop);
+	            }
+	          });
+	        }
+
+	        // the reason why we have this option is to allow a synchronous closing callback
+	        // that is fired as SOON as the animation ends (when the CSS is removed) or if
+	        // the animation never takes off at all. A good example is a leave animation since
+	        // the element must be removed just after the animation is over or else the element
+	        // will appear on screen for one animation frame causing an overbearing flicker.
+	        if (options.onDone) {
+	          options.onDone();
+	        }
+
+	        if (events && events.length) {
+	          // Remove the transitionend / animationend listener(s)
+	          element.off(events.join(' '), onAnimationProgress);
+	        }
+
+	        //Cancel the fallback closing timeout and remove the timer data
+	        var animationTimerData = element.data(ANIMATE_TIMER_KEY);
+	        if (animationTimerData) {
+	          $timeout.cancel(animationTimerData[0].timer);
+	          element.removeData(ANIMATE_TIMER_KEY);
+	        }
+
+	        // if the preparation function fails then the promise is not setup
+	        if (runner) {
+	          runner.complete(!rejected);
+	        }
+	      }
+
+	      function applyBlocking(duration) {
+	        if (flags.blockTransition) {
+	          blockTransitions(node, duration);
+	        }
+
+	        if (flags.blockKeyframeAnimation) {
+	          blockKeyframeAnimations(node, !!duration);
+	        }
+	      }
+
+	      function closeAndReturnNoopAnimator() {
+	        runner = new $$AnimateRunner({
+	          end: endFn,
+	          cancel: cancelFn
+	        });
+
+	        // should flush the cache animation
+	        waitUntilQuiet(noop);
+	        close();
+
+	        return {
+	          $$willAnimate: false,
+	          start: function() {
+	            return runner;
+	          },
+	          end: endFn
+	        };
+	      }
+
+	      function onAnimationProgress(event) {
+	        event.stopPropagation();
+	        var ev = event.originalEvent || event;
+
+	        // we now always use `Date.now()` due to the recent changes with
+	        // event.timeStamp in Firefox, Webkit and Chrome (see #13494 for more info)
+	        var timeStamp = ev.$manualTimeStamp || Date.now();
+
+	        /* Firefox (or possibly just Gecko) likes to not round values up
+	         * when a ms measurement is used for the animation */
+	        var elapsedTime = parseFloat(ev.elapsedTime.toFixed(ELAPSED_TIME_MAX_DECIMAL_PLACES));
+
+	        /* $manualTimeStamp is a mocked timeStamp value which is set
+	         * within browserTrigger(). This is only here so that tests can
+	         * mock animations properly. Real events fallback to event.timeStamp,
+	         * or, if they don't, then a timeStamp is automatically created for them.
+	         * We're checking to see if the timeStamp surpasses the expected delay,
+	         * but we're using elapsedTime instead of the timeStamp on the 2nd
+	         * pre-condition since animationPauseds sometimes close off early */
+	        if (Math.max(timeStamp - startTime, 0) >= maxDelayTime && elapsedTime >= maxDuration) {
+	          // we set this flag to ensure that if the transition is paused then, when resumed,
+	          // the animation will automatically close itself since transitions cannot be paused.
+	          animationCompleted = true;
+	          close();
+	        }
+	      }
+
+	      function start() {
+	        if (animationClosed) return;
+	        if (!node.parentNode) {
+	          close();
+	          return;
+	        }
+
+	        // even though we only pause keyframe animations here the pause flag
+	        // will still happen when transitions are used. Only the transition will
+	        // not be paused since that is not possible. If the animation ends when
+	        // paused then it will not complete until unpaused or cancelled.
+	        var playPause = function(playAnimation) {
+	          if (!animationCompleted) {
+	            animationPaused = !playAnimation;
+	            if (timings.animationDuration) {
+	              var value = blockKeyframeAnimations(node, animationPaused);
+	              if (animationPaused) {
+	                temporaryStyles.push(value);
+	              } else {
+	                removeFromArray(temporaryStyles, value);
+	              }
+	            }
+	          } else if (animationPaused && playAnimation) {
+	            animationPaused = false;
+	            close();
+	          }
+	        };
+
+	        // checking the stagger duration prevents an accidentally cascade of the CSS delay style
+	        // being inherited from the parent. If the transition duration is zero then we can safely
+	        // rely that the delay value is an intentional stagger delay style.
+	        var maxStagger = itemIndex > 0
+	                         && ((timings.transitionDuration && stagger.transitionDuration === 0) ||
+	                            (timings.animationDuration && stagger.animationDuration === 0))
+	                         && Math.max(stagger.animationDelay, stagger.transitionDelay);
+	        if (maxStagger) {
+	          $timeout(triggerAnimationStart,
+	                   Math.floor(maxStagger * itemIndex * ONE_SECOND),
+	                   false);
+	        } else {
+	          triggerAnimationStart();
+	        }
+
+	        // this will decorate the existing promise runner with pause/resume methods
+	        runnerHost.resume = function() {
+	          playPause(true);
+	        };
+
+	        runnerHost.pause = function() {
+	          playPause(false);
+	        };
+
+	        function triggerAnimationStart() {
+	          // just incase a stagger animation kicks in when the animation
+	          // itself was cancelled entirely
+	          if (animationClosed) return;
+
+	          applyBlocking(false);
+
+	          forEach(temporaryStyles, function(entry) {
+	            var key = entry[0];
+	            var value = entry[1];
+	            node.style[key] = value;
+	          });
+
+	          applyAnimationClasses(element, options);
+	          $$jqLite.addClass(element, activeClasses);
+
+	          if (flags.recalculateTimingStyles) {
+	            fullClassName = node.getAttribute('class') + ' ' + preparationClasses;
+	            cacheKey = gcsHashFn(node, fullClassName);
+
+	            timings = computeTimings(node, fullClassName, cacheKey);
+	            relativeDelay = timings.maxDelay;
+	            maxDelay = Math.max(relativeDelay, 0);
+	            maxDuration = timings.maxDuration;
+
+	            if (maxDuration === 0) {
+	              close();
+	              return;
+	            }
+
+	            flags.hasTransitions = timings.transitionDuration > 0;
+	            flags.hasAnimations = timings.animationDuration > 0;
+	          }
+
+	          if (flags.applyAnimationDelay) {
+	            relativeDelay = typeof options.delay !== 'boolean' && truthyTimingValue(options.delay)
+	                  ? parseFloat(options.delay)
+	                  : relativeDelay;
+
+	            maxDelay = Math.max(relativeDelay, 0);
+	            timings.animationDelay = relativeDelay;
+	            delayStyle = getCssDelayStyle(relativeDelay, true);
+	            temporaryStyles.push(delayStyle);
+	            node.style[delayStyle[0]] = delayStyle[1];
+	          }
+
+	          maxDelayTime = maxDelay * ONE_SECOND;
+	          maxDurationTime = maxDuration * ONE_SECOND;
+
+	          if (options.easing) {
+	            var easeProp, easeVal = options.easing;
+	            if (flags.hasTransitions) {
+	              easeProp = TRANSITION_PROP + TIMING_KEY;
+	              temporaryStyles.push([easeProp, easeVal]);
+	              node.style[easeProp] = easeVal;
+	            }
+	            if (flags.hasAnimations) {
+	              easeProp = ANIMATION_PROP + TIMING_KEY;
+	              temporaryStyles.push([easeProp, easeVal]);
+	              node.style[easeProp] = easeVal;
+	            }
+	          }
+
+	          if (timings.transitionDuration) {
+	            events.push(TRANSITIONEND_EVENT);
+	          }
+
+	          if (timings.animationDuration) {
+	            events.push(ANIMATIONEND_EVENT);
+	          }
+
+	          startTime = Date.now();
+	          var timerTime = maxDelayTime + CLOSING_TIME_BUFFER * maxDurationTime;
+	          var endTime = startTime + timerTime;
+
+	          var animationsData = element.data(ANIMATE_TIMER_KEY) || [];
+	          var setupFallbackTimer = true;
+	          if (animationsData.length) {
+	            var currentTimerData = animationsData[0];
+	            setupFallbackTimer = endTime > currentTimerData.expectedEndTime;
+	            if (setupFallbackTimer) {
+	              $timeout.cancel(currentTimerData.timer);
+	            } else {
+	              animationsData.push(close);
+	            }
+	          }
+
+	          if (setupFallbackTimer) {
+	            var timer = $timeout(onAnimationExpired, timerTime, false);
+	            animationsData[0] = {
+	              timer: timer,
+	              expectedEndTime: endTime
+	            };
+	            animationsData.push(close);
+	            element.data(ANIMATE_TIMER_KEY, animationsData);
+	          }
+
+	          if (events.length) {
+	            element.on(events.join(' '), onAnimationProgress);
+	          }
+
+	          if (options.to) {
+	            if (options.cleanupStyles) {
+	              registerRestorableStyles(restoreStyles, node, Object.keys(options.to));
+	            }
+	            applyAnimationToStyles(element, options);
+	          }
+	        }
+
+	        function onAnimationExpired() {
+	          var animationsData = element.data(ANIMATE_TIMER_KEY);
+
+	          // this will be false in the event that the element was
+	          // removed from the DOM (via a leave animation or something
+	          // similar)
+	          if (animationsData) {
+	            for (var i = 1; i < animationsData.length; i++) {
+	              animationsData[i]();
+	            }
+	            element.removeData(ANIMATE_TIMER_KEY);
+	          }
+	        }
+	      }
+	    };
+	  }];
+	}];
+
+	var $$AnimateCssDriverProvider = ['$$animationProvider', /** @this */ function($$animationProvider) {
+	  $$animationProvider.drivers.push('$$animateCssDriver');
+
+	  var NG_ANIMATE_SHIM_CLASS_NAME = 'ng-animate-shim';
+	  var NG_ANIMATE_ANCHOR_CLASS_NAME = 'ng-anchor';
+
+	  var NG_OUT_ANCHOR_CLASS_NAME = 'ng-anchor-out';
+	  var NG_IN_ANCHOR_CLASS_NAME = 'ng-anchor-in';
+
+	  function isDocumentFragment(node) {
+	    return node.parentNode && node.parentNode.nodeType === 11;
+	  }
+
+	  this.$get = ['$animateCss', '$rootScope', '$$AnimateRunner', '$rootElement', '$sniffer', '$$jqLite', '$document',
+	       function($animateCss,   $rootScope,   $$AnimateRunner,   $rootElement,   $sniffer,   $$jqLite,   $document) {
+
+	    // only browsers that support these properties can render animations
+	    if (!$sniffer.animations && !$sniffer.transitions) return noop;
+
+	    var bodyNode = $document[0].body;
+	    var rootNode = getDomNode($rootElement);
+
+	    var rootBodyElement = jqLite(
+	      // this is to avoid using something that exists outside of the body
+	      // we also special case the doc fragment case because our unit test code
+	      // appends the $rootElement to the body after the app has been bootstrapped
+	      isDocumentFragment(rootNode) || bodyNode.contains(rootNode) ? rootNode : bodyNode
+	    );
+
+	    return function initDriverFn(animationDetails) {
+	      return animationDetails.from && animationDetails.to
+	          ? prepareFromToAnchorAnimation(animationDetails.from,
+	                                         animationDetails.to,
+	                                         animationDetails.classes,
+	                                         animationDetails.anchors)
+	          : prepareRegularAnimation(animationDetails);
+	    };
+
+	    function filterCssClasses(classes) {
+	      //remove all the `ng-` stuff
+	      return classes.replace(/\bng-\S+\b/g, '');
+	    }
+
+	    function getUniqueValues(a, b) {
+	      if (isString(a)) a = a.split(' ');
+	      if (isString(b)) b = b.split(' ');
+	      return a.filter(function(val) {
+	        return b.indexOf(val) === -1;
+	      }).join(' ');
+	    }
+
+	    function prepareAnchoredAnimation(classes, outAnchor, inAnchor) {
+	      var clone = jqLite(getDomNode(outAnchor).cloneNode(true));
+	      var startingClasses = filterCssClasses(getClassVal(clone));
+
+	      outAnchor.addClass(NG_ANIMATE_SHIM_CLASS_NAME);
+	      inAnchor.addClass(NG_ANIMATE_SHIM_CLASS_NAME);
+
+	      clone.addClass(NG_ANIMATE_ANCHOR_CLASS_NAME);
+
+	      rootBodyElement.append(clone);
+
+	      var animatorIn, animatorOut = prepareOutAnimation();
+
+	      // the user may not end up using the `out` animation and
+	      // only making use of the `in` animation or vice-versa.
+	      // In either case we should allow this and not assume the
+	      // animation is over unless both animations are not used.
+	      if (!animatorOut) {
+	        animatorIn = prepareInAnimation();
+	        if (!animatorIn) {
+	          return end();
+	        }
+	      }
+
+	      var startingAnimator = animatorOut || animatorIn;
+
+	      return {
+	        start: function() {
+	          var runner;
+
+	          var currentAnimation = startingAnimator.start();
+	          currentAnimation.done(function() {
+	            currentAnimation = null;
+	            if (!animatorIn) {
+	              animatorIn = prepareInAnimation();
+	              if (animatorIn) {
+	                currentAnimation = animatorIn.start();
+	                currentAnimation.done(function() {
+	                  currentAnimation = null;
+	                  end();
+	                  runner.complete();
+	                });
+	                return currentAnimation;
+	              }
+	            }
+	            // in the event that there is no `in` animation
+	            end();
+	            runner.complete();
+	          });
+
+	          runner = new $$AnimateRunner({
+	            end: endFn,
+	            cancel: endFn
+	          });
+
+	          return runner;
+
+	          function endFn() {
+	            if (currentAnimation) {
+	              currentAnimation.end();
+	            }
+	          }
+	        }
+	      };
+
+	      function calculateAnchorStyles(anchor) {
+	        var styles = {};
+
+	        var coords = getDomNode(anchor).getBoundingClientRect();
+
+	        // we iterate directly since safari messes up and doesn't return
+	        // all the keys for the coords object when iterated
+	        forEach(['width','height','top','left'], function(key) {
+	          var value = coords[key];
+	          switch (key) {
+	            case 'top':
+	              value += bodyNode.scrollTop;
+	              break;
+	            case 'left':
+	              value += bodyNode.scrollLeft;
+	              break;
+	          }
+	          styles[key] = Math.floor(value) + 'px';
+	        });
+	        return styles;
+	      }
+
+	      function prepareOutAnimation() {
+	        var animator = $animateCss(clone, {
+	          addClass: NG_OUT_ANCHOR_CLASS_NAME,
+	          delay: true,
+	          from: calculateAnchorStyles(outAnchor)
+	        });
+
+	        // read the comment within `prepareRegularAnimation` to understand
+	        // why this check is necessary
+	        return animator.$$willAnimate ? animator : null;
+	      }
+
+	      function getClassVal(element) {
+	        return element.attr('class') || '';
+	      }
+
+	      function prepareInAnimation() {
+	        var endingClasses = filterCssClasses(getClassVal(inAnchor));
+	        var toAdd = getUniqueValues(endingClasses, startingClasses);
+	        var toRemove = getUniqueValues(startingClasses, endingClasses);
+
+	        var animator = $animateCss(clone, {
+	          to: calculateAnchorStyles(inAnchor),
+	          addClass: NG_IN_ANCHOR_CLASS_NAME + ' ' + toAdd,
+	          removeClass: NG_OUT_ANCHOR_CLASS_NAME + ' ' + toRemove,
+	          delay: true
+	        });
+
+	        // read the comment within `prepareRegularAnimation` to understand
+	        // why this check is necessary
+	        return animator.$$willAnimate ? animator : null;
+	      }
+
+	      function end() {
+	        clone.remove();
+	        outAnchor.removeClass(NG_ANIMATE_SHIM_CLASS_NAME);
+	        inAnchor.removeClass(NG_ANIMATE_SHIM_CLASS_NAME);
+	      }
+	    }
+
+	    function prepareFromToAnchorAnimation(from, to, classes, anchors) {
+	      var fromAnimation = prepareRegularAnimation(from, noop);
+	      var toAnimation = prepareRegularAnimation(to, noop);
+
+	      var anchorAnimations = [];
+	      forEach(anchors, function(anchor) {
+	        var outElement = anchor['out'];
+	        var inElement = anchor['in'];
+	        var animator = prepareAnchoredAnimation(classes, outElement, inElement);
+	        if (animator) {
+	          anchorAnimations.push(animator);
+	        }
+	      });
+
+	      // no point in doing anything when there are no elements to animate
+	      if (!fromAnimation && !toAnimation && anchorAnimations.length === 0) return;
+
+	      return {
+	        start: function() {
+	          var animationRunners = [];
+
+	          if (fromAnimation) {
+	            animationRunners.push(fromAnimation.start());
+	          }
+
+	          if (toAnimation) {
+	            animationRunners.push(toAnimation.start());
+	          }
+
+	          forEach(anchorAnimations, function(animation) {
+	            animationRunners.push(animation.start());
+	          });
+
+	          var runner = new $$AnimateRunner({
+	            end: endFn,
+	            cancel: endFn // CSS-driven animations cannot be cancelled, only ended
+	          });
+
+	          $$AnimateRunner.all(animationRunners, function(status) {
+	            runner.complete(status);
+	          });
+
+	          return runner;
+
+	          function endFn() {
+	            forEach(animationRunners, function(runner) {
+	              runner.end();
+	            });
+	          }
+	        }
+	      };
+	    }
+
+	    function prepareRegularAnimation(animationDetails) {
+	      var element = animationDetails.element;
+	      var options = animationDetails.options || {};
+
+	      if (animationDetails.structural) {
+	        options.event = animationDetails.event;
+	        options.structural = true;
+	        options.applyClassesEarly = true;
+
+	        // we special case the leave animation since we want to ensure that
+	        // the element is removed as soon as the animation is over. Otherwise
+	        // a flicker might appear or the element may not be removed at all
+	        if (animationDetails.event === 'leave') {
+	          options.onDone = options.domOperation;
+	        }
+	      }
+
+	      // We assign the preparationClasses as the actual animation event since
+	      // the internals of $animateCss will just suffix the event token values
+	      // with `-active` to trigger the animation.
+	      if (options.preparationClasses) {
+	        options.event = concatWithSpace(options.event, options.preparationClasses);
+	      }
+
+	      var animator = $animateCss(element, options);
+
+	      // the driver lookup code inside of $$animation attempts to spawn a
+	      // driver one by one until a driver returns a.$$willAnimate animator object.
+	      // $animateCss will always return an object, however, it will pass in
+	      // a flag as a hint as to whether an animation was detected or not
+	      return animator.$$willAnimate ? animator : null;
+	    }
+	  }];
+	}];
+
+	// TODO(matsko): use caching here to speed things up for detection
+	// TODO(matsko): add documentation
+	//  by the time...
+
+	var $$AnimateJsProvider = ['$animateProvider', /** @this */ function($animateProvider) {
+	  this.$get = ['$injector', '$$AnimateRunner', '$$jqLite',
+	       function($injector,   $$AnimateRunner,   $$jqLite) {
+
+	    var applyAnimationClasses = applyAnimationClassesFactory($$jqLite);
+	         // $animateJs(element, 'enter');
+	    return function(element, event, classes, options) {
+	      var animationClosed = false;
+
+	      // the `classes` argument is optional and if it is not used
+	      // then the classes will be resolved from the element's className
+	      // property as well as options.addClass/options.removeClass.
+	      if (arguments.length === 3 && isObject(classes)) {
+	        options = classes;
+	        classes = null;
+	      }
+
+	      options = prepareAnimationOptions(options);
+	      if (!classes) {
+	        classes = element.attr('class') || '';
+	        if (options.addClass) {
+	          classes += ' ' + options.addClass;
+	        }
+	        if (options.removeClass) {
+	          classes += ' ' + options.removeClass;
+	        }
+	      }
+
+	      var classesToAdd = options.addClass;
+	      var classesToRemove = options.removeClass;
+
+	      // the lookupAnimations function returns a series of animation objects that are
+	      // matched up with one or more of the CSS classes. These animation objects are
+	      // defined via the module.animation factory function. If nothing is detected then
+	      // we don't return anything which then makes $animation query the next driver.
+	      var animations = lookupAnimations(classes);
+	      var before, after;
+	      if (animations.length) {
+	        var afterFn, beforeFn;
+	        if (event === 'leave') {
+	          beforeFn = 'leave';
+	          afterFn = 'afterLeave'; // TODO(matsko): get rid of this
+	        } else {
+	          beforeFn = 'before' + event.charAt(0).toUpperCase() + event.substr(1);
+	          afterFn = event;
+	        }
+
+	        if (event !== 'enter' && event !== 'move') {
+	          before = packageAnimations(element, event, options, animations, beforeFn);
+	        }
+	        after  = packageAnimations(element, event, options, animations, afterFn);
+	      }
+
+	      // no matching animations
+	      if (!before && !after) return;
+
+	      function applyOptions() {
+	        options.domOperation();
+	        applyAnimationClasses(element, options);
+	      }
+
+	      function close() {
+	        animationClosed = true;
+	        applyOptions();
+	        applyAnimationStyles(element, options);
+	      }
+
+	      var runner;
+
+	      return {
+	        $$willAnimate: true,
+	        end: function() {
+	          if (runner) {
+	            runner.end();
+	          } else {
+	            close();
+	            runner = new $$AnimateRunner();
+	            runner.complete(true);
+	          }
+	          return runner;
+	        },
+	        start: function() {
+	          if (runner) {
+	            return runner;
+	          }
+
+	          runner = new $$AnimateRunner();
+	          var closeActiveAnimations;
+	          var chain = [];
+
+	          if (before) {
+	            chain.push(function(fn) {
+	              closeActiveAnimations = before(fn);
+	            });
+	          }
+
+	          if (chain.length) {
+	            chain.push(function(fn) {
+	              applyOptions();
+	              fn(true);
+	            });
+	          } else {
+	            applyOptions();
+	          }
+
+	          if (after) {
+	            chain.push(function(fn) {
+	              closeActiveAnimations = after(fn);
+	            });
+	          }
+
+	          runner.setHost({
+	            end: function() {
+	              endAnimations();
+	            },
+	            cancel: function() {
+	              endAnimations(true);
+	            }
+	          });
+
+	          $$AnimateRunner.chain(chain, onComplete);
+	          return runner;
+
+	          function onComplete(success) {
+	            close(success);
+	            runner.complete(success);
+	          }
+
+	          function endAnimations(cancelled) {
+	            if (!animationClosed) {
+	              (closeActiveAnimations || noop)(cancelled);
+	              onComplete(cancelled);
+	            }
+	          }
+	        }
+	      };
+
+	      function executeAnimationFn(fn, element, event, options, onDone) {
+	        var args;
+	        switch (event) {
+	          case 'animate':
+	            args = [element, options.from, options.to, onDone];
+	            break;
+
+	          case 'setClass':
+	            args = [element, classesToAdd, classesToRemove, onDone];
+	            break;
+
+	          case 'addClass':
+	            args = [element, classesToAdd, onDone];
+	            break;
+
+	          case 'removeClass':
+	            args = [element, classesToRemove, onDone];
+	            break;
+
+	          default:
+	            args = [element, onDone];
+	            break;
+	        }
+
+	        args.push(options);
+
+	        var value = fn.apply(fn, args);
+	        if (value) {
+	          if (isFunction(value.start)) {
+	            value = value.start();
+	          }
+
+	          if (value instanceof $$AnimateRunner) {
+	            value.done(onDone);
+	          } else if (isFunction(value)) {
+	            // optional onEnd / onCancel callback
+	            return value;
+	          }
+	        }
+
+	        return noop;
+	      }
+
+	      function groupEventedAnimations(element, event, options, animations, fnName) {
+	        var operations = [];
+	        forEach(animations, function(ani) {
+	          var animation = ani[fnName];
+	          if (!animation) return;
+
+	          // note that all of these animations will run in parallel
+	          operations.push(function() {
+	            var runner;
+	            var endProgressCb;
+
+	            var resolved = false;
+	            var onAnimationComplete = function(rejected) {
+	              if (!resolved) {
+	                resolved = true;
+	                (endProgressCb || noop)(rejected);
+	                runner.complete(!rejected);
+	              }
+	            };
+
+	            runner = new $$AnimateRunner({
+	              end: function() {
+	                onAnimationComplete();
+	              },
+	              cancel: function() {
+	                onAnimationComplete(true);
+	              }
+	            });
+
+	            endProgressCb = executeAnimationFn(animation, element, event, options, function(result) {
+	              var cancelled = result === false;
+	              onAnimationComplete(cancelled);
+	            });
+
+	            return runner;
+	          });
+	        });
+
+	        return operations;
+	      }
+
+	      function packageAnimations(element, event, options, animations, fnName) {
+	        var operations = groupEventedAnimations(element, event, options, animations, fnName);
+	        if (operations.length === 0) {
+	          var a, b;
+	          if (fnName === 'beforeSetClass') {
+	            a = groupEventedAnimations(element, 'removeClass', options, animations, 'beforeRemoveClass');
+	            b = groupEventedAnimations(element, 'addClass', options, animations, 'beforeAddClass');
+	          } else if (fnName === 'setClass') {
+	            a = groupEventedAnimations(element, 'removeClass', options, animations, 'removeClass');
+	            b = groupEventedAnimations(element, 'addClass', options, animations, 'addClass');
+	          }
+
+	          if (a) {
+	            operations = operations.concat(a);
+	          }
+	          if (b) {
+	            operations = operations.concat(b);
+	          }
+	        }
+
+	        if (operations.length === 0) return;
+
+	        // TODO(matsko): add documentation
+	        return function startAnimation(callback) {
+	          var runners = [];
+	          if (operations.length) {
+	            forEach(operations, function(animateFn) {
+	              runners.push(animateFn());
+	            });
+	          }
+
+	          if (runners.length) {
+	            $$AnimateRunner.all(runners, callback);
+	          }  else {
+	            callback();
+	          }
+
+	          return function endFn(reject) {
+	            forEach(runners, function(runner) {
+	              if (reject) {
+	                runner.cancel();
+	              } else {
+	                runner.end();
+	              }
+	            });
+	          };
+	        };
+	      }
+	    };
+
+	    function lookupAnimations(classes) {
+	      classes = isArray(classes) ? classes : classes.split(' ');
+	      var matches = [], flagMap = {};
+	      for (var i = 0; i < classes.length; i++) {
+	        var klass = classes[i],
+	            animationFactory = $animateProvider.$$registeredAnimations[klass];
+	        if (animationFactory && !flagMap[klass]) {
+	          matches.push($injector.get(animationFactory));
+	          flagMap[klass] = true;
+	        }
+	      }
+	      return matches;
+	    }
+	  }];
+	}];
+
+	var $$AnimateJsDriverProvider = ['$$animationProvider', /** @this */ function($$animationProvider) {
+	  $$animationProvider.drivers.push('$$animateJsDriver');
+	  this.$get = ['$$animateJs', '$$AnimateRunner', function($$animateJs, $$AnimateRunner) {
+	    return function initDriverFn(animationDetails) {
+	      if (animationDetails.from && animationDetails.to) {
+	        var fromAnimation = prepareAnimation(animationDetails.from);
+	        var toAnimation = prepareAnimation(animationDetails.to);
+	        if (!fromAnimation && !toAnimation) return;
+
+	        return {
+	          start: function() {
+	            var animationRunners = [];
+
+	            if (fromAnimation) {
+	              animationRunners.push(fromAnimation.start());
+	            }
+
+	            if (toAnimation) {
+	              animationRunners.push(toAnimation.start());
+	            }
+
+	            $$AnimateRunner.all(animationRunners, done);
+
+	            var runner = new $$AnimateRunner({
+	              end: endFnFactory(),
+	              cancel: endFnFactory()
+	            });
+
+	            return runner;
+
+	            function endFnFactory() {
+	              return function() {
+	                forEach(animationRunners, function(runner) {
+	                  // at this point we cannot cancel animations for groups just yet. 1.5+
+	                  runner.end();
+	                });
+	              };
+	            }
+
+	            function done(status) {
+	              runner.complete(status);
+	            }
+	          }
+	        };
+	      } else {
+	        return prepareAnimation(animationDetails);
+	      }
+	    };
+
+	    function prepareAnimation(animationDetails) {
+	      // TODO(matsko): make sure to check for grouped animations and delegate down to normal animations
+	      var element = animationDetails.element;
+	      var event = animationDetails.event;
+	      var options = animationDetails.options;
+	      var classes = animationDetails.classes;
+	      return $$animateJs(element, event, classes, options);
+	    }
+	  }];
+	}];
+
+	var NG_ANIMATE_ATTR_NAME = 'data-ng-animate';
+	var NG_ANIMATE_PIN_DATA = '$ngAnimatePin';
+	var $$AnimateQueueProvider = ['$animateProvider', /** @this */ function($animateProvider) {
+	  var PRE_DIGEST_STATE = 1;
+	  var RUNNING_STATE = 2;
+	  var ONE_SPACE = ' ';
+
+	  var rules = this.rules = {
+	    skip: [],
+	    cancel: [],
+	    join: []
+	  };
+
+	  function makeTruthyCssClassMap(classString) {
+	    if (!classString) {
+	      return null;
+	    }
+
+	    var keys = classString.split(ONE_SPACE);
+	    var map = Object.create(null);
+
+	    forEach(keys, function(key) {
+	      map[key] = true;
+	    });
+	    return map;
+	  }
+
+	  function hasMatchingClasses(newClassString, currentClassString) {
+	    if (newClassString && currentClassString) {
+	      var currentClassMap = makeTruthyCssClassMap(currentClassString);
+	      return newClassString.split(ONE_SPACE).some(function(className) {
+	        return currentClassMap[className];
+	      });
+	    }
+	  }
+
+	  function isAllowed(ruleType, currentAnimation, previousAnimation) {
+	    return rules[ruleType].some(function(fn) {
+	      return fn(currentAnimation, previousAnimation);
+	    });
+	  }
+
+	  function hasAnimationClasses(animation, and) {
+	    var a = (animation.addClass || '').length > 0;
+	    var b = (animation.removeClass || '').length > 0;
+	    return and ? a && b : a || b;
+	  }
+
+	  rules.join.push(function(newAnimation, currentAnimation) {
+	    // if the new animation is class-based then we can just tack that on
+	    return !newAnimation.structural && hasAnimationClasses(newAnimation);
+	  });
+
+	  rules.skip.push(function(newAnimation, currentAnimation) {
+	    // there is no need to animate anything if no classes are being added and
+	    // there is no structural animation that will be triggered
+	    return !newAnimation.structural && !hasAnimationClasses(newAnimation);
+	  });
+
+	  rules.skip.push(function(newAnimation, currentAnimation) {
+	    // why should we trigger a new structural animation if the element will
+	    // be removed from the DOM anyway?
+	    return currentAnimation.event === 'leave' && newAnimation.structural;
+	  });
+
+	  rules.skip.push(function(newAnimation, currentAnimation) {
+	    // if there is an ongoing current animation then don't even bother running the class-based animation
+	    return currentAnimation.structural && currentAnimation.state === RUNNING_STATE && !newAnimation.structural;
+	  });
+
+	  rules.cancel.push(function(newAnimation, currentAnimation) {
+	    // there can never be two structural animations running at the same time
+	    return currentAnimation.structural && newAnimation.structural;
+	  });
+
+	  rules.cancel.push(function(newAnimation, currentAnimation) {
+	    // if the previous animation is already running, but the new animation will
+	    // be triggered, but the new animation is structural
+	    return currentAnimation.state === RUNNING_STATE && newAnimation.structural;
+	  });
+
+	  rules.cancel.push(function(newAnimation, currentAnimation) {
+	    // cancel the animation if classes added / removed in both animation cancel each other out,
+	    // but only if the current animation isn't structural
+
+	    if (currentAnimation.structural) return false;
+
+	    var nA = newAnimation.addClass;
+	    var nR = newAnimation.removeClass;
+	    var cA = currentAnimation.addClass;
+	    var cR = currentAnimation.removeClass;
+
+	    // early detection to save the global CPU shortage :)
+	    if ((isUndefined(nA) && isUndefined(nR)) || (isUndefined(cA) && isUndefined(cR))) {
+	      return false;
+	    }
+
+	    return hasMatchingClasses(nA, cR) || hasMatchingClasses(nR, cA);
+	  });
+
+	  this.$get = ['$$rAF', '$rootScope', '$rootElement', '$document', '$$Map',
+	               '$$animation', '$$AnimateRunner', '$templateRequest', '$$jqLite', '$$forceReflow',
+	               '$$isDocumentHidden',
+	       function($$rAF,   $rootScope,   $rootElement,   $document,   $$Map,
+	                $$animation,   $$AnimateRunner,   $templateRequest,   $$jqLite,   $$forceReflow,
+	                $$isDocumentHidden) {
+
+	    var activeAnimationsLookup = new $$Map();
+	    var disabledElementsLookup = new $$Map();
+	    var animationsEnabled = null;
+
+	    function postDigestTaskFactory() {
+	      var postDigestCalled = false;
+	      return function(fn) {
+	        // we only issue a call to postDigest before
+	        // it has first passed. This prevents any callbacks
+	        // from not firing once the animation has completed
+	        // since it will be out of the digest cycle.
+	        if (postDigestCalled) {
+	          fn();
+	        } else {
+	          $rootScope.$$postDigest(function() {
+	            postDigestCalled = true;
+	            fn();
+	          });
+	        }
+	      };
+	    }
+
+	    // Wait until all directive and route-related templates are downloaded and
+	    // compiled. The $templateRequest.totalPendingRequests variable keeps track of
+	    // all of the remote templates being currently downloaded. If there are no
+	    // templates currently downloading then the watcher will still fire anyway.
+	    var deregisterWatch = $rootScope.$watch(
+	      function() { return $templateRequest.totalPendingRequests === 0; },
+	      function(isEmpty) {
+	        if (!isEmpty) return;
+	        deregisterWatch();
+
+	        // Now that all templates have been downloaded, $animate will wait until
+	        // the post digest queue is empty before enabling animations. By having two
+	        // calls to $postDigest calls we can ensure that the flag is enabled at the
+	        // very end of the post digest queue. Since all of the animations in $animate
+	        // use $postDigest, it's important that the code below executes at the end.
+	        // This basically means that the page is fully downloaded and compiled before
+	        // any animations are triggered.
+	        $rootScope.$$postDigest(function() {
+	          $rootScope.$$postDigest(function() {
+	            // we check for null directly in the event that the application already called
+	            // .enabled() with whatever arguments that it provided it with
+	            if (animationsEnabled === null) {
+	              animationsEnabled = true;
+	            }
+	          });
+	        });
+	      }
+	    );
+
+	    var callbackRegistry = Object.create(null);
+
+	    // remember that the classNameFilter is set during the provider/config
+	    // stage therefore we can optimize here and setup a helper function
+	    var classNameFilter = $animateProvider.classNameFilter();
+	    var isAnimatableClassName = !classNameFilter
+	              ? function() { return true; }
+	              : function(className) {
+	                return classNameFilter.test(className);
+	              };
+
+	    var applyAnimationClasses = applyAnimationClassesFactory($$jqLite);
+
+	    function normalizeAnimationDetails(element, animation) {
+	      return mergeAnimationDetails(element, animation, {});
+	    }
+
+	    // IE9-11 has no method "contains" in SVG element and in Node.prototype. Bug #10259.
+	    var contains = window.Node.prototype.contains || /** @this */ function(arg) {
+	      // eslint-disable-next-line no-bitwise
+	      return this === arg || !!(this.compareDocumentPosition(arg) & 16);
+	    };
+
+	    function findCallbacks(targetParentNode, targetNode, event) {
+	      var matches = [];
+	      var entries = callbackRegistry[event];
+	      if (entries) {
+	        forEach(entries, function(entry) {
+	          if (contains.call(entry.node, targetNode)) {
+	            matches.push(entry.callback);
+	          } else if (event === 'leave' && contains.call(entry.node, targetParentNode)) {
+	            matches.push(entry.callback);
+	          }
+	        });
+	      }
+
+	      return matches;
+	    }
+
+	    function filterFromRegistry(list, matchContainer, matchCallback) {
+	      var containerNode = extractElementNode(matchContainer);
+	      return list.filter(function(entry) {
+	        var isMatch = entry.node === containerNode &&
+	                        (!matchCallback || entry.callback === matchCallback);
+	        return !isMatch;
+	      });
+	    }
+
+	    function cleanupEventListeners(phase, node) {
+	      if (phase === 'close' && !node.parentNode) {
+	        // If the element is not attached to a parentNode, it has been removed by
+	        // the domOperation, and we can safely remove the event callbacks
+	        $animate.off(node);
+	      }
+	    }
+
+	    var $animate = {
+	      on: function(event, container, callback) {
+	        var node = extractElementNode(container);
+	        callbackRegistry[event] = callbackRegistry[event] || [];
+	        callbackRegistry[event].push({
+	          node: node,
+	          callback: callback
+	        });
+
+	        // Remove the callback when the element is removed from the DOM
+	        jqLite(container).on('$destroy', function() {
+	          var animationDetails = activeAnimationsLookup.get(node);
+
+	          if (!animationDetails) {
+	            // If there's an animation ongoing, the callback calling code will remove
+	            // the event listeners. If we'd remove here, the callbacks would be removed
+	            // before the animation ends
+	            $animate.off(event, container, callback);
+	          }
+	        });
+	      },
+
+	      off: function(event, container, callback) {
+	        if (arguments.length === 1 && !isString(arguments[0])) {
+	          container = arguments[0];
+	          for (var eventType in callbackRegistry) {
+	            callbackRegistry[eventType] = filterFromRegistry(callbackRegistry[eventType], container);
+	          }
+
+	          return;
+	        }
+
+	        var entries = callbackRegistry[event];
+	        if (!entries) return;
+
+	        callbackRegistry[event] = arguments.length === 1
+	            ? null
+	            : filterFromRegistry(entries, container, callback);
+	      },
+
+	      pin: function(element, parentElement) {
+	        assertArg(isElement(element), 'element', 'not an element');
+	        assertArg(isElement(parentElement), 'parentElement', 'not an element');
+	        element.data(NG_ANIMATE_PIN_DATA, parentElement);
+	      },
+
+	      push: function(element, event, options, domOperation) {
+	        options = options || {};
+	        options.domOperation = domOperation;
+	        return queueAnimation(element, event, options);
+	      },
+
+	      // this method has four signatures:
+	      //  () - global getter
+	      //  (bool) - global setter
+	      //  (element) - element getter
+	      //  (element, bool) - element setter<F37>
+	      enabled: function(element, bool) {
+	        var argCount = arguments.length;
+
+	        if (argCount === 0) {
+	          // () - Global getter
+	          bool = !!animationsEnabled;
+	        } else {
+	          var hasElement = isElement(element);
+
+	          if (!hasElement) {
+	            // (bool) - Global setter
+	            bool = animationsEnabled = !!element;
+	          } else {
+	            var node = getDomNode(element);
+
+	            if (argCount === 1) {
+	              // (element) - Element getter
+	              bool = !disabledElementsLookup.get(node);
+	            } else {
+	              // (element, bool) - Element setter
+	              disabledElementsLookup.set(node, !bool);
+	            }
+	          }
+	        }
+
+	        return bool;
+	      }
+	    };
+
+	    return $animate;
+
+	    function queueAnimation(originalElement, event, initialOptions) {
+	      // we always make a copy of the options since
+	      // there should never be any side effects on
+	      // the input data when running `$animateCss`.
+	      var options = copy(initialOptions);
+
+	      var element = stripCommentsFromElement(originalElement);
+	      var node = getDomNode(element);
+	      var parentNode = node && node.parentNode;
+
+	      options = prepareAnimationOptions(options);
+
+	      // we create a fake runner with a working promise.
+	      // These methods will become available after the digest has passed
+	      var runner = new $$AnimateRunner();
+
+	      // this is used to trigger callbacks in postDigest mode
+	      var runInNextPostDigestOrNow = postDigestTaskFactory();
+
+	      if (isArray(options.addClass)) {
+	        options.addClass = options.addClass.join(' ');
+	      }
+
+	      if (options.addClass && !isString(options.addClass)) {
+	        options.addClass = null;
+	      }
+
+	      if (isArray(options.removeClass)) {
+	        options.removeClass = options.removeClass.join(' ');
+	      }
+
+	      if (options.removeClass && !isString(options.removeClass)) {
+	        options.removeClass = null;
+	      }
+
+	      if (options.from && !isObject(options.from)) {
+	        options.from = null;
+	      }
+
+	      if (options.to && !isObject(options.to)) {
+	        options.to = null;
+	      }
+
+	      // there are situations where a directive issues an animation for
+	      // a jqLite wrapper that contains only comment nodes... If this
+	      // happens then there is no way we can perform an animation
+	      if (!node) {
+	        close();
+	        return runner;
+	      }
+
+	      var className = [node.getAttribute('class'), options.addClass, options.removeClass].join(' ');
+	      if (!isAnimatableClassName(className)) {
+	        close();
+	        return runner;
+	      }
+
+	      var isStructural = ['enter', 'move', 'leave'].indexOf(event) >= 0;
+
+	      var documentHidden = $$isDocumentHidden();
+
+	      // this is a hard disable of all animations for the application or on
+	      // the element itself, therefore  there is no need to continue further
+	      // past this point if not enabled
+	      // Animations are also disabled if the document is currently hidden (page is not visible
+	      // to the user), because browsers slow down or do not flush calls to requestAnimationFrame
+	      var skipAnimations = !animationsEnabled || documentHidden || disabledElementsLookup.get(node);
+	      var existingAnimation = (!skipAnimations && activeAnimationsLookup.get(node)) || {};
+	      var hasExistingAnimation = !!existingAnimation.state;
+
+	      // there is no point in traversing the same collection of parent ancestors if a followup
+	      // animation will be run on the same element that already did all that checking work
+	      if (!skipAnimations && (!hasExistingAnimation || existingAnimation.state !== PRE_DIGEST_STATE)) {
+	        skipAnimations = !areAnimationsAllowed(node, parentNode, event);
+	      }
+
+	      if (skipAnimations) {
+	        // Callbacks should fire even if the document is hidden (regression fix for issue #14120)
+	        if (documentHidden) notifyProgress(runner, event, 'start');
+	        close();
+	        if (documentHidden) notifyProgress(runner, event, 'close');
+	        return runner;
+	      }
+
+	      if (isStructural) {
+	        closeChildAnimations(node);
+	      }
+
+	      var newAnimation = {
+	        structural: isStructural,
+	        element: element,
+	        event: event,
+	        addClass: options.addClass,
+	        removeClass: options.removeClass,
+	        close: close,
+	        options: options,
+	        runner: runner
+	      };
+
+	      if (hasExistingAnimation) {
+	        var skipAnimationFlag = isAllowed('skip', newAnimation, existingAnimation);
+	        if (skipAnimationFlag) {
+	          if (existingAnimation.state === RUNNING_STATE) {
+	            close();
+	            return runner;
+	          } else {
+	            mergeAnimationDetails(element, existingAnimation, newAnimation);
+	            return existingAnimation.runner;
+	          }
+	        }
+	        var cancelAnimationFlag = isAllowed('cancel', newAnimation, existingAnimation);
+	        if (cancelAnimationFlag) {
+	          if (existingAnimation.state === RUNNING_STATE) {
+	            // this will end the animation right away and it is safe
+	            // to do so since the animation is already running and the
+	            // runner callback code will run in async
+	            existingAnimation.runner.end();
+	          } else if (existingAnimation.structural) {
+	            // this means that the animation is queued into a digest, but
+	            // hasn't started yet. Therefore it is safe to run the close
+	            // method which will call the runner methods in async.
+	            existingAnimation.close();
+	          } else {
+	            // this will merge the new animation options into existing animation options
+	            mergeAnimationDetails(element, existingAnimation, newAnimation);
+
+	            return existingAnimation.runner;
+	          }
+	        } else {
+	          // a joined animation means that this animation will take over the existing one
+	          // so an example would involve a leave animation taking over an enter. Then when
+	          // the postDigest kicks in the enter will be ignored.
+	          var joinAnimationFlag = isAllowed('join', newAnimation, existingAnimation);
+	          if (joinAnimationFlag) {
+	            if (existingAnimation.state === RUNNING_STATE) {
+	              normalizeAnimationDetails(element, newAnimation);
+	            } else {
+	              applyGeneratedPreparationClasses(element, isStructural ? event : null, options);
+
+	              event = newAnimation.event = existingAnimation.event;
+	              options = mergeAnimationDetails(element, existingAnimation, newAnimation);
+
+	              //we return the same runner since only the option values of this animation will
+	              //be fed into the `existingAnimation`.
+	              return existingAnimation.runner;
+	            }
+	          }
+	        }
+	      } else {
+	        // normalization in this case means that it removes redundant CSS classes that
+	        // already exist (addClass) or do not exist (removeClass) on the element
+	        normalizeAnimationDetails(element, newAnimation);
+	      }
+
+	      // when the options are merged and cleaned up we may end up not having to do
+	      // an animation at all, therefore we should check this before issuing a post
+	      // digest callback. Structural animations will always run no matter what.
+	      var isValidAnimation = newAnimation.structural;
+	      if (!isValidAnimation) {
+	        // animate (from/to) can be quickly checked first, otherwise we check if any classes are present
+	        isValidAnimation = (newAnimation.event === 'animate' && Object.keys(newAnimation.options.to || {}).length > 0)
+	                            || hasAnimationClasses(newAnimation);
+	      }
+
+	      if (!isValidAnimation) {
+	        close();
+	        clearElementAnimationState(node);
+	        return runner;
+	      }
+
+	      // the counter keeps track of cancelled animations
+	      var counter = (existingAnimation.counter || 0) + 1;
+	      newAnimation.counter = counter;
+
+	      markElementAnimationState(node, PRE_DIGEST_STATE, newAnimation);
+
+	      $rootScope.$$postDigest(function() {
+	        // It is possible that the DOM nodes inside `originalElement` have been replaced. This can
+	        // happen if the animated element is a transcluded clone and also has a `templateUrl`
+	        // directive on it. Therefore, we must recreate `element` in order to interact with the
+	        // actual DOM nodes.
+	        // Note: We still need to use the old `node` for certain things, such as looking up in
+	        //       HashMaps where it was used as the key.
+
+	        element = stripCommentsFromElement(originalElement);
+
+	        var animationDetails = activeAnimationsLookup.get(node);
+	        var animationCancelled = !animationDetails;
+	        animationDetails = animationDetails || {};
+
+	        // if addClass/removeClass is called before something like enter then the
+	        // registered parent element may not be present. The code below will ensure
+	        // that a final value for parent element is obtained
+	        var parentElement = element.parent() || [];
+
+	        // animate/structural/class-based animations all have requirements. Otherwise there
+	        // is no point in performing an animation. The parent node must also be set.
+	        var isValidAnimation = parentElement.length > 0
+	                                && (animationDetails.event === 'animate'
+	                                    || animationDetails.structural
+	                                    || hasAnimationClasses(animationDetails));
+
+	        // this means that the previous animation was cancelled
+	        // even if the follow-up animation is the same event
+	        if (animationCancelled || animationDetails.counter !== counter || !isValidAnimation) {
+	          // if another animation did not take over then we need
+	          // to make sure that the domOperation and options are
+	          // handled accordingly
+	          if (animationCancelled) {
+	            applyAnimationClasses(element, options);
+	            applyAnimationStyles(element, options);
+	          }
+
+	          // if the event changed from something like enter to leave then we do
+	          // it, otherwise if it's the same then the end result will be the same too
+	          if (animationCancelled || (isStructural && animationDetails.event !== event)) {
+	            options.domOperation();
+	            runner.end();
+	          }
+
+	          // in the event that the element animation was not cancelled or a follow-up animation
+	          // isn't allowed to animate from here then we need to clear the state of the element
+	          // so that any future animations won't read the expired animation data.
+	          if (!isValidAnimation) {
+	            clearElementAnimationState(node);
+	          }
+
+	          return;
+	        }
+
+	        // this combined multiple class to addClass / removeClass into a setClass event
+	        // so long as a structural event did not take over the animation
+	        event = !animationDetails.structural && hasAnimationClasses(animationDetails, true)
+	            ? 'setClass'
+	            : animationDetails.event;
+
+	        markElementAnimationState(node, RUNNING_STATE);
+	        var realRunner = $$animation(element, event, animationDetails.options);
+
+	        // this will update the runner's flow-control events based on
+	        // the `realRunner` object.
+	        runner.setHost(realRunner);
+	        notifyProgress(runner, event, 'start', {});
+
+	        realRunner.done(function(status) {
+	          close(!status);
+	          var animationDetails = activeAnimationsLookup.get(node);
+	          if (animationDetails && animationDetails.counter === counter) {
+	            clearElementAnimationState(node);
+	          }
+	          notifyProgress(runner, event, 'close', {});
+	        });
+	      });
+
+	      return runner;
+
+	      function notifyProgress(runner, event, phase, data) {
+	        runInNextPostDigestOrNow(function() {
+	          var callbacks = findCallbacks(parentNode, node, event);
+	          if (callbacks.length) {
+	            // do not optimize this call here to RAF because
+	            // we don't know how heavy the callback code here will
+	            // be and if this code is buffered then this can
+	            // lead to a performance regression.
+	            $$rAF(function() {
+	              forEach(callbacks, function(callback) {
+	                callback(element, phase, data);
+	              });
+	              cleanupEventListeners(phase, node);
+	            });
+	          } else {
+	            cleanupEventListeners(phase, node);
+	          }
+	        });
+	        runner.progress(event, phase, data);
+	      }
+
+	      function close(reject) {
+	        clearGeneratedClasses(element, options);
+	        applyAnimationClasses(element, options);
+	        applyAnimationStyles(element, options);
+	        options.domOperation();
+	        runner.complete(!reject);
+	      }
+	    }
+
+	    function closeChildAnimations(node) {
+	      var children = node.querySelectorAll('[' + NG_ANIMATE_ATTR_NAME + ']');
+	      forEach(children, function(child) {
+	        var state = parseInt(child.getAttribute(NG_ANIMATE_ATTR_NAME), 10);
+	        var animationDetails = activeAnimationsLookup.get(child);
+	        if (animationDetails) {
+	          switch (state) {
+	            case RUNNING_STATE:
+	              animationDetails.runner.end();
+	              /* falls through */
+	            case PRE_DIGEST_STATE:
+	              activeAnimationsLookup.delete(child);
+	              break;
+	          }
+	        }
+	      });
+	    }
+
+	    function clearElementAnimationState(node) {
+	      node.removeAttribute(NG_ANIMATE_ATTR_NAME);
+	      activeAnimationsLookup.delete(node);
+	    }
+
+	    /**
+	     * This fn returns false if any of the following is true:
+	     * a) animations on any parent element are disabled, and animations on the element aren't explicitly allowed
+	     * b) a parent element has an ongoing structural animation, and animateChildren is false
+	     * c) the element is not a child of the body
+	     * d) the element is not a child of the $rootElement
+	     */
+	    function areAnimationsAllowed(node, parentNode, event) {
+	      var bodyNode = $document[0].body;
+	      var rootNode = getDomNode($rootElement);
+
+	      var bodyNodeDetected = (node === bodyNode) || node.nodeName === 'HTML';
+	      var rootNodeDetected = (node === rootNode);
+	      var parentAnimationDetected = false;
+	      var elementDisabled = disabledElementsLookup.get(node);
+	      var animateChildren;
+
+	      var parentHost = jqLite.data(node, NG_ANIMATE_PIN_DATA);
+	      if (parentHost) {
+	        parentNode = getDomNode(parentHost);
+	      }
+
+	      while (parentNode) {
+	        if (!rootNodeDetected) {
+	          // angular doesn't want to attempt to animate elements outside of the application
+	          // therefore we need to ensure that the rootElement is an ancestor of the current element
+	          rootNodeDetected = (parentNode === rootNode);
+	        }
+
+	        if (parentNode.nodeType !== ELEMENT_NODE) {
+	          // no point in inspecting the #document element
+	          break;
+	        }
+
+	        var details = activeAnimationsLookup.get(parentNode) || {};
+	        // either an enter, leave or move animation will commence
+	        // therefore we can't allow any animations to take place
+	        // but if a parent animation is class-based then that's ok
+	        if (!parentAnimationDetected) {
+	          var parentNodeDisabled = disabledElementsLookup.get(parentNode);
+
+	          if (parentNodeDisabled === true && elementDisabled !== false) {
+	            // disable animations if the user hasn't explicitly enabled animations on the
+	            // current element
+	            elementDisabled = true;
+	            // element is disabled via parent element, no need to check anything else
+	            break;
+	          } else if (parentNodeDisabled === false) {
+	            elementDisabled = false;
+	          }
+	          parentAnimationDetected = details.structural;
+	        }
+
+	        if (isUndefined(animateChildren) || animateChildren === true) {
+	          var value = jqLite.data(parentNode, NG_ANIMATE_CHILDREN_DATA);
+	          if (isDefined(value)) {
+	            animateChildren = value;
+	          }
+	        }
+
+	        // there is no need to continue traversing at this point
+	        if (parentAnimationDetected && animateChildren === false) break;
+
+	        if (!bodyNodeDetected) {
+	          // we also need to ensure that the element is or will be a part of the body element
+	          // otherwise it is pointless to even issue an animation to be rendered
+	          bodyNodeDetected = (parentNode === bodyNode);
+	        }
+
+	        if (bodyNodeDetected && rootNodeDetected) {
+	          // If both body and root have been found, any other checks are pointless,
+	          // as no animation data should live outside the application
+	          break;
+	        }
+
+	        if (!rootNodeDetected) {
+	          // If `rootNode` is not detected, check if `parentNode` is pinned to another element
+	          parentHost = jqLite.data(parentNode, NG_ANIMATE_PIN_DATA);
+	          if (parentHost) {
+	            // The pin target element becomes the next parent element
+	            parentNode = getDomNode(parentHost);
+	            continue;
+	          }
+	        }
+
+	        parentNode = parentNode.parentNode;
+	      }
+
+	      var allowAnimation = (!parentAnimationDetected || animateChildren) && elementDisabled !== true;
+	      return allowAnimation && rootNodeDetected && bodyNodeDetected;
+	    }
+
+	    function markElementAnimationState(node, state, details) {
+	      details = details || {};
+	      details.state = state;
+
+	      node.setAttribute(NG_ANIMATE_ATTR_NAME, state);
+
+	      var oldValue = activeAnimationsLookup.get(node);
+	      var newValue = oldValue
+	          ? extend(oldValue, details)
+	          : details;
+	      activeAnimationsLookup.set(node, newValue);
+	    }
+	  }];
+	}];
+
+	/* exported $$AnimationProvider */
+
+	var $$AnimationProvider = ['$animateProvider', /** @this */ function($animateProvider) {
+	  var NG_ANIMATE_REF_ATTR = 'ng-animate-ref';
+
+	  var drivers = this.drivers = [];
+
+	  var RUNNER_STORAGE_KEY = '$$animationRunner';
+
+	  function setRunner(element, runner) {
+	    element.data(RUNNER_STORAGE_KEY, runner);
+	  }
+
+	  function removeRunner(element) {
+	    element.removeData(RUNNER_STORAGE_KEY);
+	  }
+
+	  function getRunner(element) {
+	    return element.data(RUNNER_STORAGE_KEY);
+	  }
+
+	  this.$get = ['$$jqLite', '$rootScope', '$injector', '$$AnimateRunner', '$$Map', '$$rAFScheduler',
+	       function($$jqLite,   $rootScope,   $injector,   $$AnimateRunner,   $$Map,   $$rAFScheduler) {
+
+	    var animationQueue = [];
+	    var applyAnimationClasses = applyAnimationClassesFactory($$jqLite);
+
+	    function sortAnimations(animations) {
+	      var tree = { children: [] };
+	      var i, lookup = new $$Map();
+
+	      // this is done first beforehand so that the map
+	      // is filled with a list of the elements that will be animated
+	      for (i = 0; i < animations.length; i++) {
+	        var animation = animations[i];
+	        lookup.set(animation.domNode, animations[i] = {
+	          domNode: animation.domNode,
+	          fn: animation.fn,
+	          children: []
+	        });
+	      }
+
+	      for (i = 0; i < animations.length; i++) {
+	        processNode(animations[i]);
+	      }
+
+	      return flatten(tree);
+
+	      function processNode(entry) {
+	        if (entry.processed) return entry;
+	        entry.processed = true;
+
+	        var elementNode = entry.domNode;
+	        var parentNode = elementNode.parentNode;
+	        lookup.set(elementNode, entry);
+
+	        var parentEntry;
+	        while (parentNode) {
+	          parentEntry = lookup.get(parentNode);
+	          if (parentEntry) {
+	            if (!parentEntry.processed) {
+	              parentEntry = processNode(parentEntry);
+	            }
+	            break;
+	          }
+	          parentNode = parentNode.parentNode;
+	        }
+
+	        (parentEntry || tree).children.push(entry);
+	        return entry;
+	      }
+
+	      function flatten(tree) {
+	        var result = [];
+	        var queue = [];
+	        var i;
+
+	        for (i = 0; i < tree.children.length; i++) {
+	          queue.push(tree.children[i]);
+	        }
+
+	        var remainingLevelEntries = queue.length;
+	        var nextLevelEntries = 0;
+	        var row = [];
+
+	        for (i = 0; i < queue.length; i++) {
+	          var entry = queue[i];
+	          if (remainingLevelEntries <= 0) {
+	            remainingLevelEntries = nextLevelEntries;
+	            nextLevelEntries = 0;
+	            result.push(row);
+	            row = [];
+	          }
+	          row.push(entry.fn);
+	          entry.children.forEach(function(childEntry) {
+	            nextLevelEntries++;
+	            queue.push(childEntry);
+	          });
+	          remainingLevelEntries--;
+	        }
+
+	        if (row.length) {
+	          result.push(row);
+	        }
+
+	        return result;
+	      }
+	    }
+
+	    // TODO(matsko): document the signature in a better way
+	    return function(element, event, options) {
+	      options = prepareAnimationOptions(options);
+	      var isStructural = ['enter', 'move', 'leave'].indexOf(event) >= 0;
+
+	      // there is no animation at the current moment, however
+	      // these runner methods will get later updated with the
+	      // methods leading into the driver's end/cancel methods
+	      // for now they just stop the animation from starting
+	      var runner = new $$AnimateRunner({
+	        end: function() { close(); },
+	        cancel: function() { close(true); }
+	      });
+
+	      if (!drivers.length) {
+	        close();
+	        return runner;
+	      }
+
+	      setRunner(element, runner);
+
+	      var classes = mergeClasses(element.attr('class'), mergeClasses(options.addClass, options.removeClass));
+	      var tempClasses = options.tempClasses;
+	      if (tempClasses) {
+	        classes += ' ' + tempClasses;
+	        options.tempClasses = null;
+	      }
+
+	      var prepareClassName;
+	      if (isStructural) {
+	        prepareClassName = 'ng-' + event + PREPARE_CLASS_SUFFIX;
+	        $$jqLite.addClass(element, prepareClassName);
+	      }
+
+	      animationQueue.push({
+	        // this data is used by the postDigest code and passed into
+	        // the driver step function
+	        element: element,
+	        classes: classes,
+	        event: event,
+	        structural: isStructural,
+	        options: options,
+	        beforeStart: beforeStart,
+	        close: close
+	      });
+
+	      element.on('$destroy', handleDestroyedElement);
+
+	      // we only want there to be one function called within the post digest
+	      // block. This way we can group animations for all the animations that
+	      // were apart of the same postDigest flush call.
+	      if (animationQueue.length > 1) return runner;
+
+	      $rootScope.$$postDigest(function() {
+	        var animations = [];
+	        forEach(animationQueue, function(entry) {
+	          // the element was destroyed early on which removed the runner
+	          // form its storage. This means we can't animate this element
+	          // at all and it already has been closed due to destruction.
+	          if (getRunner(entry.element)) {
+	            animations.push(entry);
+	          } else {
+	            entry.close();
+	          }
+	        });
+
+	        // now any future animations will be in another postDigest
+	        animationQueue.length = 0;
+
+	        var groupedAnimations = groupAnimations(animations);
+	        var toBeSortedAnimations = [];
+
+	        forEach(groupedAnimations, function(animationEntry) {
+	          toBeSortedAnimations.push({
+	            domNode: getDomNode(animationEntry.from ? animationEntry.from.element : animationEntry.element),
+	            fn: function triggerAnimationStart() {
+	              // it's important that we apply the `ng-animate` CSS class and the
+	              // temporary classes before we do any driver invoking since these
+	              // CSS classes may be required for proper CSS detection.
+	              animationEntry.beforeStart();
+
+	              var startAnimationFn, closeFn = animationEntry.close;
+
+	              // in the event that the element was removed before the digest runs or
+	              // during the RAF sequencing then we should not trigger the animation.
+	              var targetElement = animationEntry.anchors
+	                  ? (animationEntry.from.element || animationEntry.to.element)
+	                  : animationEntry.element;
+
+	              if (getRunner(targetElement)) {
+	                var operation = invokeFirstDriver(animationEntry);
+	                if (operation) {
+	                  startAnimationFn = operation.start;
+	                }
+	              }
+
+	              if (!startAnimationFn) {
+	                closeFn();
+	              } else {
+	                var animationRunner = startAnimationFn();
+	                animationRunner.done(function(status) {
+	                  closeFn(!status);
+	                });
+	                updateAnimationRunners(animationEntry, animationRunner);
+	              }
+	            }
+	          });
+	        });
+
+	        // we need to sort each of the animations in order of parent to child
+	        // relationships. This ensures that the child classes are applied at the
+	        // right time.
+	        $$rAFScheduler(sortAnimations(toBeSortedAnimations));
+	      });
+
+	      return runner;
+
+	      // TODO(matsko): change to reference nodes
+	      function getAnchorNodes(node) {
+	        var SELECTOR = '[' + NG_ANIMATE_REF_ATTR + ']';
+	        var items = node.hasAttribute(NG_ANIMATE_REF_ATTR)
+	              ? [node]
+	              : node.querySelectorAll(SELECTOR);
+	        var anchors = [];
+	        forEach(items, function(node) {
+	          var attr = node.getAttribute(NG_ANIMATE_REF_ATTR);
+	          if (attr && attr.length) {
+	            anchors.push(node);
+	          }
+	        });
+	        return anchors;
+	      }
+
+	      function groupAnimations(animations) {
+	        var preparedAnimations = [];
+	        var refLookup = {};
+	        forEach(animations, function(animation, index) {
+	          var element = animation.element;
+	          var node = getDomNode(element);
+	          var event = animation.event;
+	          var enterOrMove = ['enter', 'move'].indexOf(event) >= 0;
+	          var anchorNodes = animation.structural ? getAnchorNodes(node) : [];
+
+	          if (anchorNodes.length) {
+	            var direction = enterOrMove ? 'to' : 'from';
+
+	            forEach(anchorNodes, function(anchor) {
+	              var key = anchor.getAttribute(NG_ANIMATE_REF_ATTR);
+	              refLookup[key] = refLookup[key] || {};
+	              refLookup[key][direction] = {
+	                animationID: index,
+	                element: jqLite(anchor)
+	              };
+	            });
+	          } else {
+	            preparedAnimations.push(animation);
+	          }
+	        });
+
+	        var usedIndicesLookup = {};
+	        var anchorGroups = {};
+	        forEach(refLookup, function(operations, key) {
+	          var from = operations.from;
+	          var to = operations.to;
+
+	          if (!from || !to) {
+	            // only one of these is set therefore we can't have an
+	            // anchor animation since all three pieces are required
+	            var index = from ? from.animationID : to.animationID;
+	            var indexKey = index.toString();
+	            if (!usedIndicesLookup[indexKey]) {
+	              usedIndicesLookup[indexKey] = true;
+	              preparedAnimations.push(animations[index]);
+	            }
+	            return;
+	          }
+
+	          var fromAnimation = animations[from.animationID];
+	          var toAnimation = animations[to.animationID];
+	          var lookupKey = from.animationID.toString();
+	          if (!anchorGroups[lookupKey]) {
+	            var group = anchorGroups[lookupKey] = {
+	              structural: true,
+	              beforeStart: function() {
+	                fromAnimation.beforeStart();
+	                toAnimation.beforeStart();
+	              },
+	              close: function() {
+	                fromAnimation.close();
+	                toAnimation.close();
+	              },
+	              classes: cssClassesIntersection(fromAnimation.classes, toAnimation.classes),
+	              from: fromAnimation,
+	              to: toAnimation,
+	              anchors: [] // TODO(matsko): change to reference nodes
+	            };
+
+	            // the anchor animations require that the from and to elements both have at least
+	            // one shared CSS class which effectively marries the two elements together to use
+	            // the same animation driver and to properly sequence the anchor animation.
+	            if (group.classes.length) {
+	              preparedAnimations.push(group);
+	            } else {
+	              preparedAnimations.push(fromAnimation);
+	              preparedAnimations.push(toAnimation);
+	            }
+	          }
+
+	          anchorGroups[lookupKey].anchors.push({
+	            'out': from.element, 'in': to.element
+	          });
+	        });
+
+	        return preparedAnimations;
+	      }
+
+	      function cssClassesIntersection(a,b) {
+	        a = a.split(' ');
+	        b = b.split(' ');
+	        var matches = [];
+
+	        for (var i = 0; i < a.length; i++) {
+	          var aa = a[i];
+	          if (aa.substring(0,3) === 'ng-') continue;
+
+	          for (var j = 0; j < b.length; j++) {
+	            if (aa === b[j]) {
+	              matches.push(aa);
+	              break;
+	            }
+	          }
+	        }
+
+	        return matches.join(' ');
+	      }
+
+	      function invokeFirstDriver(animationDetails) {
+	        // we loop in reverse order since the more general drivers (like CSS and JS)
+	        // may attempt more elements, but custom drivers are more particular
+	        for (var i = drivers.length - 1; i >= 0; i--) {
+	          var driverName = drivers[i];
+	          var factory = $injector.get(driverName);
+	          var driver = factory(animationDetails);
+	          if (driver) {
+	            return driver;
+	          }
+	        }
+	      }
+
+	      function beforeStart() {
+	        element.addClass(NG_ANIMATE_CLASSNAME);
+	        if (tempClasses) {
+	          $$jqLite.addClass(element, tempClasses);
+	        }
+	        if (prepareClassName) {
+	          $$jqLite.removeClass(element, prepareClassName);
+	          prepareClassName = null;
+	        }
+	      }
+
+	      function updateAnimationRunners(animation, newRunner) {
+	        if (animation.from && animation.to) {
+	          update(animation.from.element);
+	          update(animation.to.element);
+	        } else {
+	          update(animation.element);
+	        }
+
+	        function update(element) {
+	          var runner = getRunner(element);
+	          if (runner) runner.setHost(newRunner);
+	        }
+	      }
+
+	      function handleDestroyedElement() {
+	        var runner = getRunner(element);
+	        if (runner && (event !== 'leave' || !options.$$domOperationFired)) {
+	          runner.end();
+	        }
+	      }
+
+	      function close(rejected) {
+	        element.off('$destroy', handleDestroyedElement);
+	        removeRunner(element);
+
+	        applyAnimationClasses(element, options);
+	        applyAnimationStyles(element, options);
+	        options.domOperation();
+
+	        if (tempClasses) {
+	          $$jqLite.removeClass(element, tempClasses);
+	        }
+
+	        element.removeClass(NG_ANIMATE_CLASSNAME);
+	        runner.complete(!rejected);
+	      }
+	    };
+	  }];
+	}];
+
+	/**
+	 * @ngdoc directive
+	 * @name ngAnimateSwap
+	 * @restrict A
+	 * @scope
+	 *
+	 * @description
+	 *
+	 * ngAnimateSwap is a animation-oriented directive that allows for the container to
+	 * be removed and entered in whenever the associated expression changes. A
+	 * common usecase for this directive is a rotating banner or slider component which
+	 * contains one image being present at a time. When the active image changes
+	 * then the old image will perform a `leave` animation and the new element
+	 * will be inserted via an `enter` animation.
+	 *
+	 * @animations
+	 * | Animation                        | Occurs                               |
+	 * |----------------------------------|--------------------------------------|
+	 * | {@link ng.$animate#enter enter}  | when the new element is inserted to the DOM  |
+	 * | {@link ng.$animate#leave leave}  | when the old element is removed from the DOM |
+	 *
+	 * @example
+	 * <example name="ngAnimateSwap-directive" module="ngAnimateSwapExample"
+	 *          deps="angular-animate.js"
+	 *          animations="true" fixBase="true">
+	 *   <file name="index.html">
+	 *     <div class="container" ng-controller="AppCtrl">
+	 *       <div ng-animate-swap="number" class="cell swap-animation" ng-class="colorClass(number)">
+	 *         {{ number }}
+	 *       </div>
+	 *     </div>
+	 *   </file>
+	 *   <file name="script.js">
+	 *     angular.module('ngAnimateSwapExample', ['ngAnimate'])
+	 *       .controller('AppCtrl', ['$scope', '$interval', function($scope, $interval) {
+	 *         $scope.number = 0;
+	 *         $interval(function() {
+	 *           $scope.number++;
+	 *         }, 1000);
+	 *
+	 *         var colors = ['red','blue','green','yellow','orange'];
+	 *         $scope.colorClass = function(number) {
+	 *           return colors[number % colors.length];
+	 *         };
+	 *       }]);
+	 *   </file>
+	 *  <file name="animations.css">
+	 *  .container {
+	 *    height:250px;
+	 *    width:250px;
+	 *    position:relative;
+	 *    overflow:hidden;
+	 *    border:2px solid black;
+	 *  }
+	 *  .container .cell {
+	 *    font-size:150px;
+	 *    text-align:center;
+	 *    line-height:250px;
+	 *    position:absolute;
+	 *    top:0;
+	 *    left:0;
+	 *    right:0;
+	 *    border-bottom:2px solid black;
+	 *  }
+	 *  .swap-animation.ng-enter, .swap-animation.ng-leave {
+	 *    transition:0.5s linear all;
+	 *  }
+	 *  .swap-animation.ng-enter {
+	 *    top:-250px;
+	 *  }
+	 *  .swap-animation.ng-enter-active {
+	 *    top:0px;
+	 *  }
+	 *  .swap-animation.ng-leave {
+	 *    top:0px;
+	 *  }
+	 *  .swap-animation.ng-leave-active {
+	 *    top:250px;
+	 *  }
+	 *  .red { background:red; }
+	 *  .green { background:green; }
+	 *  .blue { background:blue; }
+	 *  .yellow { background:yellow; }
+	 *  .orange { background:orange; }
+	 *  </file>
+	 * </example>
+	 */
+	var ngAnimateSwapDirective = ['$animate', '$rootScope', function($animate, $rootScope) {
+	  return {
+	    restrict: 'A',
+	    transclude: 'element',
+	    terminal: true,
+	    priority: 600, // we use 600 here to ensure that the directive is caught before others
+	    link: function(scope, $element, attrs, ctrl, $transclude) {
+	      var previousElement, previousScope;
+	      scope.$watchCollection(attrs.ngAnimateSwap || attrs['for'], function(value) {
+	        if (previousElement) {
+	          $animate.leave(previousElement);
+	        }
+	        if (previousScope) {
+	          previousScope.$destroy();
+	          previousScope = null;
+	        }
+	        if (value || value === 0) {
+	          previousScope = scope.$new();
+	          $transclude(previousScope, function(element) {
+	            previousElement = element;
+	            $animate.enter(element, null, $element);
+	          });
+	        }
+	      });
+	    }
+	  };
+	}];
+
+	/**
+	 * @ngdoc module
+	 * @name ngAnimate
+	 * @description
+	 *
+	 * The `ngAnimate` module provides support for CSS-based animations (keyframes and transitions) as well as JavaScript-based animations via
+	 * callback hooks. Animations are not enabled by default, however, by including `ngAnimate` the animation hooks are enabled for an Angular app.
+	 *
+	 * <div doc-module-components="ngAnimate"></div>
+	 *
+	 * # Usage
+	 * Simply put, there are two ways to make use of animations when ngAnimate is used: by using **CSS** and **JavaScript**. The former works purely based
+	 * using CSS (by using matching CSS selectors/styles) and the latter triggers animations that are registered via `module.animation()`. For
+	 * both CSS and JS animations the sole requirement is to have a matching `CSS class` that exists both in the registered animation and within
+	 * the HTML element that the animation will be triggered on.
+	 *
+	 * ## Directive Support
+	 * The following directives are "animation aware":
+	 *
+	 * | Directive                                                                                                | Supported Animations                                                     |
+	 * |----------------------------------------------------------------------------------------------------------|--------------------------------------------------------------------------|
+	 * | {@link ng.directive:ngRepeat#animations ngRepeat}                                                        | enter, leave and move                                                    |
+	 * | {@link ngRoute.directive:ngView#animations ngView}                                                       | enter and leave                                                          |
+	 * | {@link ng.directive:ngInclude#animations ngInclude}                                                      | enter and leave                                                          |
+	 * | {@link ng.directive:ngSwitch#animations ngSwitch}                                                        | enter and leave                                                          |
+	 * | {@link ng.directive:ngIf#animations ngIf}                                                                | enter and leave                                                          |
+	 * | {@link ng.directive:ngClass#animations ngClass}                                                          | add and remove (the CSS class(es) present)                               |
+	 * | {@link ng.directive:ngShow#animations ngShow} & {@link ng.directive:ngHide#animations ngHide}            | add and remove (the ng-hide class value)                                 |
+	 * | {@link ng.directive:form#animation-hooks form} & {@link ng.directive:ngModel#animation-hooks ngModel}    | add and remove (dirty, pristine, valid, invalid & all other validations) |
+	 * | {@link module:ngMessages#animations ngMessages}                                                          | add and remove (ng-active & ng-inactive)                                 |
+	 * | {@link module:ngMessages#animations ngMessage}                                                           | enter and leave                                                          |
+	 *
+	 * (More information can be found by visiting each the documentation associated with each directive.)
+	 *
+	 * ## CSS-based Animations
+	 *
+	 * CSS-based animations with ngAnimate are unique since they require no JavaScript code at all. By using a CSS class that we reference between our HTML
+	 * and CSS code we can create an animation that will be picked up by Angular when an underlying directive performs an operation.
+	 *
+	 * The example below shows how an `enter` animation can be made possible on an element using `ng-if`:
+	 *
+	 * ```html
+	 * <div ng-if="bool" class="fade">
+	 *    Fade me in out
+	 * </div>
+	 * <button ng-click="bool=true">Fade In!</button>
+	 * <button ng-click="bool=false">Fade Out!</button>
+	 * ```
+	 *
+	 * Notice the CSS class **fade**? We can now create the CSS transition code that references this class:
+	 *
+	 * ```css
+	 * /&#42; The starting CSS styles for the enter animation &#42;/
+	 * .fade.ng-enter {
+	 *   transition:0.5s linear all;
+	 *   opacity:0;
+	 * }
+	 *
+	 * /&#42; The finishing CSS styles for the enter animation &#42;/
+	 * .fade.ng-enter.ng-enter-active {
+	 *   opacity:1;
+	 * }
+	 * ```
+	 *
+	 * The key thing to remember here is that, depending on the animation event (which each of the directives above trigger depending on what's going on) two
+	 * generated CSS classes will be applied to the element; in the example above we have `.ng-enter` and `.ng-enter-active`. For CSS transitions, the transition
+	 * code **must** be defined within the starting CSS class (in this case `.ng-enter`). The destination class is what the transition will animate towards.
+	 *
+	 * If for example we wanted to create animations for `leave` and `move` (ngRepeat triggers move) then we can do so using the same CSS naming conventions:
+	 *
+	 * ```css
+	 * /&#42; now the element will fade out before it is removed from the DOM &#42;/
+	 * .fade.ng-leave {
+	 *   transition:0.5s linear all;
+	 *   opacity:1;
+	 * }
+	 * .fade.ng-leave.ng-leave-active {
+	 *   opacity:0;
+	 * }
+	 * ```
+	 *
+	 * We can also make use of **CSS Keyframes** by referencing the keyframe animation within the starting CSS class:
+	 *
+	 * ```css
+	 * /&#42; there is no need to define anything inside of the destination
+	 * CSS class since the keyframe will take charge of the animation &#42;/
+	 * .fade.ng-leave {
+	 *   animation: my_fade_animation 0.5s linear;
+	 *   -webkit-animation: my_fade_animation 0.5s linear;
+	 * }
+	 *
+	 * @keyframes my_fade_animation {
+	 *   from { opacity:1; }
+	 *   to { opacity:0; }
+	 * }
+	 *
+	 * @-webkit-keyframes my_fade_animation {
+	 *   from { opacity:1; }
+	 *   to { opacity:0; }
+	 * }
+	 * ```
+	 *
+	 * Feel free also mix transitions and keyframes together as well as any other CSS classes on the same element.
+	 *
+	 * ### CSS Class-based Animations
+	 *
+	 * Class-based animations (animations that are triggered via `ngClass`, `ngShow`, `ngHide` and some other directives) have a slightly different
+	 * naming convention. Class-based animations are basic enough that a standard transition or keyframe can be referenced on the class being added
+	 * and removed.
+	 *
+	 * For example if we wanted to do a CSS animation for `ngHide` then we place an animation on the `.ng-hide` CSS class:
+	 *
+	 * ```html
+	 * <div ng-show="bool" class="fade">
+	 *   Show and hide me
+	 * </div>
+	 * <button ng-click="bool=!bool">Toggle</button>
+	 *
+	 * <style>
+	 * .fade.ng-hide {
+	 *   transition:0.5s linear all;
+	 *   opacity:0;
+	 * }
+	 * </style>
+	 * ```
+	 *
+	 * All that is going on here with ngShow/ngHide behind the scenes is the `.ng-hide` class is added/removed (when the hidden state is valid). Since
+	 * ngShow and ngHide are animation aware then we can match up a transition and ngAnimate handles the rest.
+	 *
+	 * In addition the addition and removal of the CSS class, ngAnimate also provides two helper methods that we can use to further decorate the animation
+	 * with CSS styles.
+	 *
+	 * ```html
+	 * <div ng-class="{on:onOff}" class="highlight">
+	 *   Highlight this box
+	 * </div>
+	 * <button ng-click="onOff=!onOff">Toggle</button>
+	 *
+	 * <style>
+	 * .highlight {
+	 *   transition:0.5s linear all;
+	 * }
+	 * .highlight.on-add {
+	 *   background:white;
+	 * }
+	 * .highlight.on {
+	 *   background:yellow;
+	 * }
+	 * .highlight.on-remove {
+	 *   background:black;
+	 * }
+	 * </style>
+	 * ```
+	 *
+	 * We can also make use of CSS keyframes by placing them within the CSS classes.
+	 *
+	 *
+	 * ### CSS Staggering Animations
+	 * A Staggering animation is a collection of animations that are issued with a slight delay in between each successive operation resulting in a
+	 * curtain-like effect. The ngAnimate module (versions >=1.2) supports staggering animations and the stagger effect can be
+	 * performed by creating a **ng-EVENT-stagger** CSS class and attaching that class to the base CSS class used for
+	 * the animation. The style property expected within the stagger class can either be a **transition-delay** or an
+	 * **animation-delay** property (or both if your animation contains both transitions and keyframe animations).
+	 *
+	 * ```css
+	 * .my-animation.ng-enter {
+	 *   /&#42; standard transition code &#42;/
+	 *   transition: 1s linear all;
+	 *   opacity:0;
+	 * }
+	 * .my-animation.ng-enter-stagger {
+	 *   /&#42; this will have a 100ms delay between each successive leave animation &#42;/
+	 *   transition-delay: 0.1s;
+	 *
+	 *   /&#42; As of 1.4.4, this must always be set: it signals ngAnimate
+	 *     to not accidentally inherit a delay property from another CSS class &#42;/
+	 *   transition-duration: 0s;
+	 * }
+	 * .my-animation.ng-enter.ng-enter-active {
+	 *   /&#42; standard transition styles &#42;/
+	 *   opacity:1;
+	 * }
+	 * ```
+	 *
+	 * Staggering animations work by default in ngRepeat (so long as the CSS class is defined). Outside of ngRepeat, to use staggering animations
+	 * on your own, they can be triggered by firing multiple calls to the same event on $animate. However, the restrictions surrounding this
+	 * are that each of the elements must have the same CSS className value as well as the same parent element. A stagger operation
+	 * will also be reset if one or more animation frames have passed since the multiple calls to `$animate` were fired.
+	 *
+	 * The following code will issue the **ng-leave-stagger** event on the element provided:
+	 *
+	 * ```js
+	 * var kids = parent.children();
+	 *
+	 * $animate.leave(kids[0]); //stagger index=0
+	 * $animate.leave(kids[1]); //stagger index=1
+	 * $animate.leave(kids[2]); //stagger index=2
+	 * $animate.leave(kids[3]); //stagger index=3
+	 * $animate.leave(kids[4]); //stagger index=4
+	 *
+	 * window.requestAnimationFrame(function() {
+	 *   //stagger has reset itself
+	 *   $animate.leave(kids[5]); //stagger index=0
+	 *   $animate.leave(kids[6]); //stagger index=1
+	 *
+	 *   $scope.$digest();
+	 * });
+	 * ```
+	 *
+	 * Stagger animations are currently only supported within CSS-defined animations.
+	 *
+	 * ### The `ng-animate` CSS class
+	 *
+	 * When ngAnimate is animating an element it will apply the `ng-animate` CSS class to the element for the duration of the animation.
+	 * This is a temporary CSS class and it will be removed once the animation is over (for both JavaScript and CSS-based animations).
+	 *
+	 * Therefore, animations can be applied to an element using this temporary class directly via CSS.
+	 *
+	 * ```css
+	 * .zipper.ng-animate {
+	 *   transition:0.5s linear all;
+	 * }
+	 * .zipper.ng-enter {
+	 *   opacity:0;
+	 * }
+	 * .zipper.ng-enter.ng-enter-active {
+	 *   opacity:1;
+	 * }
+	 * .zipper.ng-leave {
+	 *   opacity:1;
+	 * }
+	 * .zipper.ng-leave.ng-leave-active {
+	 *   opacity:0;
+	 * }
+	 * ```
+	 *
+	 * (Note that the `ng-animate` CSS class is reserved and it cannot be applied on an element directly since ngAnimate will always remove
+	 * the CSS class once an animation has completed.)
+	 *
+	 *
+	 * ### The `ng-[event]-prepare` class
+	 *
+	 * This is a special class that can be used to prevent unwanted flickering / flash of content before
+	 * the actual animation starts. The class is added as soon as an animation is initialized, but removed
+	 * before the actual animation starts (after waiting for a $digest).
+	 * It is also only added for *structural* animations (`enter`, `move`, and `leave`).
+	 *
+	 * In practice, flickering can appear when nesting elements with structural animations such as `ngIf`
+	 * into elements that have class-based animations such as `ngClass`.
+	 *
+	 * ```html
+	 * <div ng-class="{red: myProp}">
+	 *   <div ng-class="{blue: myProp}">
+	 *     <div class="message" ng-if="myProp"></div>
+	 *   </div>
+	 * </div>
+	 * ```
+	 *
+	 * It is possible that during the `enter` animation, the `.message` div will be briefly visible before it starts animating.
+	 * In that case, you can add styles to the CSS that make sure the element stays hidden before the animation starts:
+	 *
+	 * ```css
+	 * .message.ng-enter-prepare {
+	 *   opacity: 0;
+	 * }
+	 *
+	 * ```
+	 *
+	 * ## JavaScript-based Animations
+	 *
+	 * ngAnimate also allows for animations to be consumed by JavaScript code. The approach is similar to CSS-based animations (where there is a shared
+	 * CSS class that is referenced in our HTML code) but in addition we need to register the JavaScript animation on the module. By making use of the
+	 * `module.animation()` module function we can register the animation.
+	 *
+	 * Let's see an example of a enter/leave animation using `ngRepeat`:
+	 *
+	 * ```html
+	 * <div ng-repeat="item in items" class="slide">
+	 *   {{ item }}
+	 * </div>
+	 * ```
+	 *
+	 * See the **slide** CSS class? Let's use that class to define an animation that we'll structure in our module code by using `module.animation`:
+	 *
+	 * ```js
+	 * myModule.animation('.slide', [function() {
+	 *   return {
+	 *     // make note that other events (like addClass/removeClass)
+	 *     // have different function input parameters
+	 *     enter: function(element, doneFn) {
+	 *       jQuery(element).fadeIn(1000, doneFn);
+	 *
+	 *       // remember to call doneFn so that angular
+	 *       // knows that the animation has concluded
+	 *     },
+	 *
+	 *     move: function(element, doneFn) {
+	 *       jQuery(element).fadeIn(1000, doneFn);
+	 *     },
+	 *
+	 *     leave: function(element, doneFn) {
+	 *       jQuery(element).fadeOut(1000, doneFn);
+	 *     }
+	 *   }
+	 * }]);
+	 * ```
+	 *
+	 * The nice thing about JS-based animations is that we can inject other services and make use of advanced animation libraries such as
+	 * greensock.js and velocity.js.
+	 *
+	 * If our animation code class-based (meaning that something like `ngClass`, `ngHide` and `ngShow` triggers it) then we can still define
+	 * our animations inside of the same registered animation, however, the function input arguments are a bit different:
+	 *
+	 * ```html
+	 * <div ng-class="color" class="colorful">
+	 *   this box is moody
+	 * </div>
+	 * <button ng-click="color='red'">Change to red</button>
+	 * <button ng-click="color='blue'">Change to blue</button>
+	 * <button ng-click="color='green'">Change to green</button>
+	 * ```
+	 *
+	 * ```js
+	 * myModule.animation('.colorful', [function() {
+	 *   return {
+	 *     addClass: function(element, className, doneFn) {
+	 *       // do some cool animation and call the doneFn
+	 *     },
+	 *     removeClass: function(element, className, doneFn) {
+	 *       // do some cool animation and call the doneFn
+	 *     },
+	 *     setClass: function(element, addedClass, removedClass, doneFn) {
+	 *       // do some cool animation and call the doneFn
+	 *     }
+	 *   }
+	 * }]);
+	 * ```
+	 *
+	 * ## CSS + JS Animations Together
+	 *
+	 * AngularJS 1.4 and higher has taken steps to make the amalgamation of CSS and JS animations more flexible. However, unlike earlier versions of Angular,
+	 * defining CSS and JS animations to work off of the same CSS class will not work anymore. Therefore the example below will only result in **JS animations taking
+	 * charge of the animation**:
+	 *
+	 * ```html
+	 * <div ng-if="bool" class="slide">
+	 *   Slide in and out
+	 * </div>
+	 * ```
+	 *
+	 * ```js
+	 * myModule.animation('.slide', [function() {
+	 *   return {
+	 *     enter: function(element, doneFn) {
+	 *       jQuery(element).slideIn(1000, doneFn);
+	 *     }
+	 *   }
+	 * }]);
+	 * ```
+	 *
+	 * ```css
+	 * .slide.ng-enter {
+	 *   transition:0.5s linear all;
+	 *   transform:translateY(-100px);
+	 * }
+	 * .slide.ng-enter.ng-enter-active {
+	 *   transform:translateY(0);
+	 * }
+	 * ```
+	 *
+	 * Does this mean that CSS and JS animations cannot be used together? Do JS-based animations always have higher priority? We can make up for the
+	 * lack of CSS animations by using the `$animateCss` service to trigger our own tweaked-out, CSS-based animations directly from
+	 * our own JS-based animation code:
+	 *
+	 * ```js
+	 * myModule.animation('.slide', ['$animateCss', function($animateCss) {
+	 *   return {
+	 *     enter: function(element) {
+	*        // this will trigger `.slide.ng-enter` and `.slide.ng-enter-active`.
+	 *       return $animateCss(element, {
+	 *         event: 'enter',
+	 *         structural: true
+	 *       });
+	 *     }
+	 *   }
+	 * }]);
+	 * ```
+	 *
+	 * The nice thing here is that we can save bandwidth by sticking to our CSS-based animation code and we don't need to rely on a 3rd-party animation framework.
+	 *
+	 * The `$animateCss` service is very powerful since we can feed in all kinds of extra properties that will be evaluated and fed into a CSS transition or
+	 * keyframe animation. For example if we wanted to animate the height of an element while adding and removing classes then we can do so by providing that
+	 * data into `$animateCss` directly:
+	 *
+	 * ```js
+	 * myModule.animation('.slide', ['$animateCss', function($animateCss) {
+	 *   return {
+	 *     enter: function(element) {
+	 *       return $animateCss(element, {
+	 *         event: 'enter',
+	 *         structural: true,
+	 *         addClass: 'maroon-setting',
+	 *         from: { height:0 },
+	 *         to: { height: 200 }
+	 *       });
+	 *     }
+	 *   }
+	 * }]);
+	 * ```
+	 *
+	 * Now we can fill in the rest via our transition CSS code:
+	 *
+	 * ```css
+	 * /&#42; the transition tells ngAnimate to make the animation happen &#42;/
+	 * .slide.ng-enter { transition:0.5s linear all; }
+	 *
+	 * /&#42; this extra CSS class will be absorbed into the transition
+	 * since the $animateCss code is adding the class &#42;/
+	 * .maroon-setting { background:red; }
+	 * ```
+	 *
+	 * And `$animateCss` will figure out the rest. Just make sure to have the `done()` callback fire the `doneFn` function to signal when the animation is over.
+	 *
+	 * To learn more about what's possible be sure to visit the {@link ngAnimate.$animateCss $animateCss service}.
+	 *
+	 * ## Animation Anchoring (via `ng-animate-ref`)
+	 *
+	 * ngAnimate in AngularJS 1.4 comes packed with the ability to cross-animate elements between
+	 * structural areas of an application (like views) by pairing up elements using an attribute
+	 * called `ng-animate-ref`.
+	 *
+	 * Let's say for example we have two views that are managed by `ng-view` and we want to show
+	 * that there is a relationship between two components situated in within these views. By using the
+	 * `ng-animate-ref` attribute we can identify that the two components are paired together and we
+	 * can then attach an animation, which is triggered when the view changes.
+	 *
+	 * Say for example we have the following template code:
+	 *
+	 * ```html
+	 * <!-- index.html -->
+	 * <div ng-view class="view-animation">
+	 * </div>
+	 *
+	 * <!-- home.html -->
+	 * <a href="#/banner-page">
+	 *   <img src="./banner.jpg" class="banner" ng-animate-ref="banner">
+	 * </a>
+	 *
+	 * <!-- banner-page.html -->
+	 * <img src="./banner.jpg" class="banner" ng-animate-ref="banner">
+	 * ```
+	 *
+	 * Now, when the view changes (once the link is clicked), ngAnimate will examine the
+	 * HTML contents to see if there is a match reference between any components in the view
+	 * that is leaving and the view that is entering. It will scan both the view which is being
+	 * removed (leave) and inserted (enter) to see if there are any paired DOM elements that
+	 * contain a matching ref value.
+	 *
+	 * The two images match since they share the same ref value. ngAnimate will now create a
+	 * transport element (which is a clone of the first image element) and it will then attempt
+	 * to animate to the position of the second image element in the next view. For the animation to
+	 * work a special CSS class called `ng-anchor` will be added to the transported element.
+	 *
+	 * We can now attach a transition onto the `.banner.ng-anchor` CSS class and then
+	 * ngAnimate will handle the entire transition for us as well as the addition and removal of
+	 * any changes of CSS classes between the elements:
+	 *
+	 * ```css
+	 * .banner.ng-anchor {
+	 *   /&#42; this animation will last for 1 second since there are
+	 *          two phases to the animation (an `in` and an `out` phase) &#42;/
+	 *   transition:0.5s linear all;
+	 * }
+	 * ```
+	 *
+	 * We also **must** include animations for the views that are being entered and removed
+	 * (otherwise anchoring wouldn't be possible since the new view would be inserted right away).
+	 *
+	 * ```css
+	 * .view-animation.ng-enter, .view-animation.ng-leave {
+	 *   transition:0.5s linear all;
+	 *   position:fixed;
+	 *   left:0;
+	 *   top:0;
+	 *   width:100%;
+	 * }
+	 * .view-animation.ng-enter {
+	 *   transform:translateX(100%);
+	 * }
+	 * .view-animation.ng-leave,
+	 * .view-animation.ng-enter.ng-enter-active {
+	 *   transform:translateX(0%);
+	 * }
+	 * .view-animation.ng-leave.ng-leave-active {
+	 *   transform:translateX(-100%);
+	 * }
+	 * ```
+	 *
+	 * Now we can jump back to the anchor animation. When the animation happens, there are two stages that occur:
+	 * an `out` and an `in` stage. The `out` stage happens first and that is when the element is animated away
+	 * from its origin. Once that animation is over then the `in` stage occurs which animates the
+	 * element to its destination. The reason why there are two animations is to give enough time
+	 * for the enter animation on the new element to be ready.
+	 *
+	 * The example above sets up a transition for both the in and out phases, but we can also target the out or
+	 * in phases directly via `ng-anchor-out` and `ng-anchor-in`.
+	 *
+	 * ```css
+	 * .banner.ng-anchor-out {
+	 *   transition: 0.5s linear all;
+	 *
+	 *   /&#42; the scale will be applied during the out animation,
+	 *          but will be animated away when the in animation runs &#42;/
+	 *   transform: scale(1.2);
+	 * }
+	 *
+	 * .banner.ng-anchor-in {
+	 *   transition: 1s linear all;
+	 * }
+	 * ```
+	 *
+	 *
+	 *
+	 *
+	 * ### Anchoring Demo
+	 *
+	  <example module="anchoringExample"
+	           name="anchoringExample"
+	           id="anchoringExample"
+	           deps="angular-animate.js;angular-route.js"
+	           animations="true">
+	    <file name="index.html">
+	      <a href="#!/">Home</a>
+	      <hr />
+	      <div class="view-container">
+	        <div ng-view class="view"></div>
+	      </div>
+	    </file>
+	    <file name="script.js">
+	      angular.module('anchoringExample', ['ngAnimate', 'ngRoute'])
+	        .config(['$routeProvider', function($routeProvider) {
+	          $routeProvider.when('/', {
+	            templateUrl: 'home.html',
+	            controller: 'HomeController as home'
+	          });
+	          $routeProvider.when('/profile/:id', {
+	            templateUrl: 'profile.html',
+	            controller: 'ProfileController as profile'
+	          });
+	        }])
+	        .run(['$rootScope', function($rootScope) {
+	          $rootScope.records = [
+	            { id: 1, title: 'Miss Beulah Roob' },
+	            { id: 2, title: 'Trent Morissette' },
+	            { id: 3, title: 'Miss Ava Pouros' },
+	            { id: 4, title: 'Rod Pouros' },
+	            { id: 5, title: 'Abdul Rice' },
+	            { id: 6, title: 'Laurie Rutherford Sr.' },
+	            { id: 7, title: 'Nakia McLaughlin' },
+	            { id: 8, title: 'Jordon Blanda DVM' },
+	            { id: 9, title: 'Rhoda Hand' },
+	            { id: 10, title: 'Alexandrea Sauer' }
+	          ];
+	        }])
+	        .controller('HomeController', [function() {
+	          //empty
+	        }])
+	        .controller('ProfileController', ['$rootScope', '$routeParams',
+	            function ProfileController($rootScope, $routeParams) {
+	          var index = parseInt($routeParams.id, 10);
+	          var record = $rootScope.records[index - 1];
+
+	          this.title = record.title;
+	          this.id = record.id;
+	        }]);
+	    </file>
+	    <file name="home.html">
+	      <h2>Welcome to the home page</h1>
+	      <p>Please click on an element</p>
+	      <a class="record"
+	         ng-href="#!/profile/{{ record.id }}"
+	         ng-animate-ref="{{ record.id }}"
+	         ng-repeat="record in records">
+	        {{ record.title }}
+	      </a>
+	    </file>
+	    <file name="profile.html">
+	      <div class="profile record" ng-animate-ref="{{ profile.id }}">
+	        {{ profile.title }}
+	      </div>
+	    </file>
+	    <file name="animations.css">
+	      .record {
+	        display:block;
+	        font-size:20px;
+	      }
+	      .profile {
+	        background:black;
+	        color:white;
+	        font-size:100px;
+	      }
+	      .view-container {
+	        position:relative;
+	      }
+	      .view-container > .view.ng-animate {
+	        position:absolute;
+	        top:0;
+	        left:0;
+	        width:100%;
+	        min-height:500px;
+	      }
+	      .view.ng-enter, .view.ng-leave,
+	      .record.ng-anchor {
+	        transition:0.5s linear all;
+	      }
+	      .view.ng-enter {
+	        transform:translateX(100%);
+	      }
+	      .view.ng-enter.ng-enter-active, .view.ng-leave {
+	        transform:translateX(0%);
+	      }
+	      .view.ng-leave.ng-leave-active {
+	        transform:translateX(-100%);
+	      }
+	      .record.ng-anchor-out {
+	        background:red;
+	      }
+	    </file>
+	  </example>
+	 *
+	 * ### How is the element transported?
+	 *
+	 * When an anchor animation occurs, ngAnimate will clone the starting element and position it exactly where the starting
+	 * element is located on screen via absolute positioning. The cloned element will be placed inside of the root element
+	 * of the application (where ng-app was defined) and all of the CSS classes of the starting element will be applied. The
+	 * element will then animate into the `out` and `in` animations and will eventually reach the coordinates and match
+	 * the dimensions of the destination element. During the entire animation a CSS class of `.ng-animate-shim` will be applied
+	 * to both the starting and destination elements in order to hide them from being visible (the CSS styling for the class
+	 * is: `visibility:hidden`). Once the anchor reaches its destination then it will be removed and the destination element
+	 * will become visible since the shim class will be removed.
+	 *
+	 * ### How is the morphing handled?
+	 *
+	 * CSS Anchoring relies on transitions and keyframes and the internal code is intelligent enough to figure out
+	 * what CSS classes differ between the starting element and the destination element. These different CSS classes
+	 * will be added/removed on the anchor element and a transition will be applied (the transition that is provided
+	 * in the anchor class). Long story short, ngAnimate will figure out what classes to add and remove which will
+	 * make the transition of the element as smooth and automatic as possible. Be sure to use simple CSS classes that
+	 * do not rely on DOM nesting structure so that the anchor element appears the same as the starting element (since
+	 * the cloned element is placed inside of root element which is likely close to the body element).
+	 *
+	 * Note that if the root element is on the `<html>` element then the cloned node will be placed inside of body.
+	 *
+	 *
+	 * ## Using $animate in your directive code
+	 *
+	 * So far we've explored how to feed in animations into an Angular application, but how do we trigger animations within our own directives in our application?
+	 * By injecting the `$animate` service into our directive code, we can trigger structural and class-based hooks which can then be consumed by animations. Let's
+	 * imagine we have a greeting box that shows and hides itself when the data changes
+	 *
+	 * ```html
+	 * <greeting-box active="onOrOff">Hi there</greeting-box>
+	 * ```
+	 *
+	 * ```js
+	 * ngModule.directive('greetingBox', ['$animate', function($animate) {
+	 *   return function(scope, element, attrs) {
+	 *     attrs.$observe('active', function(value) {
+	 *       value ? $animate.addClass(element, 'on') : $animate.removeClass(element, 'on');
+	 *     });
+	 *   });
+	 * }]);
+	 * ```
+	 *
+	 * Now the `on` CSS class is added and removed on the greeting box component. Now if we add a CSS class on top of the greeting box element
+	 * in our HTML code then we can trigger a CSS or JS animation to happen.
+	 *
+	 * ```css
+	 * /&#42; normally we would create a CSS class to reference on the element &#42;/
+	 * greeting-box.on { transition:0.5s linear all; background:green; color:white; }
+	 * ```
+	 *
+	 * The `$animate` service contains a variety of other methods like `enter`, `leave`, `animate` and `setClass`. To learn more about what's
+	 * possible be sure to visit the {@link ng.$animate $animate service API page}.
+	 *
+	 *
+	 * ## Callbacks and Promises
+	 *
+	 * When `$animate` is called it returns a promise that can be used to capture when the animation has ended. Therefore if we were to trigger
+	 * an animation (within our directive code) then we can continue performing directive and scope related activities after the animation has
+	 * ended by chaining onto the returned promise that animation method returns.
+	 *
+	 * ```js
+	 * // somewhere within the depths of the directive
+	 * $animate.enter(element, parent).then(function() {
+	 *   //the animation has completed
+	 * });
+	 * ```
+	 *
+	 * (Note that earlier versions of Angular prior to v1.4 required the promise code to be wrapped using `$scope.$apply(...)`. This is not the case
+	 * anymore.)
+	 *
+	 * In addition to the animation promise, we can also make use of animation-related callbacks within our directives and controller code by registering
+	 * an event listener using the `$animate` service. Let's say for example that an animation was triggered on our view
+	 * routing controller to hook into that:
+	 *
+	 * ```js
+	 * ngModule.controller('HomePageController', ['$animate', function($animate) {
+	 *   $animate.on('enter', ngViewElement, function(element) {
+	 *     // the animation for this route has completed
+	 *   }]);
+	 * }])
+	 * ```
+	 *
+	 * (Note that you will need to trigger a digest within the callback to get angular to notice any scope-related changes.)
+	 */
+
+	var copy;
+	var extend;
+	var forEach;
+	var isArray;
+	var isDefined;
+	var isElement;
+	var isFunction;
+	var isObject;
+	var isString;
+	var isUndefined;
+	var jqLite;
+	var noop;
+
+	/**
+	 * @ngdoc service
+	 * @name $animate
+	 * @kind object
+	 *
+	 * @description
+	 * The ngAnimate `$animate` service documentation is the same for the core `$animate` service.
+	 *
+	 * Click here {@link ng.$animate to learn more about animations with `$animate`}.
+	 */
+	angular.module('ngAnimate', [], function initAngularHelpers() {
+	  // Access helpers from angular core.
+	  // Do it inside a `config` block to ensure `window.angular` is available.
+	  noop        = angular.noop;
+	  copy        = angular.copy;
+	  extend      = angular.extend;
+	  jqLite      = angular.element;
+	  forEach     = angular.forEach;
+	  isArray     = angular.isArray;
+	  isString    = angular.isString;
+	  isObject    = angular.isObject;
+	  isUndefined = angular.isUndefined;
+	  isDefined   = angular.isDefined;
+	  isFunction  = angular.isFunction;
+	  isElement   = angular.isElement;
+	})
+	  .directive('ngAnimateSwap', ngAnimateSwapDirective)
+
+	  .directive('ngAnimateChildren', $$AnimateChildrenDirective)
+	  .factory('$$rAFScheduler', $$rAFSchedulerFactory)
+
+	  .provider('$$animateQueue', $$AnimateQueueProvider)
+	  .provider('$$animation', $$AnimationProvider)
+
+	  .provider('$animateCss', $AnimateCssProvider)
+	  .provider('$$animateCssDriver', $$AnimateCssDriverProvider)
+
+	  .provider('$$animateJs', $$AnimateJsProvider)
+	  .provider('$$animateJsDriver', $$AnimateJsDriverProvider);
+
+
+	})(window, window.angular);
+
+
+/***/ },
+
+/***/ 204:
+/***/ function(module, exports) {
+
+	!function(t){function n(t){var n=document.getElementsByTagName("head")[0],e=document.createElement("script");e.type="text/javascript",e.charset="utf-8",e.src=d.p+""+t+"."+y+".hot-update.js",n.appendChild(e)}function e(t){if("undefined"==typeof XMLHttpRequest)return t(new Error("No browser support"));try{var n=new XMLHttpRequest,e=d.p+""+y+".hot-update.json";n.open("GET",e,!0),n.timeout=1e4,n.send(null)}catch(a){return t(a)}n.onreadystatechange=function(){if(4===n.readyState)if(0===n.status)t(new Error("Manifest request to "+e+" timed out."));else if(404===n.status)t();else if(200!==n.status&&304!==n.status)t(new Error("Manifest request to "+e+" failed."));else{try{var a=JSON.parse(n.responseText)}catch(r){return void t(r)}t(null,a)}}}function a(t){var n=P[t];if(!n)return d;var e=function(e){return n.hot.active?P[e]?(P[e].parents.indexOf(t)<0&&P[e].parents.push(t),n.children.indexOf(e)<0&&n.children.push(e)):_=[t]:(console.warn("[HMR] unexpected require("+e+") from disposed module "+t),_=[]),d(e)};for(var a in d)Object.prototype.hasOwnProperty.call(d,a)&&(e[a]=d[a]);return e.e=function(t,n){"ready"===w&&i("prepare"),D++,d.e(t,function(){function a(){D--,"prepare"===w&&(C[t]||l(t),0===D&&0===k&&c())}try{n.call(null,e)}finally{a()}})},e}function r(t){var n={_acceptedDependencies:{},_declinedDependencies:{},_selfAccepted:!1,_selfDeclined:!1,_disposeHandlers:[],active:!0,accept:function(t,e){if("undefined"==typeof t)n._selfAccepted=!0;else if("function"==typeof t)n._selfAccepted=t;else if("object"==typeof t)for(var a=0;a<t.length;a++)n._acceptedDependencies[t[a]]=e;else n._acceptedDependencies[t]=e},decline:function(t){if("undefined"==typeof t)n._selfDeclined=!0;else if("number"==typeof t)n._declinedDependencies[t]=!0;else for(var e=0;e<t.length;e++)n._declinedDependencies[t[e]]=!0},dispose:function(t){n._disposeHandlers.push(t)},addDisposeHandler:function(t){n._disposeHandlers.push(t)},removeDisposeHandler:function(t){var e=n._disposeHandlers.indexOf(t);e>=0&&n._disposeHandlers.splice(e,1)},check:s,apply:f,status:function(t){return t?void x.push(t):w},addStatusHandler:function(t){x.push(t)},removeStatusHandler:function(t){var n=x.indexOf(t);n>=0&&x.splice(n,1)},data:b[t]};return n}function i(t){w=t;for(var n=0;n<x.length;n++)x[n].call(null,t)}function o(t){var n=+t+""===t;return n?+t:t}function s(t,n){if("idle"!==w)throw new Error("check() is only allowed in idle status");"function"==typeof t?(g=!1,n=t):(g=t,n=n||function(t){if(t)throw t}),i("check"),e(function(t,e){if(t)return n(t);if(!e)return i("idle"),void n(null,null);M={},S={},C={};for(var a=0;a<e.c.length;a++)S[e.c[a]]=!0;v=e.h,i("prepare"),p=n,m={};var r=0;l(r),"prepare"===w&&0===D&&0===k&&c()})}function u(t,n){if(S[t]&&M[t]){M[t]=!1;for(var e in n)Object.prototype.hasOwnProperty.call(n,e)&&(m[e]=n[e]);0===--k&&0===D&&c()}}function l(t){S[t]?(M[t]=!0,k++,n(t)):C[t]=!0}function c(){i("ready");var t=p;if(p=null,t)if(g)f(g,t);else{var n=[];for(var e in m)Object.prototype.hasOwnProperty.call(m,e)&&n.push(o(e));t(null,n)}}function f(n,e){function a(t){for(var n=[t],e={},a=n.slice();a.length>0;){var i=a.pop(),t=P[i];if(t&&!t.hot._selfAccepted){if(t.hot._selfDeclined)return new Error("Aborted because of self decline: "+i);if(0===i)return;for(var o=0;o<t.parents.length;o++){var s=t.parents[o],u=P[s];if(u.hot._declinedDependencies[i])return new Error("Aborted because of declined dependency: "+i+" in "+s);n.indexOf(s)>=0||(u.hot._acceptedDependencies[i]?(e[s]||(e[s]=[]),r(e[s],[i])):(delete e[s],n.push(s),a.push(s)))}}}return[n,e]}function r(t,n){for(var e=0;e<n.length;e++){var a=n[e];t.indexOf(a)<0&&t.push(a)}}if("ready"!==w)throw new Error("apply() is only allowed in ready status");"function"==typeof n?(e=n,n={}):n&&"object"==typeof n?e=e||function(t){if(t)throw t}:(n={},e=e||function(t){if(t)throw t});var s={},u=[],l={};for(var c in m)if(Object.prototype.hasOwnProperty.call(m,c)){var f=o(c),h=a(f);if(!h){if(n.ignoreUnaccepted)continue;return i("abort"),e(new Error("Aborted because "+f+" is not accepted"))}if(h instanceof Error)return i("abort"),e(h);l[f]=m[f],r(u,h[0]);for(var f in h[1])Object.prototype.hasOwnProperty.call(h[1],f)&&(s[f]||(s[f]=[]),r(s[f],h[1][f]))}for(var p=[],g=0;g<u.length;g++){var f=u[g];P[f]&&P[f].hot._selfAccepted&&p.push({module:f,errorHandler:P[f].hot._selfAccepted})}i("dispose");for(var x=u.slice();x.length>0;){var f=x.pop(),k=P[f];if(k){for(var D={},C=k.hot._disposeHandlers,M=0;M<C.length;M++){var S=C[M];S(D)}b[f]=D,k.hot.active=!1,delete P[f];for(var M=0;M<k.children.length;M++){var A=P[k.children[M]];if(A){var T=A.parents.indexOf(f);T>=0&&A.parents.splice(T,1)}}}}for(var f in s)if(Object.prototype.hasOwnProperty.call(s,f))for(var k=P[f],E=s[f],M=0;M<E.length;M++){var N=E[M],T=k.children.indexOf(N);T>=0&&k.children.splice(T,1)}i("apply"),y=v;for(var f in l)Object.prototype.hasOwnProperty.call(l,f)&&(t[f]=l[f]);var H=null;for(var f in s)if(Object.prototype.hasOwnProperty.call(s,f)){for(var k=P[f],E=s[f],I=[],g=0;g<E.length;g++){var N=E[g],S=k.hot._acceptedDependencies[N];I.indexOf(S)>=0||I.push(S)}for(var g=0;g<I.length;g++){var S=I[g];try{S(s)}catch(z){H||(H=z)}}}for(var g=0;g<p.length;g++){var R=p[g],f=R.module;_=[f];try{d(f)}catch(z){if("function"==typeof R.errorHandler)try{R.errorHandler(z)}catch(z){H||(H=z)}else H||(H=z)}}return H?(i("fail"),e(H)):(i("idle"),void e(null,u))}function d(n){if(P[n])return P[n].exports;var e=P[n]={exports:{},id:n,loaded:!1,hot:r(n),parents:_,children:[]};return t[n].call(e.exports,e,e.exports,a(n)),e.loaded=!0,e.exports}var h=this.webpackHotUpdate;this.webpackHotUpdate=function(t,n){u(t,n),h&&h(t,n)};var p,m,v,g=!0,y="f92326e3577a1a4f7f8d",b={},_=[],x=[],w="idle",k=0,D=0,C={},M={},S={},P={};return d.m=t,d.c=P,d.p="",d.h=function(){return y},a(0)(0)}([function(t,n,e){"use strict";function a(t){t.debugInfoEnabled(!1)}function r(t){function n(){}function a(t){t.data=null}function r(n){t.get(n.url).success(function(t){n.data=t}).error(function(t){console.log("err",t)})}var i=this;i.replays=[{_id:"7",url:e(240),data:null,description:"7 ---- the HUD breaks"},{_id:"8",url:e(241),data:null,description:"8 ---- the HUD breaks"},{_id:"1",url:e(242),data:null,description:"T, USD, 8 Players"},{_id:"2",url:e(243),data:null,description:"P, Play money, 4 Players (multiple pots)"},{_id:"18",url:e(244),data:null,description:"18 - 9 Players - premium - v4 .. with .live"},{_id:"19",url:e(245),data:null,description:"19 - 9 Players - premium v4"},{_id:"20",url:e(246),data:null,description:"20 - 9 Players - premium v4 WIN"},{_id:"21",url:e(247),data:null,description:"21 - 7 Players - 2 pots"},{_id:"22",url:e(248),data:null,description:"22 - 9 Players - 2 pots - large chipstacks"},{_id:"23",url:e(249),data:null,description:"23 - 9 players - CG - Einar"}],i.close=a,i.play=r,n()}var i=function(t){return t&&t.__esModule?t["default"]:t},o=i(e(27)),s=angular.module("jivaro.replayer.example",["LocalStorageModule","currencyFilter","ngAnimate",o]);s.config(a).controller("ExampleCtrl",r),a.$inject=["$compileProvider"],r.$inject=["$http"],t.exports=s.name},,,,,,,,,,,,,,,,,,,,,,,,,,,function(t,n,e){"use strict";var a=function(t){return t&&t.__esModule?t["default"]:t},r=a(e(28)),i=a(e(100)),o=angular.module("jivaro.replayer",[r,i]);e(109),e(198)(o),e(199)(o),e(200)(o),e(201)(o),e(202)(o),e(203)(o),e(204)(o),e(205)(o),e(206)(o),e(226)(o),e(228)(o),e(230)(o),e(232)(o),e(236)(o),t.exports=o.name},function(t,n,e){"use strict";var a=function(t){return t&&t.__esModule?t["default"]:t},r=a(e(29));t.exports=r},function(t,n,e){"use strict";var a=angular.module("jivaro.hud",[]);e(30),e(77)(a),e(78)(a),e(79)(a),e(85)(a),e(87)(a),e(93)(a),e(95)(a),e(97)(a),t.exports=a.name},function(t,n){},,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,function(t,n){"use strict";t.exports=function(t){function n(t){function n(n,i,o){function s(){t(function(){e(c,o),l(),"1"===c.hudType?r(c,i):a(c,i)})}function u(){o.$observe("hudType",function(t){t&&s()}),n.$on("$destroy",function(){l()})}function l(){var t=i.closest("."+c.infoPanelParentClass),n=t.find("."+c.infoPanelClass);i.unbind("mouseenter"),i.unbind("mouseleave"),n.unbind("mouseleave")}var c={infoPanelClass:"InfoPanel",infoPanelParentClass:"HUD-seat",infoPanelVisibilityClass:"is-visible",hudType:0};s(),u()}function e(t,n){n.infoPanelParentClass&&(t.infoPanelParentClass=n.infoPanelParentClass),n.hudType&&(t.hudType=n.hudType),n.infoPanelVisibilityClass&&(t.infoPanelVisibilityClass=n.infoPanelVisibilityClass),n.infoPanelClass&&(t.infoPanelClass=n.infoPanelClass)}function a(n,e){function a(t,n){n.addClass(t.infoPanelVisibilityClass)}function r(t,n){n.removeClass(t.infoPanelVisibilityClass)}function i(e){e.bind("mouseenter",function(){t(function(){if(e.is(":hover")){var t=e.closest("."+n.infoPanelParentClass),i=t.find("."+n.infoPanelClass);a(n,i),e.bind("mouseleave",function(){i.is(":hover")||r(n,i)}),i.bind("mouseleave",function(){e.is(":hover")||r(n,i)})}},0)})}i(e)}function r(n,e){function a(t,n){n.removeClass("is-visible").addClass("is-hidden"),t.removeClass("is-hidden").addClass("is-visible")}function r(t,n){t.removeClass("is-visible").addClass("is-hidden"),n.removeClass("is-hidden").addClass("is-visible")}function i(){e.bind("mouseenter",function(){t(function(){if(e.is(":hover")){var t=e.closest("."+n.infoPanelParentClass),i=t.find("."+n.infoPanelClass),o=i.find(".js-coreStats"),s=i.find(".js-liveStats");a(o,s),e.bind("mouseleave",function(){i.is(":hover")||r(o,s)}),i.bind("mouseleave",function(){e.is(":hover")||r(o,s)})}},0)})}i()}return{restrict:"A",link:n}}t.directive("jvInfoPanelToggle",n),n.$inject=["$timeout"]}},function(t,n){"use strict";t.exports=function(t){function n(t){function n(){return t.get("command_center_always_open")}function e(n){t.set("command_center_always_open",n)}function a(){t.remove("command_center_always_open")}function r(n){return t.get("command_center_open_gameid_"+n)}function i(n,e){t.set("command_center_open_gameid_"+n,e)}function o(n){t.remove("command_center_open_gameid_"+n)}var s={commandCenter:{getVisibility:n,saveVisbility:e,removeVisbility:a,getVisibilityForGame:r,saveVisbilityForGame:i,removeVisbilityForGame:o}};return s}t.factory("HudSettings",n),n.$inject=["localStorageService"]}},function(t,n,e){"use strict";t.exports=function(t){function n(t,n){return{scope:{frameData:"="},controller:"HudCtrl",controllerAs:"vm",bindToController:!0,link:function(a,r,i){var o=n.getTemplateUrl(e(80),"./hud.template",i.version);r.html(o),t(r.contents())(a)}}}function a(t,n,e){function a(){e(function(){t.$emit("hud-loaded")}),i.frameData.hudtype=i.frameData.hudtype||0,n.$on("hud:street-update",function(t,n){return 0!==i.frameData.hudtype?i.selectedStats===n?void(i.selectedStats="live"):void(i.selectedStats=n):void 0}),t.$watch("vm.frameData.hudtype",function(t){1===t?(i.showInfoPanel=!0,i.selectedStats="live"):0===t&&(i.showInfoPanel=!1,i.selectedStats="core")})}function r(t,n){return n>=0?t+n:""}var i=this;window.vmHUD=i,i.showInfoPanel=!1,i.getVipStatusClass=r,i.selectedStats="live",a()}t.directive("hud",n).controller("HudCtrl",a),n.$inject=["$compile","templateService"],a.$inject=["$scope","$rootScope","$timeout"]}},function(t,n,e){function a(t){return e(r(t))}function r(t){return i[t]||function(){throw new Error("Cannot find module '"+t+"'.")}()}var i={"./hud.component":79,"./hud.component.js":79,"./hud.template":81,"./hud.template.html":81,"./hud.template.v2":82,"./hud.template.v2.html":82,"./hud.template.v3":83,"./hud.template.v3.html":83,"./hud.template.v4":84,"./hud.template.v4.html":84};a.keys=function(){return Object.keys(i)},a.resolve=r,t.exports=a,a.id=80},function(t,n){t.exports='<div ng-if="vm.frameData.seats" class="HUD-container">\n	<div ng-repeat="(seatNumber,seatData) in vm.frameData.seats track by seatNumber; seats = seatNumber"\n	     class="{{ \'seat-\' + seatNumber + \' \' + \'HUD-seat \' + \'HUD-seat--\' + (seatNumber < seats / 2 && \'right\' || \'left\') }}"\n	     ng-class="{\n				\'is-acting\': seatData.acting,\n				\'has-folded\': (!seatData.in_hand && !seatData.mucked) || seatData.is_afk || seatData.sit_out,\n				\'has-mucked\': seatData.mucked,\n				\'has-faceUpCards\': seatData.has_faceup_cards,\n				\'is-hero\': seatData.is_hero\n				}">\n		<div ng-if="seatData.state == \'OCCUPIED\' || !seatData.state" class="HUD-dials" jv-info-panel-toggle hud-type="{{ vm.frameData.hudtype }}">\n			<div class="HUD-graph">\n				<hud-dial class="HUD-dial" start-angle="118" end-angle="2" value="seatData.stats.core.stat2.fillValue" foreground-color="seatData.stats.core.stat2.color" background-color="seatData.stats.core.stat2.color"></hud-dial>\n				<hud-dial class="HUD-dial" start-angle="238" end-angle="122" value="seatData.stats.core.stat3.fillValue" foreground-color="seatData.stats.core.stat3.color" background-color="seatData.stats.core.stat3.color"></hud-dial>\n				<hud-dial class="HUD-dial" start-angle="239" end-angle="360" value="seatData.stats.core.stat1.fillValue" foreground-color="seatData.stats.core.stat1.color" background-color="seatData.stats.core.stat1.color"></hud-dial>\n			</div>\n\n			<div class="HUD-cover"></div>\n			<div class="HUD-bounty" ng-if="seatData.bounty" title="Bounty">\n				<i class="HUD-bountyIcon"></i>\n				<span class="HUD-bountyAmount">{{ seatData.bounty | chipsCurrency:vm.frameData.table_data.currency.symbol }}</span>\n			</div>\n			<div class="HUD-hands">{{seatData.stats.num_hands}}</div>\n			<div class="HUD-vip" ng-class="vm.getVipStatusClass(\'HUD-vip--\', seatData.client.vip_level)" title="{{ seatData.client.vip_name }}" ng-if="seatData.client.vip_level !== -1"></div>\n			<div class="HUD-pro" ng-if="seatData.client.team_pokerstars === 1"></div>\n			<div class="HUD-notes" ng-if="seatData.notes.text">\n				<div class="HUD-notesInner"></div>\n			</div>\n			<div class="HUD-device--{{ seatData.client.device }}" ng-if="seatData.client.device != \'desktop\'"></div>\n		</div>\n\n		<hud-info-panel ng-if="seatData.state == \'OCCUPIED\' || !seatData.state" data-visible="vm.showInfoPanel" stats-data="seatData.stats" seat-data="seatData" table-data="vm.frameData.table_data" selected-stats="vm.selectedStats" version="4"></hud-info-panel>\n	</div>\n</div>'},function(t,n){t.exports='<div ng-if="vm.frameData.hud.table.seats" class="HUD-container">\n	<div ng-repeat="(hudSeatNo,hudSeatData) in vm.frameData.hud.table.seats track by hudSeatNo; seats = hudSeatNo"\n			 class="{{ \'seat-\' + hudSeatNo + \' \' + \'HUD-seat \' + \'HUD-seat--\' + (hudSeatNo < seats / 2 && \'right\' || \'left\') }}"\n			 ng-class="{\n				\'is-acting\': hudSeatData.acting,\n				\'has-folded\': (!hudSeatData.in_hand && !hudSeatData.mucked) || hudSeatData.is_afk || hudSeatData.sit_out,\n				\'has-mucked\': hudSeatData.mucked,\n				\'has-faceUpCards\': hudSeatData.has_faceup_cards,\n				\'is-hero\': hudSeatData.is_hero\n				}">\n		<div class="HUD-dials" jv-info-panel-toggle hud-type="1">\n			<div class="backdrop HUD-graph">\n				<hud-dial class="HUD-dial" start-angle="118" end-angle="2" value="hudSeatData.PFR.fillValue" foreground-color="hudSeatData.PFR.colors.start" background-color="hudSeatData.PFR.colors.stop"></hud-dial>\n				<hud-dial class="HUD-dial" start-angle="238" end-angle="122" value="hudSeatData.AFq.fillValue" foreground-color="hudSeatData.AFq.colors.start" background-color="hudSeatData.AFq.colors.stop"></hud-dial>\n				<hud-dial class="HUD-dial" start-angle="239" end-angle="360" value="hudSeatData.VPiP.fillValue" foreground-color="hudSeatData.VPiP.colors.start" background-color="hudSeatData.VPiP.colors.stop"></hud-dial>\n			</div>\n			<div class="cover HUD-cover">\n				<div class="hands HUD-hands">{{hudSeatData.num_hands}}</div>\n			</div>\n		</div>\n		<hud-info-panel visible="vm.showInfoPanel" stats-data="hudSeatData" seat-data="vm.frameData.seats[hudSeatNo]" table-data="vm.frameData.table_data" version="2"></hud-info-panel>\n	</div>\n</div>\n'},function(t,n){t.exports='<div ng-if="vm.frameData.seats" class="HUD-container">\n	<div ng-repeat="(seatNumber,seatData) in vm.frameData.seats track by seatNumber; seats = seatNumber"\n			 class="{{ \'seat-\' + seatNumber + \' \' + \'HUD-seat \' + \'HUD-seat--\' + (seatNumber < seats / 2 && \'right\' || \'left\') }}"\n			 ng-class="{\n				\'is-acting\': seatData.acting,\n				\'has-folded\': (!seatData.in_hand && !seatData.mucked) || seatData.is_afk || seatData.sit_out,\n				\'has-mucked\': seatData.mucked,\n				\'has-faceUpCards\': seatData.has_faceup_cards,\n				\'is-hero\': seatData.is_hero\n				}">\n		<div ng-if="seatData.state == \'OCCUPIED\' || !seatData.state" class="HUD-dials" jv-info-panel-toggle hud-type="{{ vm.frameData.hudtype }}">\n			<div class="HUD-graph">\n				<hud-dial class="HUD-dial" start-angle="118" end-angle="2" value="seatData.stats.core.stat2.fillValue" foreground-color="seatData.stats.core.stat2.color" background-color="seatData.stats.core.stat2.color"></hud-dial>\n				<hud-dial class="HUD-dial" start-angle="238" end-angle="122" value="seatData.stats.core.stat3.fillValue" foreground-color="seatData.stats.core.stat3.color" background-color="seatData.stats.core.stat3.color"></hud-dial>\n				<hud-dial class="HUD-dial" start-angle="239" end-angle="360" value="seatData.stats.core.stat1.fillValue" foreground-color="seatData.stats.core.stat1.color" background-color="seatData.stats.core.stat1.color"></hud-dial>\n			</div>\n\n			<div class="HUD-cover"></div>\n			<div class="HUD-bounty" ng-if="seatData.bounty" title="Bounty">\n				<i class="HUD-bountyIcon"></i>\n				<span class="HUD-bountyAmount">{{ seatData.bounty | chipsCurrency:vm.frameData.table_data.currency.symbol }}</span>\n			</div>\n			<div class="HUD-hands">{{seatData.stats.num_hands}}</div>\n			<div class="HUD-pro" ng-if="seatData.client.team_pokerstars === 1"></div>\n			<div class="HUD-notes" ng-if="seatData.notes.text">\n				<div class="HUD-notesInner" ng-style="{\'background-color\': \'#\' + seatData.notes.label.color}"></div>\n			</div>\n			<div class="HUD-device--{{ seatData.client.device }}" ng-if="seatData.client.device != \'desktop\'"></div>\n		</div>\n\n		<hud-info-panel ng-if="seatData.state == \'OCCUPIED\' || !seatData.state" visible="vm.showInfoPanel" stats-data="seatData.stats" seat-data="seatData" table-data="vm.frameData.table_data" selected-live-stats="vm.selectedLiveStats" version="3"></hud-info-panel>\n	</div>\n</div>\n'},function(t,n){t.exports='<div ng-if="vm.frameData.seats" class="HUD-container">\n	<div ng-repeat="(seatNumber,seatData) in vm.frameData.seats track by seatNumber; seats = seatNumber"\n		     class="{{ \'seat-\' + seatNumber + \' \' + \'HUD-seat \' + \'HUD-seat--\' + (seatNumber < seats / 2 && \'right\' || \'left\') }}"\n		     ng-class="{\n				\'is-acting\': seatData.acting,\n				\'has-folded\': (!seatData.in_hand && !seatData.mucked) || seatData.is_afk || seatData.sit_out,\n				\'has-mucked\': seatData.mucked,\n				\'has-faceUpCards\': seatData.has_faceup_cards,\n				\'is-hero\': seatData.is_hero\n				}">\n		<div ng-if="seatData.state == \'OCCUPIED\' || !seatData.state" class="HUD-dials" jv-info-panel-toggle hud-type="{{ vm.frameData.hudtype }}">\n			<div class="HUD-graph">\n				<hud-dial class="HUD-dial" start-angle="118" end-angle="2" value="seatData.stats.core.stat2.fillValue" foreground-color="seatData.stats.core.stat2.color" background-color="seatData.stats.core.stat2.color"></hud-dial>\n				<hud-dial class="HUD-dial" start-angle="238" end-angle="122" value="seatData.stats.core.stat3.fillValue" foreground-color="seatData.stats.core.stat3.color" background-color="seatData.stats.core.stat3.color"></hud-dial>\n				<hud-dial class="HUD-dial" start-angle="239" end-angle="360" value="seatData.stats.core.stat1.fillValue" foreground-color="seatData.stats.core.stat1.color" background-color="seatData.stats.core.stat1.color"></hud-dial>\n			</div>\n\n			<div class="HUD-cover"></div>\n			<div class="HUD-bounty" ng-if="seatData.bounty" title="Bounty">\n				<i class="HUD-bountyIcon"></i>\n				<span class="HUD-bountyAmount">{{ seatData.bounty | chipsCurrency:vm.frameData.table_data.currency.symbol }}</span>\n			</div>\n			<div class="HUD-hands">{{seatData.stats.num_hands}}</div>\n			<div class="HUD-pro" ng-if="seatData.client.team_pokerstars === 1"></div>\n			<div class="HUD-notes" ng-if="seatData.notes.text">\n				<div class="HUD-notesInner"></div>\n			</div>\n			<div class="HUD-device--{{ seatData.client.device }}" ng-if="seatData.client.device != \'desktop\'"></div>\n		</div>\n\n		<hud-info-panel ng-if="seatData.state == \'OCCUPIED\' || !seatData.state" data-visible="vm.showInfoPanel" stats-data="seatData.stats" seat-data="seatData" table-data="vm.frameData.table_data" selected-stats="vm.selectedStats" version="4"></hud-info-panel>\n	</div>\n</div>'},function(t,n,e){(function(n){"use strict";t.exports=function(t){function e(t){function e(t){return t*Math.PI/180}function a(t,e){t.attrTween("d",function(t){var a=n.interpolate(t.endAngle,e);return function(n){return t.endAngle=a(n),l(t)}})}var r={version:"0.0.1"};t=t||{};var i=60,o=60;t.runningId=t.runningId||0,t.minValue=t.minValue||0,t.maxValue=t.maxValue||1,t.startAngle=t.startAngle||0,t.endAngle=t.endAngle||350,t.foregroundColor=t.foregroundColor||"orange",t.backgroundColor=t.backgroundColor||"darkOrange",t.arcPadding=t.arcPadding||0;var s=n.scale.linear().domain([t.minValue,t.maxValue]).range([e(t.startAngle),e(t.endAngle)]),u=n.select(t.id).append("svg").attr({width:"100%",height:"100%"}).attr("viewBox","0 0 "+i+" "+o).attr("preserveAspectRatio","xMidYMid meet").append("g").attr("class","slice").attr("transform","translate("+i/2+","+o/2+")"),l=n.svg.arc().innerRadius(i/2-9).outerRadius(i/2-1),c=u.append("path").attr("class","d-background").datum({startAngle:e(t.startAngle+t.arcPadding),endAngle:e(t.endAngle-t.arcPadding)}).style("fill",t.backgroundColor).attr("id",function(n,e){return"#arc-"+e+"-"+t.runningId}).attr("d",l),f=u.append("path").attr("class","d-foreground").datum({startAngle:e(t.startAngle+t.arcPadding),endAngle:e(t.startAngle+t.arcPadding)}).style("fill",t.foregroundColor).attr("d",l);return r.updateValue=function(t){f.transition().duration(750).call(a,s(t))},r.updateForegroundColor=function(t){f.style("fill",t)},r.updateBackgroundColor=function(t){c.style("fill",t)},r}function a(t,n){t=String(t).replace(/[^0-9a-f]/gi,""),t.length<6&&(t=t[0]+t[0]+t[1]+t[1]+t[2]+t[2]),n=n||0;var e,a,r="#",i=0,o=255;for(a=0;3>a;a++)e=parseInt(t.substr(2*a,2),16),e=Math.round(Math.min(Math.max(i,e+n*o),o)).toString(16),r+=("00"+e).substr(e.length);return r}t.directive("hudDial",function(){var t=0;return{restrict:"AE",scope:{startAngle:"=",endAngle:"=",backgroundColor:"=",foregroundColor:"=",value:"=",width:"=",height:"=",onClick:"&"},template:"",link:function(n,r){""===r[0].id&&(r[0].id="id-"+n.$id+"-dial",t+=1);var i={id:"#"+r[0].id,runningId:t,startAngle:n.startAngle,endAngle:n.endAngle,foregroundColor:n.foregroundColor,backgroundColor:n.backgroundColor,value:n.value,width:n.width,height:n.height},o=new e(i,parseInt(n.value,10));n.$watch("foregroundColor",function(t){t&&o.updateForegroundColor(t)}),n.$watch("backgroundColor",function(t){t&&(t===n.foregroundColor&&(t=a(n.foregroundColor,-.4)),o.updateBackgroundColor(t))}),n.$watch("value",function(t){void 0!==t&&o.updateValue(t)})}}})}}).call(n,e(86))},function(t,n,e){var a,r;!function(){function i(t){return t&&(t.ownerDocument||t.document||t).documentElement}function o(t){return t&&(t.ownerDocument&&t.ownerDocument.defaultView||t.document&&t||t.defaultView)}function s(t,n){return n>t?-1:t>n?1:t>=n?0:NaN}function u(t){return null===t?NaN:+t}function l(t){return!isNaN(t)}function c(t){return{left:function(n,e,a,r){for(arguments.length<3&&(a=0),arguments.length<4&&(r=n.length);r>a;){var i=a+r>>>1;t(n[i],e)<0?a=i+1:r=i}return a},right:function(n,e,a,r){for(arguments.length<3&&(a=0),arguments.length<4&&(r=n.length);r>a;){var i=a+r>>>1;t(n[i],e)>0?r=i:a=i+1}return a}}}function f(t){return t.length}function d(t){for(var n=1;t*n%1;)n*=10;return n}function h(t,n){for(var e in n)Object.defineProperty(t.prototype,e,{value:n[e],enumerable:!1})}function p(){this._=Object.create(null)}function m(t){return(t+="")===_o||t[0]===xo?xo+t:t}function v(t){return(t+="")[0]===xo?t.slice(1):t}function g(t){return m(t)in this._}function y(t){return(t=m(t))in this._&&delete this._[t]}function b(){var t=[];for(var n in this._)t.push(v(n));return t}function _(){var t=0;for(var n in this._)++t;return t}function x(){for(var t in this._)return!1;return!0}function w(){this._=Object.create(null)}function k(t){return t}function D(t,n,e){return function(){var a=e.apply(n,arguments);return a===n?t:a}}function C(t,n){if(n in t)return n;n=n.charAt(0).toUpperCase()+n.slice(1);for(var e=0,a=wo.length;a>e;++e){var r=wo[e]+n;if(r in t)return r}}function M(){}function S(){}function P(t){function n(){for(var n,a=e,r=-1,i=a.length;++r<i;)(n=a[r].on)&&n.apply(this,arguments);return t}var e=[],a=new p;return n.on=function(n,r){var i,o=a.get(n);return arguments.length<2?o&&o.on:(o&&(o.on=null,e=e.slice(0,i=e.indexOf(o)).concat(e.slice(i+1)),a.remove(n)),r&&e.push(a.set(n,{on:r})),t)},n}function A(){oo.event.preventDefault()}function T(){for(var t,n=oo.event;t=n.sourceEvent;)n=t;return n}function E(t){for(var n=new S,e=0,a=arguments.length;++e<a;)n[arguments[e]]=P(n);return n.of=function(e,a){return function(r){try{var i=r.sourceEvent=oo.event;r.target=t,oo.event=r,n[r.type].apply(e,a)}finally{oo.event=i}}},n}function N(t){return Do(t,Po),t}function H(t){return"function"==typeof t?t:function(){return Co(t,this)}}function I(t){return"function"==typeof t?t:function(){return Mo(t,this)}}function z(t,n){function e(){this.removeAttribute(t)}function a(){this.removeAttributeNS(t.space,t.local)}function r(){this.setAttribute(t,n)}function i(){this.setAttributeNS(t.space,t.local,n)}function o(){var e=n.apply(this,arguments);null==e?this.removeAttribute(t):this.setAttribute(t,e)}function s(){var e=n.apply(this,arguments);null==e?this.removeAttributeNS(t.space,t.local):this.setAttributeNS(t.space,t.local,e)}return t=oo.ns.qualify(t),null==n?t.local?a:e:"function"==typeof n?t.local?s:o:t.local?i:r}function R(t){return t.trim().replace(/\s+/g," ")}function U(t){return new RegExp("(?:^|\\s+)"+oo.requote(t)+"(?:\\s+|$)","g")}function L(t){return(t+"").trim().split(/^|\s+/)}function F(t,n){function e(){for(var e=-1;++e<r;)t[e](this,n)}function a(){for(var e=-1,a=n.apply(this,arguments);++e<r;)t[e](this,a)}t=L(t).map(j);var r=t.length;return"function"==typeof n?a:e}function j(t){var n=U(t);return function(e,a){if(r=e.classList)return a?r.add(t):r.remove(t);var r=e.getAttribute("class")||"";a?(n.lastIndex=0,n.test(r)||e.setAttribute("class",R(r+" "+t))):e.setAttribute("class",R(r.replace(n," ")))}}function B(t,n,e){function a(){this.style.removeProperty(t)}function r(){this.style.setProperty(t,n,e)}function i(){var a=n.apply(this,arguments);null==a?this.style.removeProperty(t):this.style.setProperty(t,a,e)}return null==n?a:"function"==typeof n?i:r}function q(t,n){function e(){delete this[t]}function a(){this[t]=n}function r(){var e=n.apply(this,arguments);null==e?delete this[t]:this[t]=e}return null==n?e:"function"==typeof n?r:a}function O(t){function n(){var n=this.ownerDocument,e=this.namespaceURI;return e?n.createElementNS(e,t):n.createElement(t)}function e(){return this.ownerDocument.createElementNS(t.space,t.local)}return"function"==typeof t?t:(t=oo.ns.qualify(t)).local?e:n}function V(){var t=this.parentNode;t&&t.removeChild(this)}function $(t){return{__data__:t}}function Z(t){return function(){return So(this,t)}}function Y(t){return arguments.length||(t=s),function(n,e){return n&&e?t(n.__data__,e.__data__):!n-!e}}function K(t,n){for(var e=0,a=t.length;a>e;e++)for(var r,i=t[e],o=0,s=i.length;s>o;o++)(r=i[o])&&n(r,o,e);return t}function W(t){return Do(t,To),t}function G(t){var n,e;return function(a,r,i){var o,s=t[i].update,u=s.length;for(i!=e&&(e=i,n=0),r>=n&&(n=r+1);!(o=s[n])&&++n<u;);return o}}function X(t,n,e){function a(){var n=this[o];n&&(this.removeEventListener(t,n,n.$),delete this[o])}function r(){var r=u(n,uo(arguments));a.call(this),this.addEventListener(t,this[o]=r,r.$=e),r._=n}function i(){var n,e=new RegExp("^__on([^.]+)"+oo.requote(t)+"$");for(var a in this)if(n=a.match(e)){var r=this[a];this.removeEventListener(n[1],r,r.$),delete this[a]}}var o="__on"+t,s=t.indexOf("."),u=J;s>0&&(t=t.slice(0,s));var l=Eo.get(t);return l&&(t=l,u=Q),s?n?r:a:n?M:i}function J(t,n){return function(e){var a=oo.event;oo.event=e,n[0]=this.__data__;try{t.apply(this,n)}finally{oo.event=a}}}function Q(t,n){var e=J(t,n);return function(t){var n=this,a=t.relatedTarget;a&&(a===n||8&a.compareDocumentPosition(n))||e.call(n,t)}}function tt(t){var n=".dragsuppress-"+ ++Ho,e="click"+n,a=oo.select(o(t)).on("touchmove"+n,A).on("dragstart"+n,A).on("selectstart"+n,A);if(null==No&&(No="onselectstart"in t?!1:C(t.style,"userSelect")),No){var r=i(t).style,s=r[No];r[No]="none"}return function(t){if(a.on(n,null),No&&(r[No]=s),t){var i=function(){a.on(e,null)};a.on(e,function(){A(),i()},!0),setTimeout(i,0)}}}function nt(t,n){n.changedTouches&&(n=n.changedTouches[0]);var e=t.ownerSVGElement||t;if(e.createSVGPoint){var a=e.createSVGPoint();if(0>Io){var r=o(t);if(r.scrollX||r.scrollY){e=oo.select("body").append("svg").style({position:"absolute",top:0,left:0,margin:0,padding:0,border:"none"},"important");var i=e[0][0].getScreenCTM();Io=!(i.f||i.e),e.remove()}}return Io?(a.x=n.pageX,a.y=n.pageY):(a.x=n.clientX,a.y=n.clientY),a=a.matrixTransform(t.getScreenCTM().inverse()),[a.x,a.y]}var s=t.getBoundingClientRect();return[n.clientX-s.left-t.clientLeft,n.clientY-s.top-t.clientTop]}function et(){return oo.event.changedTouches[0].identifier}function at(t){return t>0?1:0>t?-1:0}function rt(t,n,e){return(n[0]-t[0])*(e[1]-t[1])-(n[1]-t[1])*(e[0]-t[0])}function it(t){return t>1?0:-1>t?Uo:Math.acos(t)}function ot(t){return t>1?jo:-1>t?-jo:Math.asin(t)}function st(t){return((t=Math.exp(t))-1/t)/2}function ut(t){return((t=Math.exp(t))+1/t)/2}function lt(t){return((t=Math.exp(2*t))-1)/(t+1)}function ct(t){return(t=Math.sin(t/2))*t}function ft(){}function dt(t,n,e){return this instanceof dt?(this.h=+t,this.s=+n,void(this.l=+e)):arguments.length<2?t instanceof dt?new dt(t.h,t.s,t.l):Mt(""+t,St,dt):new dt(t,n,e)}function ht(t,n,e){function a(t){return t>360?t-=360:0>t&&(t+=360),60>t?i+(o-i)*t/60:180>t?o:240>t?i+(o-i)*(240-t)/60:i}function r(t){return Math.round(255*a(t))}var i,o;return t=isNaN(t)?0:(t%=360)<0?t+360:t,n=isNaN(n)?0:0>n?0:n>1?1:n,e=0>e?0:e>1?1:e,o=.5>=e?e*(1+n):e+n-e*n,i=2*e-o,new wt(r(t+120),r(t),r(t-120))}function pt(t,n,e){return this instanceof pt?(this.h=+t,this.c=+n,void(this.l=+e)):arguments.length<2?t instanceof pt?new pt(t.h,t.c,t.l):t instanceof vt?yt(t.l,t.a,t.b):yt((t=Pt((t=oo.rgb(t)).r,t.g,t.b)).l,t.a,t.b):new pt(t,n,e)}function mt(t,n,e){return isNaN(t)&&(t=0),isNaN(n)&&(n=0),new vt(e,Math.cos(t*=Bo)*n,Math.sin(t)*n)}function vt(t,n,e){return this instanceof vt?(this.l=+t,this.a=+n,void(this.b=+e)):arguments.length<2?t instanceof vt?new vt(t.l,t.a,t.b):t instanceof pt?mt(t.h,t.c,t.l):Pt((t=wt(t)).r,t.g,t.b):new vt(t,n,e)}function gt(t,n,e){var a=(t+16)/116,r=a+n/500,i=a-e/200;return r=bt(r)*Jo,a=bt(a)*Qo,i=bt(i)*ts,new wt(xt(3.2404542*r-1.5371385*a-.4985314*i),xt(-.969266*r+1.8760108*a+.041556*i),xt(.0556434*r-.2040259*a+1.0572252*i))}function yt(t,n,e){return t>0?new pt(Math.atan2(e,n)*qo,Math.sqrt(n*n+e*e),t):new pt(NaN,NaN,t)}function bt(t){return t>.206893034?t*t*t:(t-4/29)/7.787037}function _t(t){return t>.008856?Math.pow(t,1/3):7.787037*t+4/29}function xt(t){return Math.round(255*(.00304>=t?12.92*t:1.055*Math.pow(t,1/2.4)-.055))}function wt(t,n,e){return this instanceof wt?(this.r=~~t,this.g=~~n,void(this.b=~~e)):arguments.length<2?t instanceof wt?new wt(t.r,t.g,t.b):Mt(""+t,wt,ht):new wt(t,n,e)}function kt(t){return new wt(t>>16,t>>8&255,255&t)}function Dt(t){return kt(t)+""}function Ct(t){return 16>t?"0"+Math.max(0,t).toString(16):Math.min(255,t).toString(16)}function Mt(t,n,e){t=t.toLowerCase();
+	var a,r,i,o=0,s=0,u=0;if(a=/([a-z]+)\((.*)\)/.exec(t))switch(r=a[2].split(","),a[1]){case"hsl":return e(parseFloat(r[0]),parseFloat(r[1])/100,parseFloat(r[2])/100);case"rgb":return n(Tt(r[0]),Tt(r[1]),Tt(r[2]))}return(i=as.get(t))?n(i.r,i.g,i.b):(null==t||"#"!==t.charAt(0)||isNaN(i=parseInt(t.slice(1),16))||(4===t.length?(o=(3840&i)>>4,o=o>>4|o,s=240&i,s=s>>4|s,u=15&i,u=u<<4|u):7===t.length&&(o=(16711680&i)>>16,s=(65280&i)>>8,u=255&i)),n(o,s,u))}function St(t,n,e){var a,r,i=Math.min(t/=255,n/=255,e/=255),o=Math.max(t,n,e),s=o-i,u=(o+i)/2;return s?(r=.5>u?s/(o+i):s/(2-o-i),a=t==o?(n-e)/s+(e>n?6:0):n==o?(e-t)/s+2:(t-n)/s+4,a*=60):(a=NaN,r=u>0&&1>u?0:a),new dt(a,r,u)}function Pt(t,n,e){t=At(t),n=At(n),e=At(e);var a=_t((.4124564*t+.3575761*n+.1804375*e)/Jo),r=_t((.2126729*t+.7151522*n+.072175*e)/Qo),i=_t((.0193339*t+.119192*n+.9503041*e)/ts);return vt(116*r-16,500*(a-r),200*(r-i))}function At(t){return(t/=255)<=.04045?t/12.92:Math.pow((t+.055)/1.055,2.4)}function Tt(t){var n=parseFloat(t);return"%"===t.charAt(t.length-1)?Math.round(2.55*n):n}function Et(t){return"function"==typeof t?t:function(){return t}}function Nt(t){return function(n,e,a){return 2===arguments.length&&"function"==typeof e&&(a=e,e=null),Ht(n,e,t,a)}}function Ht(t,n,e,a){function r(){var t,n=u.status;if(!n&&zt(u)||n>=200&&300>n||304===n){try{t=e.call(i,u)}catch(a){return void o.error.call(i,a)}o.load.call(i,t)}else o.error.call(i,u)}var i={},o=oo.dispatch("beforesend","progress","load","error"),s={},u=new XMLHttpRequest,l=null;return!this.XDomainRequest||"withCredentials"in u||!/^(http(s)?:)?\/\//.test(t)||(u=new XDomainRequest),"onload"in u?u.onload=u.onerror=r:u.onreadystatechange=function(){u.readyState>3&&r()},u.onprogress=function(t){var n=oo.event;oo.event=t;try{o.progress.call(i,u)}finally{oo.event=n}},i.header=function(t,n){return t=(t+"").toLowerCase(),arguments.length<2?s[t]:(null==n?delete s[t]:s[t]=n+"",i)},i.mimeType=function(t){return arguments.length?(n=null==t?null:t+"",i):n},i.responseType=function(t){return arguments.length?(l=t,i):l},i.response=function(t){return e=t,i},["get","post"].forEach(function(t){i[t]=function(){return i.send.apply(i,[t].concat(uo(arguments)))}}),i.send=function(e,a,r){if(2===arguments.length&&"function"==typeof a&&(r=a,a=null),u.open(e,t,!0),null==n||"accept"in s||(s.accept=n+",*/*"),u.setRequestHeader)for(var c in s)u.setRequestHeader(c,s[c]);return null!=n&&u.overrideMimeType&&u.overrideMimeType(n),null!=l&&(u.responseType=l),null!=r&&i.on("error",r).on("load",function(t){r(null,t)}),o.beforesend.call(i,u),u.send(null==a?null:a),i},i.abort=function(){return u.abort(),i},oo.rebind(i,o,"on"),null==a?i:i.get(It(a))}function It(t){return 1===t.length?function(n,e){t(null==n?e:null)}:t}function zt(t){var n=t.responseType;return n&&"text"!==n?t.response:t.responseText}function Rt(){var t=Ut(),n=Lt()-t;n>24?(isFinite(n)&&(clearTimeout(ss),ss=setTimeout(Rt,n)),os=0):(os=1,ls(Rt))}function Ut(){var t=Date.now();for(us=rs;us;)t>=us.t&&(us.f=us.c(t-us.t)),us=us.n;return t}function Lt(){for(var t,n=rs,e=1/0;n;)n.f?n=t?t.n=n.n:rs=n.n:(n.t<e&&(e=n.t),n=(t=n).n);return is=t,e}function Ft(t,n){return n-(t?Math.ceil(Math.log(t)/Math.LN10):1)}function jt(t,n){var e=Math.pow(10,3*bo(8-n));return{scale:n>8?function(t){return t/e}:function(t){return t*e},symbol:t}}function Bt(t){var n=t.decimal,e=t.thousands,a=t.grouping,r=t.currency,i=a&&e?function(t,n){for(var r=t.length,i=[],o=0,s=a[0],u=0;r>0&&s>0&&(u+s+1>n&&(s=Math.max(1,n-u)),i.push(t.substring(r-=s,r+s)),!((u+=s+1)>n));)s=a[o=(o+1)%a.length];return i.reverse().join(e)}:k;return function(t){var e=fs.exec(t),a=e[1]||" ",o=e[2]||">",s=e[3]||"-",u=e[4]||"",l=e[5],c=+e[6],f=e[7],d=e[8],h=e[9],p=1,m="",v="",g=!1,y=!0;switch(d&&(d=+d.substring(1)),(l||"0"===a&&"="===o)&&(l=a="0",o="="),h){case"n":f=!0,h="g";break;case"%":p=100,v="%",h="f";break;case"p":p=100,v="%",h="r";break;case"b":case"o":case"x":case"X":"#"===u&&(m="0"+h.toLowerCase());case"c":y=!1;case"d":g=!0,d=0;break;case"s":p=-1,h="r"}"$"===u&&(m=r[0],v=r[1]),"r"!=h||d||(h="g"),null!=d&&("g"==h?d=Math.max(1,Math.min(21,d)):("e"==h||"f"==h)&&(d=Math.max(0,Math.min(20,d)))),h=ds.get(h)||qt;var b=l&&f;return function(t){var e=v;if(g&&t%1)return"";var r=0>t||0===t&&0>1/t?(t=-t,"-"):"-"===s?"":s;if(0>p){var u=oo.formatPrefix(t,d);t=u.scale(t),e=u.symbol+v}else t*=p;t=h(t,d);var _,x,w=t.lastIndexOf(".");if(0>w){var k=y?t.lastIndexOf("e"):-1;0>k?(_=t,x=""):(_=t.substring(0,k),x=t.substring(k))}else _=t.substring(0,w),x=n+t.substring(w+1);!l&&f&&(_=i(_,1/0));var D=m.length+_.length+x.length+(b?0:r.length),C=c>D?new Array(D=c-D+1).join(a):"";return b&&(_=i(C+_,C.length?c-x.length:1/0)),r+=m,t=_+x,("<"===o?r+t+C:">"===o?C+r+t:"^"===o?C.substring(0,D>>=1)+r+t+C.substring(D):r+(b?t:C+t))+e}}}function qt(t){return t+""}function Ot(){this._=new Date(arguments.length>1?Date.UTC.apply(this,arguments):arguments[0])}function Vt(t,n,e){function a(n){var e=t(n),a=i(e,1);return a-n>n-e?e:a}function r(e){return n(e=t(new ps(e-1)),1),e}function i(t,e){return n(t=new ps(+t),e),t}function o(t,a,i){var o=r(t),s=[];if(i>1)for(;a>o;)e(o)%i||s.push(new Date(+o)),n(o,1);else for(;a>o;)s.push(new Date(+o)),n(o,1);return s}function s(t,n,e){try{ps=Ot;var a=new Ot;return a._=t,o(a,n,e)}finally{ps=Date}}t.floor=t,t.round=a,t.ceil=r,t.offset=i,t.range=o;var u=t.utc=$t(t);return u.floor=u,u.round=$t(a),u.ceil=$t(r),u.offset=$t(i),u.range=s,t}function $t(t){return function(n,e){try{ps=Ot;var a=new Ot;return a._=n,t(a,e)._}finally{ps=Date}}}function Zt(t){function n(t){function n(n){for(var e,r,i,o=[],s=-1,u=0;++s<a;)37===t.charCodeAt(s)&&(o.push(t.slice(u,s)),null!=(r=vs[e=t.charAt(++s)])&&(e=t.charAt(++s)),(i=P[e])&&(e=i(n,null==r?"e"===e?" ":"0":r)),o.push(e),u=s+1);return o.push(t.slice(u,s)),o.join("")}var a=t.length;return n.parse=function(n){var a={y:1900,m:0,d:1,H:0,M:0,S:0,L:0,Z:null},r=e(a,t,n,0);if(r!=n.length)return null;"p"in a&&(a.H=a.H%12+12*a.p);var i=null!=a.Z&&ps!==Ot,o=new(i?Ot:ps);return"j"in a?o.setFullYear(a.y,0,a.j):"w"in a&&("W"in a||"U"in a)?(o.setFullYear(a.y,0,1),o.setFullYear(a.y,0,"W"in a?(a.w+6)%7+7*a.W-(o.getDay()+5)%7:a.w+7*a.U-(o.getDay()+6)%7)):o.setFullYear(a.y,a.m,a.d),o.setHours(a.H+(a.Z/100|0),a.M+a.Z%100,a.S,a.L),i?o._:o},n.toString=function(){return t},n}function e(t,n,e,a){for(var r,i,o,s=0,u=n.length,l=e.length;u>s;){if(a>=l)return-1;if(r=n.charCodeAt(s++),37===r){if(o=n.charAt(s++),i=A[o in vs?n.charAt(s++):o],!i||(a=i(t,e,a))<0)return-1}else if(r!=e.charCodeAt(a++))return-1}return a}function a(t,n,e){w.lastIndex=0;var a=w.exec(n.slice(e));return a?(t.w=k.get(a[0].toLowerCase()),e+a[0].length):-1}function r(t,n,e){_.lastIndex=0;var a=_.exec(n.slice(e));return a?(t.w=x.get(a[0].toLowerCase()),e+a[0].length):-1}function i(t,n,e){M.lastIndex=0;var a=M.exec(n.slice(e));return a?(t.m=S.get(a[0].toLowerCase()),e+a[0].length):-1}function o(t,n,e){D.lastIndex=0;var a=D.exec(n.slice(e));return a?(t.m=C.get(a[0].toLowerCase()),e+a[0].length):-1}function s(t,n,a){return e(t,P.c.toString(),n,a)}function u(t,n,a){return e(t,P.x.toString(),n,a)}function l(t,n,a){return e(t,P.X.toString(),n,a)}function c(t,n,e){var a=b.get(n.slice(e,e+=2).toLowerCase());return null==a?-1:(t.p=a,e)}var f=t.dateTime,d=t.date,h=t.time,p=t.periods,m=t.days,v=t.shortDays,g=t.months,y=t.shortMonths;n.utc=function(t){function e(t){try{ps=Ot;var n=new ps;return n._=t,a(n)}finally{ps=Date}}var a=n(t);return e.parse=function(t){try{ps=Ot;var n=a.parse(t);return n&&n._}finally{ps=Date}},e.toString=a.toString,e},n.multi=n.utc.multi=hn;var b=oo.map(),_=Kt(m),x=Wt(m),w=Kt(v),k=Wt(v),D=Kt(g),C=Wt(g),M=Kt(y),S=Wt(y);p.forEach(function(t,n){b.set(t.toLowerCase(),n)});var P={a:function(t){return v[t.getDay()]},A:function(t){return m[t.getDay()]},b:function(t){return y[t.getMonth()]},B:function(t){return g[t.getMonth()]},c:n(f),d:function(t,n){return Yt(t.getDate(),n,2)},e:function(t,n){return Yt(t.getDate(),n,2)},H:function(t,n){return Yt(t.getHours(),n,2)},I:function(t,n){return Yt(t.getHours()%12||12,n,2)},j:function(t,n){return Yt(1+hs.dayOfYear(t),n,3)},L:function(t,n){return Yt(t.getMilliseconds(),n,3)},m:function(t,n){return Yt(t.getMonth()+1,n,2)},M:function(t,n){return Yt(t.getMinutes(),n,2)},p:function(t){return p[+(t.getHours()>=12)]},S:function(t,n){return Yt(t.getSeconds(),n,2)},U:function(t,n){return Yt(hs.sundayOfYear(t),n,2)},w:function(t){return t.getDay()},W:function(t,n){return Yt(hs.mondayOfYear(t),n,2)},x:n(d),X:n(h),y:function(t,n){return Yt(t.getFullYear()%100,n,2)},Y:function(t,n){return Yt(t.getFullYear()%1e4,n,4)},Z:fn,"%":function(){return"%"}},A={a:a,A:r,b:i,B:o,c:s,d:rn,e:rn,H:sn,I:sn,j:on,L:cn,m:an,M:un,p:c,S:ln,U:Xt,w:Gt,W:Jt,x:u,X:l,y:tn,Y:Qt,Z:nn,"%":dn};return n}function Yt(t,n,e){var a=0>t?"-":"",r=(a?-t:t)+"",i=r.length;return a+(e>i?new Array(e-i+1).join(n)+r:r)}function Kt(t){return new RegExp("^(?:"+t.map(oo.requote).join("|")+")","i")}function Wt(t){for(var n=new p,e=-1,a=t.length;++e<a;)n.set(t[e].toLowerCase(),e);return n}function Gt(t,n,e){gs.lastIndex=0;var a=gs.exec(n.slice(e,e+1));return a?(t.w=+a[0],e+a[0].length):-1}function Xt(t,n,e){gs.lastIndex=0;var a=gs.exec(n.slice(e));return a?(t.U=+a[0],e+a[0].length):-1}function Jt(t,n,e){gs.lastIndex=0;var a=gs.exec(n.slice(e));return a?(t.W=+a[0],e+a[0].length):-1}function Qt(t,n,e){gs.lastIndex=0;var a=gs.exec(n.slice(e,e+4));return a?(t.y=+a[0],e+a[0].length):-1}function tn(t,n,e){gs.lastIndex=0;var a=gs.exec(n.slice(e,e+2));return a?(t.y=en(+a[0]),e+a[0].length):-1}function nn(t,n,e){return/^[+-]\d{4}$/.test(n=n.slice(e,e+5))?(t.Z=-n,e+5):-1}function en(t){return t+(t>68?1900:2e3)}function an(t,n,e){gs.lastIndex=0;var a=gs.exec(n.slice(e,e+2));return a?(t.m=a[0]-1,e+a[0].length):-1}function rn(t,n,e){gs.lastIndex=0;var a=gs.exec(n.slice(e,e+2));return a?(t.d=+a[0],e+a[0].length):-1}function on(t,n,e){gs.lastIndex=0;var a=gs.exec(n.slice(e,e+3));return a?(t.j=+a[0],e+a[0].length):-1}function sn(t,n,e){gs.lastIndex=0;var a=gs.exec(n.slice(e,e+2));return a?(t.H=+a[0],e+a[0].length):-1}function un(t,n,e){gs.lastIndex=0;var a=gs.exec(n.slice(e,e+2));return a?(t.M=+a[0],e+a[0].length):-1}function ln(t,n,e){gs.lastIndex=0;var a=gs.exec(n.slice(e,e+2));return a?(t.S=+a[0],e+a[0].length):-1}function cn(t,n,e){gs.lastIndex=0;var a=gs.exec(n.slice(e,e+3));return a?(t.L=+a[0],e+a[0].length):-1}function fn(t){var n=t.getTimezoneOffset(),e=n>0?"-":"+",a=bo(n)/60|0,r=bo(n)%60;return e+Yt(a,"0",2)+Yt(r,"0",2)}function dn(t,n,e){ys.lastIndex=0;var a=ys.exec(n.slice(e,e+1));return a?e+a[0].length:-1}function hn(t){for(var n=t.length,e=-1;++e<n;)t[e][0]=this(t[e][0]);return function(n){for(var e=0,a=t[e];!a[1](n);)a=t[++e];return a[0](n)}}function pn(){}function mn(t,n,e){var a=e.s=t+n,r=a-t,i=a-r;e.t=t-i+(n-r)}function vn(t,n){t&&ws.hasOwnProperty(t.type)&&ws[t.type](t,n)}function gn(t,n,e){var a,r=-1,i=t.length-e;for(n.lineStart();++r<i;)a=t[r],n.point(a[0],a[1],a[2]);n.lineEnd()}function yn(t,n){var e=-1,a=t.length;for(n.polygonStart();++e<a;)gn(t[e],n,1);n.polygonEnd()}function bn(){function t(t,n){t*=Bo,n=n*Bo/2+Uo/4;var e=t-a,o=e>=0?1:-1,s=o*e,u=Math.cos(n),l=Math.sin(n),c=i*l,f=r*u+c*Math.cos(s),d=c*o*Math.sin(s);Ds.add(Math.atan2(d,f)),a=t,r=u,i=l}var n,e,a,r,i;Cs.point=function(o,s){Cs.point=t,a=(n=o)*Bo,r=Math.cos(s=(e=s)*Bo/2+Uo/4),i=Math.sin(s)},Cs.lineEnd=function(){t(n,e)}}function _n(t){var n=t[0],e=t[1],a=Math.cos(e);return[a*Math.cos(n),a*Math.sin(n),Math.sin(e)]}function xn(t,n){return t[0]*n[0]+t[1]*n[1]+t[2]*n[2]}function wn(t,n){return[t[1]*n[2]-t[2]*n[1],t[2]*n[0]-t[0]*n[2],t[0]*n[1]-t[1]*n[0]]}function kn(t,n){t[0]+=n[0],t[1]+=n[1],t[2]+=n[2]}function Dn(t,n){return[t[0]*n,t[1]*n,t[2]*n]}function Cn(t){var n=Math.sqrt(t[0]*t[0]+t[1]*t[1]+t[2]*t[2]);t[0]/=n,t[1]/=n,t[2]/=n}function Mn(t){return[Math.atan2(t[1],t[0]),ot(t[2])]}function Sn(t,n){return bo(t[0]-n[0])<zo&&bo(t[1]-n[1])<zo}function Pn(t,n){t*=Bo;var e=Math.cos(n*=Bo);An(e*Math.cos(t),e*Math.sin(t),Math.sin(n))}function An(t,n,e){++Ms,Ps+=(t-Ps)/Ms,As+=(n-As)/Ms,Ts+=(e-Ts)/Ms}function Tn(){function t(t,r){t*=Bo;var i=Math.cos(r*=Bo),o=i*Math.cos(t),s=i*Math.sin(t),u=Math.sin(r),l=Math.atan2(Math.sqrt((l=e*u-a*s)*l+(l=a*o-n*u)*l+(l=n*s-e*o)*l),n*o+e*s+a*u);Ss+=l,Es+=l*(n+(n=o)),Ns+=l*(e+(e=s)),Hs+=l*(a+(a=u)),An(n,e,a)}var n,e,a;Us.point=function(r,i){r*=Bo;var o=Math.cos(i*=Bo);n=o*Math.cos(r),e=o*Math.sin(r),a=Math.sin(i),Us.point=t,An(n,e,a)}}function En(){Us.point=Pn}function Nn(){function t(t,n){t*=Bo;var e=Math.cos(n*=Bo),o=e*Math.cos(t),s=e*Math.sin(t),u=Math.sin(n),l=r*u-i*s,c=i*o-a*u,f=a*s-r*o,d=Math.sqrt(l*l+c*c+f*f),h=a*o+r*s+i*u,p=d&&-it(h)/d,m=Math.atan2(d,h);Is+=p*l,zs+=p*c,Rs+=p*f,Ss+=m,Es+=m*(a+(a=o)),Ns+=m*(r+(r=s)),Hs+=m*(i+(i=u)),An(a,r,i)}var n,e,a,r,i;Us.point=function(o,s){n=o,e=s,Us.point=t,o*=Bo;var u=Math.cos(s*=Bo);a=u*Math.cos(o),r=u*Math.sin(o),i=Math.sin(s),An(a,r,i)},Us.lineEnd=function(){t(n,e),Us.lineEnd=En,Us.point=Pn}}function Hn(t,n){function e(e,a){return e=t(e,a),n(e[0],e[1])}return t.invert&&n.invert&&(e.invert=function(e,a){return e=n.invert(e,a),e&&t.invert(e[0],e[1])}),e}function In(){return!0}function zn(t,n,e,a,r){var i=[],o=[];if(t.forEach(function(t){if(!((n=t.length-1)<=0)){var n,e=t[0],a=t[n];if(Sn(e,a)){r.lineStart();for(var s=0;n>s;++s)r.point((e=t[s])[0],e[1]);return void r.lineEnd()}var u=new Un(e,t,null,!0),l=new Un(e,null,u,!1);u.o=l,i.push(u),o.push(l),u=new Un(a,t,null,!1),l=new Un(a,null,u,!0),u.o=l,i.push(u),o.push(l)}}),o.sort(n),Rn(i),Rn(o),i.length){for(var s=0,u=e,l=o.length;l>s;++s)o[s].e=u=!u;for(var c,f,d=i[0];;){for(var h=d,p=!0;h.v;)if((h=h.n)===d)return;c=h.z,r.lineStart();do{if(h.v=h.o.v=!0,h.e){if(p)for(var s=0,l=c.length;l>s;++s)r.point((f=c[s])[0],f[1]);else a(h.x,h.n.x,1,r);h=h.n}else{if(p){c=h.p.z;for(var s=c.length-1;s>=0;--s)r.point((f=c[s])[0],f[1])}else a(h.x,h.p.x,-1,r);h=h.p}h=h.o,c=h.z,p=!p}while(!h.v);r.lineEnd()}}}function Rn(t){if(n=t.length){for(var n,e,a=0,r=t[0];++a<n;)r.n=e=t[a],e.p=r,r=e;r.n=e=t[0],e.p=r}}function Un(t,n,e,a){this.x=t,this.z=n,this.o=e,this.e=a,this.v=!1,this.n=this.p=null}function Ln(t,n,e,a){return function(r,i){function o(n,e){var a=r(n,e);t(n=a[0],e=a[1])&&i.point(n,e)}function s(t,n){var e=r(t,n);v.point(e[0],e[1])}function u(){y.point=s,v.lineStart()}function l(){y.point=o,v.lineEnd()}function c(t,n){m.push([t,n]);var e=r(t,n);_.point(e[0],e[1])}function f(){_.lineStart(),m=[]}function d(){c(m[0][0],m[0][1]),_.lineEnd();var t,n=_.clean(),e=b.buffer(),a=e.length;if(m.pop(),p.push(m),m=null,a)if(1&n){t=e[0];var r,a=t.length-1,o=-1;if(a>0){for(x||(i.polygonStart(),x=!0),i.lineStart();++o<a;)i.point((r=t[o])[0],r[1]);i.lineEnd()}}else a>1&&2&n&&e.push(e.pop().concat(e.shift())),h.push(e.filter(Fn))}var h,p,m,v=n(i),g=r.invert(a[0],a[1]),y={point:o,lineStart:u,lineEnd:l,polygonStart:function(){y.point=c,y.lineStart=f,y.lineEnd=d,h=[],p=[]},polygonEnd:function(){y.point=o,y.lineStart=u,y.lineEnd=l,h=oo.merge(h);var t=$n(g,p);h.length?(x||(i.polygonStart(),x=!0),zn(h,Bn,t,e,i)):t&&(x||(i.polygonStart(),x=!0),i.lineStart(),e(null,null,1,i),i.lineEnd()),x&&(i.polygonEnd(),x=!1),h=p=null},sphere:function(){i.polygonStart(),i.lineStart(),e(null,null,1,i),i.lineEnd(),i.polygonEnd()}},b=jn(),_=n(b),x=!1;return y}}function Fn(t){return t.length>1}function jn(){var t,n=[];return{lineStart:function(){n.push(t=[])},point:function(n,e){t.push([n,e])},lineEnd:M,buffer:function(){var e=n;return n=[],t=null,e},rejoin:function(){n.length>1&&n.push(n.pop().concat(n.shift()))}}}function Bn(t,n){return((t=t.x)[0]<0?t[1]-jo-zo:jo-t[1])-((n=n.x)[0]<0?n[1]-jo-zo:jo-n[1])}function qn(t){var n,e=NaN,a=NaN,r=NaN;return{lineStart:function(){t.lineStart(),n=1},point:function(i,o){var s=i>0?Uo:-Uo,u=bo(i-e);bo(u-Uo)<zo?(t.point(e,a=(a+o)/2>0?jo:-jo),t.point(r,a),t.lineEnd(),t.lineStart(),t.point(s,a),t.point(i,a),n=0):r!==s&&u>=Uo&&(bo(e-r)<zo&&(e-=r*zo),bo(i-s)<zo&&(i-=s*zo),a=On(e,a,i,o),t.point(r,a),t.lineEnd(),t.lineStart(),t.point(s,a),n=0),t.point(e=i,a=o),r=s},lineEnd:function(){t.lineEnd(),e=a=NaN},clean:function(){return 2-n}}}function On(t,n,e,a){var r,i,o=Math.sin(t-e);return bo(o)>zo?Math.atan((Math.sin(n)*(i=Math.cos(a))*Math.sin(e)-Math.sin(a)*(r=Math.cos(n))*Math.sin(t))/(r*i*o)):(n+a)/2}function Vn(t,n,e,a){var r;if(null==t)r=e*jo,a.point(-Uo,r),a.point(0,r),a.point(Uo,r),a.point(Uo,0),a.point(Uo,-r),a.point(0,-r),a.point(-Uo,-r),a.point(-Uo,0),a.point(-Uo,r);else if(bo(t[0]-n[0])>zo){var i=t[0]<n[0]?Uo:-Uo;r=e*i/2,a.point(-i,r),a.point(0,r),a.point(i,r)}else a.point(n[0],n[1])}function $n(t,n){var e=t[0],a=t[1],r=[Math.sin(e),-Math.cos(e),0],i=0,o=0;Ds.reset();for(var s=0,u=n.length;u>s;++s){var l=n[s],c=l.length;if(c)for(var f=l[0],d=f[0],h=f[1]/2+Uo/4,p=Math.sin(h),m=Math.cos(h),v=1;;){v===c&&(v=0),t=l[v];var g=t[0],y=t[1]/2+Uo/4,b=Math.sin(y),_=Math.cos(y),x=g-d,w=x>=0?1:-1,k=w*x,D=k>Uo,C=p*b;if(Ds.add(Math.atan2(C*w*Math.sin(k),m*_+C*Math.cos(k))),i+=D?x+w*Lo:x,D^d>=e^g>=e){var M=wn(_n(f),_n(t));Cn(M);var S=wn(r,M);Cn(S);var P=(D^x>=0?-1:1)*ot(S[2]);(a>P||a===P&&(M[0]||M[1]))&&(o+=D^x>=0?1:-1)}if(!v++)break;d=g,p=b,m=_,f=t}}return(-zo>i||zo>i&&0>Ds)^1&o}function Zn(t){function n(t,n){return Math.cos(t)*Math.cos(n)>i}function e(t){var e,i,u,l,c;return{lineStart:function(){l=u=!1,c=1},point:function(f,d){var h,p=[f,d],m=n(f,d),v=o?m?0:r(f,d):m?r(f+(0>f?Uo:-Uo),d):0;if(!e&&(l=u=m)&&t.lineStart(),m!==u&&(h=a(e,p),(Sn(e,h)||Sn(p,h))&&(p[0]+=zo,p[1]+=zo,m=n(p[0],p[1]))),m!==u)c=0,m?(t.lineStart(),h=a(p,e),t.point(h[0],h[1])):(h=a(e,p),t.point(h[0],h[1]),t.lineEnd()),e=h;else if(s&&e&&o^m){var g;v&i||!(g=a(p,e,!0))||(c=0,o?(t.lineStart(),t.point(g[0][0],g[0][1]),t.point(g[1][0],g[1][1]),t.lineEnd()):(t.point(g[1][0],g[1][1]),t.lineEnd(),t.lineStart(),t.point(g[0][0],g[0][1])))}!m||e&&Sn(e,p)||t.point(p[0],p[1]),e=p,u=m,i=v},lineEnd:function(){u&&t.lineEnd(),e=null},clean:function(){return c|(l&&u)<<1}}}function a(t,n,e){var a=_n(t),r=_n(n),o=[1,0,0],s=wn(a,r),u=xn(s,s),l=s[0],c=u-l*l;if(!c)return!e&&t;var f=i*u/c,d=-i*l/c,h=wn(o,s),p=Dn(o,f),m=Dn(s,d);kn(p,m);var v=h,g=xn(p,v),y=xn(v,v),b=g*g-y*(xn(p,p)-1);if(!(0>b)){var _=Math.sqrt(b),x=Dn(v,(-g-_)/y);if(kn(x,p),x=Mn(x),!e)return x;var w,k=t[0],D=n[0],C=t[1],M=n[1];k>D&&(w=k,k=D,D=w);var S=D-k,P=bo(S-Uo)<zo,A=P||zo>S;if(!P&&C>M&&(w=C,C=M,M=w),A?P?C+M>0^x[1]<(bo(x[0]-k)<zo?C:M):C<=x[1]&&x[1]<=M:S>Uo^(k<=x[0]&&x[0]<=D)){var T=Dn(v,(-g+_)/y);return kn(T,p),[x,Mn(T)]}}}function r(n,e){var a=o?t:Uo-t,r=0;return-a>n?r|=1:n>a&&(r|=2),-a>e?r|=4:e>a&&(r|=8),r}var i=Math.cos(t),o=i>0,s=bo(i)>zo,u=be(t,6*Bo);return Ln(n,e,u,o?[0,-t]:[-Uo,t-Uo])}function Yn(t,n,e,a){return function(r){var i,o=r.a,s=r.b,u=o.x,l=o.y,c=s.x,f=s.y,d=0,h=1,p=c-u,m=f-l;if(i=t-u,p||!(i>0)){if(i/=p,0>p){if(d>i)return;h>i&&(h=i)}else if(p>0){if(i>h)return;i>d&&(d=i)}if(i=e-u,p||!(0>i)){if(i/=p,0>p){if(i>h)return;i>d&&(d=i)}else if(p>0){if(d>i)return;h>i&&(h=i)}if(i=n-l,m||!(i>0)){if(i/=m,0>m){if(d>i)return;h>i&&(h=i)}else if(m>0){if(i>h)return;i>d&&(d=i)}if(i=a-l,m||!(0>i)){if(i/=m,0>m){if(i>h)return;i>d&&(d=i)}else if(m>0){if(d>i)return;h>i&&(h=i)}return d>0&&(r.a={x:u+d*p,y:l+d*m}),1>h&&(r.b={x:u+h*p,y:l+h*m}),r}}}}}}function Kn(t,n,e,a){function r(a,r){return bo(a[0]-t)<zo?r>0?0:3:bo(a[0]-e)<zo?r>0?2:1:bo(a[1]-n)<zo?r>0?1:0:r>0?3:2}function i(t,n){return o(t.x,n.x)}function o(t,n){var e=r(t,1),a=r(n,1);return e!==a?e-a:0===e?n[1]-t[1]:1===e?t[0]-n[0]:2===e?t[1]-n[1]:n[0]-t[0]}return function(s){function u(t){for(var n=0,e=v.length,a=t[1],r=0;e>r;++r)for(var i,o=1,s=v[r],u=s.length,l=s[0];u>o;++o)i=s[o],l[1]<=a?i[1]>a&&rt(l,i,t)>0&&++n:i[1]<=a&&rt(l,i,t)<0&&--n,l=i;return 0!==n}function l(i,s,u,l){var c=0,f=0;if(null==i||(c=r(i,u))!==(f=r(s,u))||o(i,s)<0^u>0){do l.point(0===c||3===c?t:e,c>1?a:n);while((c=(c+u+4)%4)!==f)}else l.point(s[0],s[1])}function c(r,i){return r>=t&&e>=r&&i>=n&&a>=i}function f(t,n){c(t,n)&&s.point(t,n)}function d(){A.point=p,v&&v.push(g=[]),D=!0,k=!1,x=w=NaN}function h(){m&&(p(y,b),_&&k&&S.rejoin(),m.push(S.buffer())),A.point=f,k&&s.lineEnd()}function p(t,n){t=Math.max(-Fs,Math.min(Fs,t)),n=Math.max(-Fs,Math.min(Fs,n));var e=c(t,n);if(v&&g.push([t,n]),D)y=t,b=n,_=e,D=!1,e&&(s.lineStart(),s.point(t,n));else if(e&&k)s.point(t,n);else{var a={a:{x:x,y:w},b:{x:t,y:n}};P(a)?(k||(s.lineStart(),s.point(a.a.x,a.a.y)),s.point(a.b.x,a.b.y),e||s.lineEnd(),C=!1):e&&(s.lineStart(),s.point(t,n),C=!1)}x=t,w=n,k=e}var m,v,g,y,b,_,x,w,k,D,C,M=s,S=jn(),P=Yn(t,n,e,a),A={point:f,lineStart:d,lineEnd:h,polygonStart:function(){s=S,m=[],v=[],C=!0},polygonEnd:function(){s=M,m=oo.merge(m);var n=u([t,a]),e=C&&n,r=m.length;(e||r)&&(s.polygonStart(),e&&(s.lineStart(),l(null,null,1,s),s.lineEnd()),r&&zn(m,i,n,l,s),s.polygonEnd()),m=v=g=null}};return A}}function Wn(t){var n=0,e=Uo/3,a=fe(t),r=a(n,e);return r.parallels=function(t){return arguments.length?a(n=t[0]*Uo/180,e=t[1]*Uo/180):[n/Uo*180,e/Uo*180]},r}function Gn(t,n){function e(t,n){var e=Math.sqrt(i-2*r*Math.sin(n))/r;return[e*Math.sin(t*=r),o-e*Math.cos(t)]}var a=Math.sin(t),r=(a+Math.sin(n))/2,i=1+a*(2*r-a),o=Math.sqrt(i)/r;return e.invert=function(t,n){var e=o-n;return[Math.atan2(t,e)/r,ot((i-(t*t+e*e)*r*r)/(2*r))]},e}function Xn(){function t(t,n){Bs+=r*t-a*n,a=t,r=n}var n,e,a,r;Zs.point=function(i,o){Zs.point=t,n=a=i,e=r=o},Zs.lineEnd=function(){t(n,e)}}function Jn(t,n){qs>t&&(qs=t),t>Vs&&(Vs=t),Os>n&&(Os=n),n>$s&&($s=n)}function Qn(){function t(t,n){o.push("M",t,",",n,i)}function n(t,n){o.push("M",t,",",n),s.point=e}function e(t,n){o.push("L",t,",",n)}function a(){s.point=t}function r(){o.push("Z")}var i=te(4.5),o=[],s={point:t,lineStart:function(){s.point=n},lineEnd:a,polygonStart:function(){s.lineEnd=r},polygonEnd:function(){s.lineEnd=a,s.point=t},pointRadius:function(t){return i=te(t),s},result:function(){if(o.length){var t=o.join("");return o=[],t}}};return s}function te(t){return"m0,"+t+"a"+t+","+t+" 0 1,1 0,"+-2*t+"a"+t+","+t+" 0 1,1 0,"+2*t+"z"}function ne(t,n){Ps+=t,As+=n,++Ts}function ee(){function t(t,a){var r=t-n,i=a-e,o=Math.sqrt(r*r+i*i);Es+=o*(n+t)/2,Ns+=o*(e+a)/2,Hs+=o,ne(n=t,e=a)}var n,e;Ks.point=function(a,r){Ks.point=t,ne(n=a,e=r)}}function ae(){Ks.point=ne}function re(){function t(t,n){var e=t-a,i=n-r,o=Math.sqrt(e*e+i*i);Es+=o*(a+t)/2,Ns+=o*(r+n)/2,Hs+=o,o=r*t-a*n,Is+=o*(a+t),zs+=o*(r+n),Rs+=3*o,ne(a=t,r=n)}var n,e,a,r;Ks.point=function(i,o){Ks.point=t,ne(n=a=i,e=r=o)},Ks.lineEnd=function(){t(n,e)}}function ie(t){function n(n,e){t.moveTo(n+o,e),t.arc(n,e,o,0,Lo)}function e(n,e){t.moveTo(n,e),s.point=a}function a(n,e){t.lineTo(n,e)}function r(){s.point=n}function i(){t.closePath()}var o=4.5,s={point:n,lineStart:function(){s.point=e},lineEnd:r,polygonStart:function(){s.lineEnd=i},polygonEnd:function(){s.lineEnd=r,s.point=n},pointRadius:function(t){return o=t,s},result:M};return s}function oe(t){function n(t){return(s?a:e)(t)}function e(n){return le(n,function(e,a){e=t(e,a),n.point(e[0],e[1])})}function a(n){function e(e,a){e=t(e,a),n.point(e[0],e[1])}function a(){b=NaN,D.point=i,n.lineStart()}function i(e,a){var i=_n([e,a]),o=t(e,a);r(b,_,y,x,w,k,b=o[0],_=o[1],y=e,x=i[0],w=i[1],k=i[2],s,n),n.point(b,_)}function o(){D.point=e,n.lineEnd()}function u(){a(),D.point=l,D.lineEnd=c}function l(t,n){i(f=t,d=n),h=b,p=_,m=x,v=w,g=k,D.point=i}function c(){r(b,_,y,x,w,k,h,p,f,m,v,g,s,n),D.lineEnd=o,o()}var f,d,h,p,m,v,g,y,b,_,x,w,k,D={point:e,lineStart:a,lineEnd:o,polygonStart:function(){n.polygonStart(),D.lineStart=u},polygonEnd:function(){n.polygonEnd(),D.lineStart=a}};return D}function r(n,e,a,s,u,l,c,f,d,h,p,m,v,g){var y=c-n,b=f-e,_=y*y+b*b;if(_>4*i&&v--){var x=s+h,w=u+p,k=l+m,D=Math.sqrt(x*x+w*w+k*k),C=Math.asin(k/=D),M=bo(bo(k)-1)<zo||bo(a-d)<zo?(a+d)/2:Math.atan2(w,x),S=t(M,C),P=S[0],A=S[1],T=P-n,E=A-e,N=b*T-y*E;(N*N/_>i||bo((y*T+b*E)/_-.5)>.3||o>s*h+u*p+l*m)&&(r(n,e,a,s,u,l,P,A,M,x/=D,w/=D,k,v,g),g.point(P,A),r(P,A,M,x,w,k,c,f,d,h,p,m,v,g))}}var i=.5,o=Math.cos(30*Bo),s=16;return n.precision=function(t){return arguments.length?(s=(i=t*t)>0&&16,n):Math.sqrt(i)},n}function se(t){var n=oe(function(n,e){return t([n*qo,e*qo])});return function(t){return de(n(t))}}function ue(t){this.stream=t}function le(t,n){return{point:n,sphere:function(){t.sphere()},lineStart:function(){t.lineStart()},lineEnd:function(){t.lineEnd()},polygonStart:function(){t.polygonStart()},polygonEnd:function(){t.polygonEnd()}}}function ce(t){return fe(function(){return t})()}function fe(t){function n(t){return t=s(t[0]*Bo,t[1]*Bo),[t[0]*d+u,l-t[1]*d]}function e(t){return t=s.invert((t[0]-u)/d,(l-t[1])/d),t&&[t[0]*qo,t[1]*qo]}function a(){s=Hn(o=me(g,y,b),i);var t=i(m,v);return u=h-t[0]*d,l=p+t[1]*d,r()}function r(){return c&&(c.valid=!1,c=null),n}var i,o,s,u,l,c,f=oe(function(t,n){return t=i(t,n),[t[0]*d+u,l-t[1]*d]}),d=150,h=480,p=250,m=0,v=0,g=0,y=0,b=0,_=Ls,x=k,w=null,D=null;return n.stream=function(t){return c&&(c.valid=!1),c=de(_(o,f(x(t)))),c.valid=!0,c},n.clipAngle=function(t){return arguments.length?(_=null==t?(w=t,Ls):Zn((w=+t)*Bo),r()):w},n.clipExtent=function(t){return arguments.length?(D=t,x=t?Kn(t[0][0],t[0][1],t[1][0],t[1][1]):k,r()):D},n.scale=function(t){return arguments.length?(d=+t,a()):d},n.translate=function(t){return arguments.length?(h=+t[0],p=+t[1],a()):[h,p]},n.center=function(t){return arguments.length?(m=t[0]%360*Bo,v=t[1]%360*Bo,a()):[m*qo,v*qo]},n.rotate=function(t){return arguments.length?(g=t[0]%360*Bo,y=t[1]%360*Bo,b=t.length>2?t[2]%360*Bo:0,a()):[g*qo,y*qo,b*qo]},oo.rebind(n,f,"precision"),function(){return i=t.apply(this,arguments),n.invert=i.invert&&e,a()}}function de(t){return le(t,function(n,e){t.point(n*Bo,e*Bo)})}function he(t,n){return[t,n]}function pe(t,n){return[t>Uo?t-Lo:-Uo>t?t+Lo:t,n]}function me(t,n,e){return t?n||e?Hn(ge(t),ye(n,e)):ge(t):n||e?ye(n,e):pe}function ve(t){return function(n,e){return n+=t,[n>Uo?n-Lo:-Uo>n?n+Lo:n,e]}}function ge(t){var n=ve(t);return n.invert=ve(-t),n}function ye(t,n){function e(t,n){var e=Math.cos(n),s=Math.cos(t)*e,u=Math.sin(t)*e,l=Math.sin(n),c=l*a+s*r;return[Math.atan2(u*i-c*o,s*a-l*r),ot(c*i+u*o)]}var a=Math.cos(t),r=Math.sin(t),i=Math.cos(n),o=Math.sin(n);return e.invert=function(t,n){var e=Math.cos(n),s=Math.cos(t)*e,u=Math.sin(t)*e,l=Math.sin(n),c=l*i-u*o;return[Math.atan2(u*i+l*o,s*a+c*r),ot(c*a-s*r)]},e}function be(t,n){var e=Math.cos(t),a=Math.sin(t);return function(r,i,o,s){var u=o*n;null!=r?(r=_e(e,r),i=_e(e,i),(o>0?i>r:r>i)&&(r+=o*Lo)):(r=t+o*Lo,i=t-.5*u);for(var l,c=r;o>0?c>i:i>c;c-=u)s.point((l=Mn([e,-a*Math.cos(c),-a*Math.sin(c)]))[0],l[1])}}function _e(t,n){var e=_n(n);e[0]-=t,Cn(e);var a=it(-e[1]);return((-e[2]<0?-a:a)+2*Math.PI-zo)%(2*Math.PI)}function xe(t,n,e){var a=oo.range(t,n-zo,e).concat(n);return function(t){return a.map(function(n){return[t,n]})}}function we(t,n,e){var a=oo.range(t,n-zo,e).concat(n);return function(t){return a.map(function(n){return[n,t]})}}function ke(t){return t.source}function De(t){return t.target}function Ce(t,n,e,a){var r=Math.cos(n),i=Math.sin(n),o=Math.cos(a),s=Math.sin(a),u=r*Math.cos(t),l=r*Math.sin(t),c=o*Math.cos(e),f=o*Math.sin(e),d=2*Math.asin(Math.sqrt(ct(a-n)+r*o*ct(e-t))),h=1/Math.sin(d),p=d?function(t){var n=Math.sin(t*=d)*h,e=Math.sin(d-t)*h,a=e*u+n*c,r=e*l+n*f,o=e*i+n*s;return[Math.atan2(r,a)*qo,Math.atan2(o,Math.sqrt(a*a+r*r))*qo]}:function(){return[t*qo,n*qo]};return p.distance=d,p}function Me(){function t(t,r){var i=Math.sin(r*=Bo),o=Math.cos(r),s=bo((t*=Bo)-n),u=Math.cos(s);Ws+=Math.atan2(Math.sqrt((s=o*Math.sin(s))*s+(s=a*i-e*o*u)*s),e*i+a*o*u),n=t,e=i,a=o}var n,e,a;Gs.point=function(r,i){n=r*Bo,e=Math.sin(i*=Bo),a=Math.cos(i),Gs.point=t},Gs.lineEnd=function(){Gs.point=Gs.lineEnd=M}}function Se(t,n){function e(n,e){var a=Math.cos(n),r=Math.cos(e),i=t(a*r);return[i*r*Math.sin(n),i*Math.sin(e)]}return e.invert=function(t,e){var a=Math.sqrt(t*t+e*e),r=n(a),i=Math.sin(r),o=Math.cos(r);return[Math.atan2(t*i,a*o),Math.asin(a&&e*i/a)]},e}function Pe(t,n){function e(t,n){o>0?-jo+zo>n&&(n=-jo+zo):n>jo-zo&&(n=jo-zo);var e=o/Math.pow(r(n),i);return[e*Math.sin(i*t),o-e*Math.cos(i*t)]}var a=Math.cos(t),r=function(t){return Math.tan(Uo/4+t/2)},i=t===n?Math.sin(t):Math.log(a/Math.cos(n))/Math.log(r(n)/r(t)),o=a*Math.pow(r(t),i)/i;return i?(e.invert=function(t,n){var e=o-n,a=at(i)*Math.sqrt(t*t+e*e);return[Math.atan2(t,e)/i,2*Math.atan(Math.pow(o/a,1/i))-jo]},e):Te}function Ae(t,n){function e(t,n){var e=i-n;return[e*Math.sin(r*t),i-e*Math.cos(r*t)]}var a=Math.cos(t),r=t===n?Math.sin(t):(a-Math.cos(n))/(n-t),i=a/r+t;return bo(r)<zo?he:(e.invert=function(t,n){var e=i-n;return[Math.atan2(t,e)/r,i-at(r)*Math.sqrt(t*t+e*e)]},e)}function Te(t,n){return[t,Math.log(Math.tan(Uo/4+n/2))]}function Ee(t){var n,e=ce(t),a=e.scale,r=e.translate,i=e.clipExtent;return e.scale=function(){var t=a.apply(e,arguments);return t===e?n?e.clipExtent(null):e:t},e.translate=function(){var t=r.apply(e,arguments);return t===e?n?e.clipExtent(null):e:t},e.clipExtent=function(t){var o=i.apply(e,arguments);if(o===e){if(n=null==t){var s=Uo*a(),u=r();i([[u[0]-s,u[1]-s],[u[0]+s,u[1]+s]])}}else n&&(o=null);return o},e.clipExtent(null)}function Ne(t,n){return[Math.log(Math.tan(Uo/4+n/2)),-t]}function He(t){return t[0]}function Ie(t){return t[1]}function ze(t){for(var n=t.length,e=[0,1],a=2,r=2;n>r;r++){for(;a>1&&rt(t[e[a-2]],t[e[a-1]],t[r])<=0;)--a;e[a++]=r}return e.slice(0,a)}function Re(t,n){return t[0]-n[0]||t[1]-n[1]}function Ue(t,n,e){return(e[0]-n[0])*(t[1]-n[1])<(e[1]-n[1])*(t[0]-n[0])}function Le(t,n,e,a){var r=t[0],i=e[0],o=n[0]-r,s=a[0]-i,u=t[1],l=e[1],c=n[1]-u,f=a[1]-l,d=(s*(u-l)-f*(r-i))/(f*o-s*c);return[r+d*o,u+d*c]}function Fe(t){var n=t[0],e=t[t.length-1];return!(n[0]-e[0]||n[1]-e[1])}function je(){sa(this),this.edge=this.site=this.circle=null}function Be(t){var n=uu.pop()||new je;return n.site=t,n}function qe(t){Je(t),iu.remove(t),uu.push(t),sa(t)}function Oe(t){var n=t.circle,e=n.x,a=n.cy,r={x:e,y:a},i=t.P,o=t.N,s=[t];qe(t);for(var u=i;u.circle&&bo(e-u.circle.x)<zo&&bo(a-u.circle.cy)<zo;)i=u.P,s.unshift(u),qe(u),u=i;s.unshift(u),Je(u);for(var l=o;l.circle&&bo(e-l.circle.x)<zo&&bo(a-l.circle.cy)<zo;)o=l.N,s.push(l),qe(l),l=o;s.push(l),Je(l);var c,f=s.length;for(c=1;f>c;++c)l=s[c],u=s[c-1],ra(l.edge,u.site,l.site,r);u=s[0],l=s[f-1],l.edge=ea(u.site,l.site,null,r),Xe(u),Xe(l)}function Ve(t){for(var n,e,a,r,i=t.x,o=t.y,s=iu._;s;)if(a=$e(s,o)-i,a>zo)s=s.L;else{if(r=i-Ze(s,o),!(r>zo)){a>-zo?(n=s.P,e=s):r>-zo?(n=s,e=s.N):n=e=s;break}if(!s.R){n=s;break}s=s.R}var u=Be(t);if(iu.insert(n,u),n||e){if(n===e)return Je(n),e=Be(n.site),iu.insert(u,e),u.edge=e.edge=ea(n.site,u.site),Xe(n),void Xe(e);if(!e)return void(u.edge=ea(n.site,u.site));Je(n),Je(e);var l=n.site,c=l.x,f=l.y,d=t.x-c,h=t.y-f,p=e.site,m=p.x-c,v=p.y-f,g=2*(d*v-h*m),y=d*d+h*h,b=m*m+v*v,_={x:(v*y-h*b)/g+c,y:(d*b-m*y)/g+f};ra(e.edge,l,p,_),u.edge=ea(l,t,null,_),e.edge=ea(t,p,null,_),Xe(n),Xe(e)}}function $e(t,n){var e=t.site,a=e.x,r=e.y,i=r-n;if(!i)return a;var o=t.P;if(!o)return-(1/0);e=o.site;var s=e.x,u=e.y,l=u-n;if(!l)return s;var c=s-a,f=1/i-1/l,d=c/l;return f?(-d+Math.sqrt(d*d-2*f*(c*c/(-2*l)-u+l/2+r-i/2)))/f+a:(a+s)/2}function Ze(t,n){var e=t.N;if(e)return $e(e,n);var a=t.site;return a.y===n?a.x:1/0}function Ye(t){this.site=t,this.edges=[]}function Ke(t){for(var n,e,a,r,i,o,s,u,l,c,f=t[0][0],d=t[1][0],h=t[0][1],p=t[1][1],m=ru,v=m.length;v--;)if(i=m[v],i&&i.prepare())for(s=i.edges,u=s.length,o=0;u>o;)c=s[o].end(),a=c.x,r=c.y,l=s[++o%u].start(),n=l.x,e=l.y,(bo(a-n)>zo||bo(r-e)>zo)&&(s.splice(o,0,new ia(aa(i.site,c,bo(a-f)<zo&&p-r>zo?{x:f,y:bo(n-f)<zo?e:p}:bo(r-p)<zo&&d-a>zo?{x:bo(e-p)<zo?n:d,y:p}:bo(a-d)<zo&&r-h>zo?{x:d,y:bo(n-d)<zo?e:h}:bo(r-h)<zo&&a-f>zo?{x:bo(e-h)<zo?n:f,y:h}:null),i.site,null)),++u)}function We(t,n){return n.angle-t.angle}function Ge(){sa(this),this.x=this.y=this.arc=this.site=this.cy=null}function Xe(t){var n=t.P,e=t.N;if(n&&e){var a=n.site,r=t.site,i=e.site;if(a!==i){var o=r.x,s=r.y,u=a.x-o,l=a.y-s,c=i.x-o,f=i.y-s,d=2*(u*f-l*c);if(!(d>=-Ro)){var h=u*u+l*l,p=c*c+f*f,m=(f*h-l*p)/d,v=(u*p-c*h)/d,f=v+s,g=lu.pop()||new Ge;g.arc=t,g.site=r,g.x=m+o,g.y=f+Math.sqrt(m*m+v*v),g.cy=f,t.circle=g;for(var y=null,b=su._;b;)if(g.y<b.y||g.y===b.y&&g.x<=b.x){if(!b.L){y=b.P;
+	break}b=b.L}else{if(!b.R){y=b;break}b=b.R}su.insert(y,g),y||(ou=g)}}}}function Je(t){var n=t.circle;n&&(n.P||(ou=n.N),su.remove(n),lu.push(n),sa(n),t.circle=null)}function Qe(t){for(var n,e=au,a=Yn(t[0][0],t[0][1],t[1][0],t[1][1]),r=e.length;r--;)n=e[r],(!ta(n,t)||!a(n)||bo(n.a.x-n.b.x)<zo&&bo(n.a.y-n.b.y)<zo)&&(n.a=n.b=null,e.splice(r,1))}function ta(t,n){var e=t.b;if(e)return!0;var a,r,i=t.a,o=n[0][0],s=n[1][0],u=n[0][1],l=n[1][1],c=t.l,f=t.r,d=c.x,h=c.y,p=f.x,m=f.y,v=(d+p)/2,g=(h+m)/2;if(m===h){if(o>v||v>=s)return;if(d>p){if(i){if(i.y>=l)return}else i={x:v,y:u};e={x:v,y:l}}else{if(i){if(i.y<u)return}else i={x:v,y:l};e={x:v,y:u}}}else if(a=(d-p)/(m-h),r=g-a*v,-1>a||a>1)if(d>p){if(i){if(i.y>=l)return}else i={x:(u-r)/a,y:u};e={x:(l-r)/a,y:l}}else{if(i){if(i.y<u)return}else i={x:(l-r)/a,y:l};e={x:(u-r)/a,y:u}}else if(m>h){if(i){if(i.x>=s)return}else i={x:o,y:a*o+r};e={x:s,y:a*s+r}}else{if(i){if(i.x<o)return}else i={x:s,y:a*s+r};e={x:o,y:a*o+r}}return t.a=i,t.b=e,!0}function na(t,n){this.l=t,this.r=n,this.a=this.b=null}function ea(t,n,e,a){var r=new na(t,n);return au.push(r),e&&ra(r,t,n,e),a&&ra(r,n,t,a),ru[t.i].edges.push(new ia(r,t,n)),ru[n.i].edges.push(new ia(r,n,t)),r}function aa(t,n,e){var a=new na(t,null);return a.a=n,a.b=e,au.push(a),a}function ra(t,n,e,a){t.a||t.b?t.l===e?t.b=a:t.a=a:(t.a=a,t.l=n,t.r=e)}function ia(t,n,e){var a=t.a,r=t.b;this.edge=t,this.site=n,this.angle=e?Math.atan2(e.y-n.y,e.x-n.x):t.l===n?Math.atan2(r.x-a.x,a.y-r.y):Math.atan2(a.x-r.x,r.y-a.y)}function oa(){this._=null}function sa(t){t.U=t.C=t.L=t.R=t.P=t.N=null}function ua(t,n){var e=n,a=n.R,r=e.U;r?r.L===e?r.L=a:r.R=a:t._=a,a.U=r,e.U=a,e.R=a.L,e.R&&(e.R.U=e),a.L=e}function la(t,n){var e=n,a=n.L,r=e.U;r?r.L===e?r.L=a:r.R=a:t._=a,a.U=r,e.U=a,e.L=a.R,e.L&&(e.L.U=e),a.R=e}function ca(t){for(;t.L;)t=t.L;return t}function fa(t,n){var e,a,r,i=t.sort(da).pop();for(au=[],ru=new Array(t.length),iu=new oa,su=new oa;;)if(r=ou,i&&(!r||i.y<r.y||i.y===r.y&&i.x<r.x))(i.x!==e||i.y!==a)&&(ru[i.i]=new Ye(i),Ve(i),e=i.x,a=i.y),i=t.pop();else{if(!r)break;Oe(r.arc)}n&&(Qe(n),Ke(n));var o={cells:ru,edges:au};return iu=su=au=ru=null,o}function da(t,n){return n.y-t.y||n.x-t.x}function ha(t,n,e){return(t.x-e.x)*(n.y-t.y)-(t.x-n.x)*(e.y-t.y)}function pa(t){return t.x}function ma(t){return t.y}function va(){return{leaf:!0,nodes:[],point:null,x:null,y:null}}function ga(t,n,e,a,r,i){if(!t(n,e,a,r,i)){var o=.5*(e+r),s=.5*(a+i),u=n.nodes;u[0]&&ga(t,u[0],e,a,o,s),u[1]&&ga(t,u[1],o,a,r,s),u[2]&&ga(t,u[2],e,s,o,i),u[3]&&ga(t,u[3],o,s,r,i)}}function ya(t,n,e,a,r,i,o){var s,u=1/0;return function l(t,c,f,d,h){if(!(c>i||f>o||a>d||r>h)){if(p=t.point){var p,m=n-t.x,v=e-t.y,g=m*m+v*v;if(u>g){var y=Math.sqrt(u=g);a=n-y,r=e-y,i=n+y,o=e+y,s=p}}for(var b=t.nodes,_=.5*(c+d),x=.5*(f+h),w=n>=_,k=e>=x,D=k<<1|w,C=D+4;C>D;++D)if(t=b[3&D])switch(3&D){case 0:l(t,c,f,_,x);break;case 1:l(t,_,f,d,x);break;case 2:l(t,c,x,_,h);break;case 3:l(t,_,x,d,h)}}}(t,a,r,i,o),s}function ba(t,n){t=oo.rgb(t),n=oo.rgb(n);var e=t.r,a=t.g,r=t.b,i=n.r-e,o=n.g-a,s=n.b-r;return function(t){return"#"+Ct(Math.round(e+i*t))+Ct(Math.round(a+o*t))+Ct(Math.round(r+s*t))}}function _a(t,n){var e,a={},r={};for(e in t)e in n?a[e]=ka(t[e],n[e]):r[e]=t[e];for(e in n)e in t||(r[e]=n[e]);return function(t){for(e in a)r[e]=a[e](t);return r}}function xa(t,n){return t=+t,n=+n,function(e){return t*(1-e)+n*e}}function wa(t,n){var e,a,r,i=fu.lastIndex=du.lastIndex=0,o=-1,s=[],u=[];for(t+="",n+="";(e=fu.exec(t))&&(a=du.exec(n));)(r=a.index)>i&&(r=n.slice(i,r),s[o]?s[o]+=r:s[++o]=r),(e=e[0])===(a=a[0])?s[o]?s[o]+=a:s[++o]=a:(s[++o]=null,u.push({i:o,x:xa(e,a)})),i=du.lastIndex;return i<n.length&&(r=n.slice(i),s[o]?s[o]+=r:s[++o]=r),s.length<2?u[0]?(n=u[0].x,function(t){return n(t)+""}):function(){return n}:(n=u.length,function(t){for(var e,a=0;n>a;++a)s[(e=u[a]).i]=e.x(t);return s.join("")})}function ka(t,n){for(var e,a=oo.interpolators.length;--a>=0&&!(e=oo.interpolators[a](t,n)););return e}function Da(t,n){var e,a=[],r=[],i=t.length,o=n.length,s=Math.min(t.length,n.length);for(e=0;s>e;++e)a.push(ka(t[e],n[e]));for(;i>e;++e)r[e]=t[e];for(;o>e;++e)r[e]=n[e];return function(t){for(e=0;s>e;++e)r[e]=a[e](t);return r}}function Ca(t){return function(n){return 0>=n?0:n>=1?1:t(n)}}function Ma(t){return function(n){return 1-t(1-n)}}function Sa(t){return function(n){return.5*(.5>n?t(2*n):2-t(2-2*n))}}function Pa(t){return t*t}function Aa(t){return t*t*t}function Ta(t){if(0>=t)return 0;if(t>=1)return 1;var n=t*t,e=n*t;return 4*(.5>t?e:3*(t-n)+e-.75)}function Ea(t){return function(n){return Math.pow(n,t)}}function Na(t){return 1-Math.cos(t*jo)}function Ha(t){return Math.pow(2,10*(t-1))}function Ia(t){return 1-Math.sqrt(1-t*t)}function za(t,n){var e;return arguments.length<2&&(n=.45),arguments.length?e=n/Lo*Math.asin(1/t):(t=1,e=n/4),function(a){return 1+t*Math.pow(2,-10*a)*Math.sin((a-e)*Lo/n)}}function Ra(t){return t||(t=1.70158),function(n){return n*n*((t+1)*n-t)}}function Ua(t){return 1/2.75>t?7.5625*t*t:2/2.75>t?7.5625*(t-=1.5/2.75)*t+.75:2.5/2.75>t?7.5625*(t-=2.25/2.75)*t+.9375:7.5625*(t-=2.625/2.75)*t+.984375}function La(t,n){t=oo.hcl(t),n=oo.hcl(n);var e=t.h,a=t.c,r=t.l,i=n.h-e,o=n.c-a,s=n.l-r;return isNaN(o)&&(o=0,a=isNaN(a)?n.c:a),isNaN(i)?(i=0,e=isNaN(e)?n.h:e):i>180?i-=360:-180>i&&(i+=360),function(t){return mt(e+i*t,a+o*t,r+s*t)+""}}function Fa(t,n){t=oo.hsl(t),n=oo.hsl(n);var e=t.h,a=t.s,r=t.l,i=n.h-e,o=n.s-a,s=n.l-r;return isNaN(o)&&(o=0,a=isNaN(a)?n.s:a),isNaN(i)?(i=0,e=isNaN(e)?n.h:e):i>180?i-=360:-180>i&&(i+=360),function(t){return ht(e+i*t,a+o*t,r+s*t)+""}}function ja(t,n){t=oo.lab(t),n=oo.lab(n);var e=t.l,a=t.a,r=t.b,i=n.l-e,o=n.a-a,s=n.b-r;return function(t){return gt(e+i*t,a+o*t,r+s*t)+""}}function Ba(t,n){return n-=t,function(e){return Math.round(t+n*e)}}function qa(t){var n=[t.a,t.b],e=[t.c,t.d],a=Va(n),r=Oa(n,e),i=Va($a(e,n,-r))||0;n[0]*e[1]<e[0]*n[1]&&(n[0]*=-1,n[1]*=-1,a*=-1,r*=-1),this.rotate=(a?Math.atan2(n[1],n[0]):Math.atan2(-e[0],e[1]))*qo,this.translate=[t.e,t.f],this.scale=[a,i],this.skew=i?Math.atan2(r,i)*qo:0}function Oa(t,n){return t[0]*n[0]+t[1]*n[1]}function Va(t){var n=Math.sqrt(Oa(t,t));return n&&(t[0]/=n,t[1]/=n),n}function $a(t,n,e){return t[0]+=e*n[0],t[1]+=e*n[1],t}function Za(t,n){var e,a=[],r=[],i=oo.transform(t),o=oo.transform(n),s=i.translate,u=o.translate,l=i.rotate,c=o.rotate,f=i.skew,d=o.skew,h=i.scale,p=o.scale;return s[0]!=u[0]||s[1]!=u[1]?(a.push("translate(",null,",",null,")"),r.push({i:1,x:xa(s[0],u[0])},{i:3,x:xa(s[1],u[1])})):u[0]||u[1]?a.push("translate("+u+")"):a.push(""),l!=c?(l-c>180?c+=360:c-l>180&&(l+=360),r.push({i:a.push(a.pop()+"rotate(",null,")")-2,x:xa(l,c)})):c&&a.push(a.pop()+"rotate("+c+")"),f!=d?r.push({i:a.push(a.pop()+"skewX(",null,")")-2,x:xa(f,d)}):d&&a.push(a.pop()+"skewX("+d+")"),h[0]!=p[0]||h[1]!=p[1]?(e=a.push(a.pop()+"scale(",null,",",null,")"),r.push({i:e-4,x:xa(h[0],p[0])},{i:e-2,x:xa(h[1],p[1])})):(1!=p[0]||1!=p[1])&&a.push(a.pop()+"scale("+p+")"),e=r.length,function(t){for(var n,i=-1;++i<e;)a[(n=r[i]).i]=n.x(t);return a.join("")}}function Ya(t,n){return n=(n-=t=+t)||1/n,function(e){return(e-t)/n}}function Ka(t,n){return n=(n-=t=+t)||1/n,function(e){return Math.max(0,Math.min(1,(e-t)/n))}}function Wa(t){for(var n=t.source,e=t.target,a=Xa(n,e),r=[n];n!==a;)n=n.parent,r.push(n);for(var i=r.length;e!==a;)r.splice(i,0,e),e=e.parent;return r}function Ga(t){for(var n=[],e=t.parent;null!=e;)n.push(t),t=e,e=e.parent;return n.push(t),n}function Xa(t,n){if(t===n)return t;for(var e=Ga(t),a=Ga(n),r=e.pop(),i=a.pop(),o=null;r===i;)o=r,r=e.pop(),i=a.pop();return o}function Ja(t){t.fixed|=2}function Qa(t){t.fixed&=-7}function tr(t){t.fixed|=4,t.px=t.x,t.py=t.y}function nr(t){t.fixed&=-5}function er(t,n,e){var a=0,r=0;if(t.charge=0,!t.leaf)for(var i,o=t.nodes,s=o.length,u=-1;++u<s;)i=o[u],null!=i&&(er(i,n,e),t.charge+=i.charge,a+=i.charge*i.cx,r+=i.charge*i.cy);if(t.point){t.leaf||(t.point.x+=Math.random()-.5,t.point.y+=Math.random()-.5);var l=n*e[t.point.index];t.charge+=t.pointCharge=l,a+=l*t.point.x,r+=l*t.point.y}t.cx=a/t.charge,t.cy=r/t.charge}function ar(t,n){return oo.rebind(t,n,"sort","children","value"),t.nodes=t,t.links=lr,t}function rr(t,n){for(var e=[t];null!=(t=e.pop());)if(n(t),(r=t.children)&&(a=r.length))for(var a,r;--a>=0;)e.push(r[a])}function ir(t,n){for(var e=[t],a=[];null!=(t=e.pop());)if(a.push(t),(i=t.children)&&(r=i.length))for(var r,i,o=-1;++o<r;)e.push(i[o]);for(;null!=(t=a.pop());)n(t)}function or(t){return t.children}function sr(t){return t.value}function ur(t,n){return n.value-t.value}function lr(t){return oo.merge(t.map(function(t){return(t.children||[]).map(function(n){return{source:t,target:n}})}))}function cr(t){return t.x}function fr(t){return t.y}function dr(t,n,e){t.y0=n,t.y=e}function hr(t){return oo.range(t.length)}function pr(t){for(var n=-1,e=t[0].length,a=[];++n<e;)a[n]=0;return a}function mr(t){for(var n,e=1,a=0,r=t[0][1],i=t.length;i>e;++e)(n=t[e][1])>r&&(a=e,r=n);return a}function vr(t){return t.reduce(gr,0)}function gr(t,n){return t+n[1]}function yr(t,n){return br(t,Math.ceil(Math.log(n.length)/Math.LN2+1))}function br(t,n){for(var e=-1,a=+t[0],r=(t[1]-a)/n,i=[];++e<=n;)i[e]=r*e+a;return i}function _r(t){return[oo.min(t),oo.max(t)]}function xr(t,n){return t.value-n.value}function wr(t,n){var e=t._pack_next;t._pack_next=n,n._pack_prev=t,n._pack_next=e,e._pack_prev=n}function kr(t,n){t._pack_next=n,n._pack_prev=t}function Dr(t,n){var e=n.x-t.x,a=n.y-t.y,r=t.r+n.r;return.999*r*r>e*e+a*a}function Cr(t){function n(t){c=Math.min(t.x-t.r,c),f=Math.max(t.x+t.r,f),d=Math.min(t.y-t.r,d),h=Math.max(t.y+t.r,h)}if((e=t.children)&&(l=e.length)){var e,a,r,i,o,s,u,l,c=1/0,f=-(1/0),d=1/0,h=-(1/0);if(e.forEach(Mr),a=e[0],a.x=-a.r,a.y=0,n(a),l>1&&(r=e[1],r.x=r.r,r.y=0,n(r),l>2))for(i=e[2],Ar(a,r,i),n(i),wr(a,i),a._pack_prev=i,wr(i,r),r=a._pack_next,o=3;l>o;o++){Ar(a,r,i=e[o]);var p=0,m=1,v=1;for(s=r._pack_next;s!==r;s=s._pack_next,m++)if(Dr(s,i)){p=1;break}if(1==p)for(u=a._pack_prev;u!==s._pack_prev&&!Dr(u,i);u=u._pack_prev,v++);p?(v>m||m==v&&r.r<a.r?kr(a,r=s):kr(a=u,r),o--):(wr(a,i),r=i,n(i))}var g=(c+f)/2,y=(d+h)/2,b=0;for(o=0;l>o;o++)i=e[o],i.x-=g,i.y-=y,b=Math.max(b,i.r+Math.sqrt(i.x*i.x+i.y*i.y));t.r=b,e.forEach(Sr)}}function Mr(t){t._pack_next=t._pack_prev=t}function Sr(t){delete t._pack_next,delete t._pack_prev}function Pr(t,n,e,a){var r=t.children;if(t.x=n+=a*t.x,t.y=e+=a*t.y,t.r*=a,r)for(var i=-1,o=r.length;++i<o;)Pr(r[i],n,e,a)}function Ar(t,n,e){var a=t.r+e.r,r=n.x-t.x,i=n.y-t.y;if(a&&(r||i)){var o=n.r+e.r,s=r*r+i*i;o*=o,a*=a;var u=.5+(a-o)/(2*s),l=Math.sqrt(Math.max(0,2*o*(a+s)-(a-=s)*a-o*o))/(2*s);e.x=t.x+u*r+l*i,e.y=t.y+u*i-l*r}else e.x=t.x+a,e.y=t.y}function Tr(t,n){return t.parent==n.parent?1:2}function Er(t){var n=t.children;return n.length?n[0]:t.t}function Nr(t){var n,e=t.children;return(n=e.length)?e[n-1]:t.t}function Hr(t,n,e){var a=e/(n.i-t.i);n.c-=a,n.s+=e,t.c+=a,n.z+=e,n.m+=e}function Ir(t){for(var n,e=0,a=0,r=t.children,i=r.length;--i>=0;)n=r[i],n.z+=e,n.m+=e,e+=n.s+(a+=n.c)}function zr(t,n,e){return t.a.parent===n.parent?t.a:e}function Rr(t){return 1+oo.max(t,function(t){return t.y})}function Ur(t){return t.reduce(function(t,n){return t+n.x},0)/t.length}function Lr(t){var n=t.children;return n&&n.length?Lr(n[0]):t}function Fr(t){var n,e=t.children;return e&&(n=e.length)?Fr(e[n-1]):t}function jr(t){return{x:t.x,y:t.y,dx:t.dx,dy:t.dy}}function Br(t,n){var e=t.x+n[3],a=t.y+n[0],r=t.dx-n[1]-n[3],i=t.dy-n[0]-n[2];return 0>r&&(e+=r/2,r=0),0>i&&(a+=i/2,i=0),{x:e,y:a,dx:r,dy:i}}function qr(t){var n=t[0],e=t[t.length-1];return e>n?[n,e]:[e,n]}function Or(t){return t.rangeExtent?t.rangeExtent():qr(t.range())}function Vr(t,n,e,a){var r=e(t[0],t[1]),i=a(n[0],n[1]);return function(t){return i(r(t))}}function $r(t,n){var e,a=0,r=t.length-1,i=t[a],o=t[r];return i>o&&(e=a,a=r,r=e,e=i,i=o,o=e),t[a]=n.floor(i),t[r]=n.ceil(o),t}function Zr(t){return t?{floor:function(n){return Math.floor(n/t)*t},ceil:function(n){return Math.ceil(n/t)*t}}:ku}function Yr(t,n,e,a){var r=[],i=[],o=0,s=Math.min(t.length,n.length)-1;for(t[s]<t[0]&&(t=t.slice().reverse(),n=n.slice().reverse());++o<=s;)r.push(e(t[o-1],t[o])),i.push(a(n[o-1],n[o]));return function(n){var e=oo.bisect(t,n,1,s)-1;return i[e](r[e](n))}}function Kr(t,n,e,a){function r(){var r=Math.min(t.length,n.length)>2?Yr:Vr,u=a?Ka:Ya;return o=r(t,n,u,e),s=r(n,t,u,ka),i}function i(t){return o(t)}var o,s;return i.invert=function(t){return s(t)},i.domain=function(n){return arguments.length?(t=n.map(Number),r()):t},i.range=function(t){return arguments.length?(n=t,r()):n},i.rangeRound=function(t){return i.range(t).interpolate(Ba)},i.clamp=function(t){return arguments.length?(a=t,r()):a},i.interpolate=function(t){return arguments.length?(e=t,r()):e},i.ticks=function(n){return Jr(t,n)},i.tickFormat=function(n,e){return Qr(t,n,e)},i.nice=function(n){return Gr(t,n),r()},i.copy=function(){return Kr(t,n,e,a)},r()}function Wr(t,n){return oo.rebind(t,n,"range","rangeRound","interpolate","clamp")}function Gr(t,n){return $r(t,Zr(Xr(t,n)[2]))}function Xr(t,n){null==n&&(n=10);var e=qr(t),a=e[1]-e[0],r=Math.pow(10,Math.floor(Math.log(a/n)/Math.LN10)),i=n/a*r;return.15>=i?r*=10:.35>=i?r*=5:.75>=i&&(r*=2),e[0]=Math.ceil(e[0]/r)*r,e[1]=Math.floor(e[1]/r)*r+.5*r,e[2]=r,e}function Jr(t,n){return oo.range.apply(oo,Xr(t,n))}function Qr(t,n,e){var a=Xr(t,n);if(e){var r=fs.exec(e);if(r.shift(),"s"===r[8]){var i=oo.formatPrefix(Math.max(bo(a[0]),bo(a[1])));return r[7]||(r[7]="."+ti(i.scale(a[2]))),r[8]="f",e=oo.format(r.join("")),function(t){return e(i.scale(t))+i.symbol}}r[7]||(r[7]="."+ni(r[8],a)),e=r.join("")}else e=",."+ti(a[2])+"f";return oo.format(e)}function ti(t){return-Math.floor(Math.log(t)/Math.LN10+.01)}function ni(t,n){var e=ti(n[2]);return t in Du?Math.abs(e-ti(Math.max(bo(n[0]),bo(n[1]))))+ +("e"!==t):e-2*("%"===t)}function ei(t,n,e,a){function r(t){return(e?Math.log(0>t?0:t):-Math.log(t>0?0:-t))/Math.log(n)}function i(t){return e?Math.pow(n,t):-Math.pow(n,-t)}function o(n){return t(r(n))}return o.invert=function(n){return i(t.invert(n))},o.domain=function(n){return arguments.length?(e=n[0]>=0,t.domain((a=n.map(Number)).map(r)),o):a},o.base=function(e){return arguments.length?(n=+e,t.domain(a.map(r)),o):n},o.nice=function(){var n=$r(a.map(r),e?Math:Mu);return t.domain(n),a=n.map(i),o},o.ticks=function(){var t=qr(a),o=[],s=t[0],u=t[1],l=Math.floor(r(s)),c=Math.ceil(r(u)),f=n%1?2:n;if(isFinite(c-l)){if(e){for(;c>l;l++)for(var d=1;f>d;d++)o.push(i(l)*d);o.push(i(l))}else for(o.push(i(l));l++<c;)for(var d=f-1;d>0;d--)o.push(i(l)*d);for(l=0;o[l]<s;l++);for(c=o.length;o[c-1]>u;c--);o=o.slice(l,c)}return o},o.tickFormat=function(t,n){if(!arguments.length)return Cu;arguments.length<2?n=Cu:"function"!=typeof n&&(n=oo.format(n));var a,s=Math.max(.1,t/o.ticks().length),u=e?(a=1e-12,Math.ceil):(a=-1e-12,Math.floor);return function(t){return t/i(u(r(t)+a))<=s?n(t):""}},o.copy=function(){return ei(t.copy(),n,e,a)},Wr(o,t)}function ai(t,n,e){function a(n){return t(r(n))}var r=ri(n),i=ri(1/n);return a.invert=function(n){return i(t.invert(n))},a.domain=function(n){return arguments.length?(t.domain((e=n.map(Number)).map(r)),a):e},a.ticks=function(t){return Jr(e,t)},a.tickFormat=function(t,n){return Qr(e,t,n)},a.nice=function(t){return a.domain(Gr(e,t))},a.exponent=function(o){return arguments.length?(r=ri(n=o),i=ri(1/n),t.domain(e.map(r)),a):n},a.copy=function(){return ai(t.copy(),n,e)},Wr(a,t)}function ri(t){return function(n){return 0>n?-Math.pow(-n,t):Math.pow(n,t)}}function ii(t,n){function e(e){return i[((r.get(e)||("range"===n.t?r.set(e,t.push(e)):NaN))-1)%i.length]}function a(n,e){return oo.range(t.length).map(function(t){return n+e*t})}var r,i,o;return e.domain=function(a){if(!arguments.length)return t;t=[],r=new p;for(var i,o=-1,s=a.length;++o<s;)r.has(i=a[o])||r.set(i,t.push(i));return e[n.t].apply(e,n.a)},e.range=function(t){return arguments.length?(i=t,o=0,n={t:"range",a:arguments},e):i},e.rangePoints=function(r,s){arguments.length<2&&(s=0);var u=r[0],l=r[1],c=t.length<2?(u=(u+l)/2,0):(l-u)/(t.length-1+s);return i=a(u+c*s/2,c),o=0,n={t:"rangePoints",a:arguments},e},e.rangeRoundPoints=function(r,s){arguments.length<2&&(s=0);var u=r[0],l=r[1],c=t.length<2?(u=l=Math.round((u+l)/2),0):(l-u)/(t.length-1+s)|0;return i=a(u+Math.round(c*s/2+(l-u-(t.length-1+s)*c)/2),c),o=0,n={t:"rangeRoundPoints",a:arguments},e},e.rangeBands=function(r,s,u){arguments.length<2&&(s=0),arguments.length<3&&(u=s);var l=r[1]<r[0],c=r[l-0],f=r[1-l],d=(f-c)/(t.length-s+2*u);return i=a(c+d*u,d),l&&i.reverse(),o=d*(1-s),n={t:"rangeBands",a:arguments},e},e.rangeRoundBands=function(r,s,u){arguments.length<2&&(s=0),arguments.length<3&&(u=s);var l=r[1]<r[0],c=r[l-0],f=r[1-l],d=Math.floor((f-c)/(t.length-s+2*u));return i=a(c+Math.round((f-c-(t.length-s)*d)/2),d),l&&i.reverse(),o=Math.round(d*(1-s)),n={t:"rangeRoundBands",a:arguments},e},e.rangeBand=function(){return o},e.rangeExtent=function(){return qr(n.a[0])},e.copy=function(){return ii(t,n)},e.domain(t)}function oi(t,n){function e(){var e=0,i=n.length;for(r=[];++e<i;)r[e-1]=oo.quantile(t,e/i);return a}function a(t){return isNaN(t=+t)?void 0:n[oo.bisect(r,t)]}var r;return a.domain=function(n){return arguments.length?(t=n.map(u).filter(l).sort(s),e()):t},a.range=function(t){return arguments.length?(n=t,e()):n},a.quantiles=function(){return r},a.invertExtent=function(e){return e=n.indexOf(e),0>e?[NaN,NaN]:[e>0?r[e-1]:t[0],e<r.length?r[e]:t[t.length-1]]},a.copy=function(){return oi(t,n)},e()}function si(t,n,e){function a(n){return e[Math.max(0,Math.min(o,Math.floor(i*(n-t))))]}function r(){return i=e.length/(n-t),o=e.length-1,a}var i,o;return a.domain=function(e){return arguments.length?(t=+e[0],n=+e[e.length-1],r()):[t,n]},a.range=function(t){return arguments.length?(e=t,r()):e},a.invertExtent=function(n){return n=e.indexOf(n),n=0>n?NaN:n/i+t,[n,n+1/i]},a.copy=function(){return si(t,n,e)},r()}function ui(t,n){function e(e){return e>=e?n[oo.bisect(t,e)]:void 0}return e.domain=function(n){return arguments.length?(t=n,e):t},e.range=function(t){return arguments.length?(n=t,e):n},e.invertExtent=function(e){return e=n.indexOf(e),[t[e-1],t[e]]},e.copy=function(){return ui(t,n)},e}function li(t){function n(t){return+t}return n.invert=n,n.domain=n.range=function(e){return arguments.length?(t=e.map(n),n):t},n.ticks=function(n){return Jr(t,n)},n.tickFormat=function(n,e){return Qr(t,n,e)},n.copy=function(){return li(t)},n}function ci(){return 0}function fi(t){return t.innerRadius}function di(t){return t.outerRadius}function hi(t){return t.startAngle}function pi(t){return t.endAngle}function mi(t){return t&&t.padAngle}function vi(t,n,e,a){return(t-e)*n-(n-a)*t>0?0:1}function gi(t,n,e,a,r){var i=t[0]-n[0],o=t[1]-n[1],s=(r?a:-a)/Math.sqrt(i*i+o*o),u=s*o,l=-s*i,c=t[0]+u,f=t[1]+l,d=n[0]+u,h=n[1]+l,p=(c+d)/2,m=(f+h)/2,v=d-c,g=h-f,y=v*v+g*g,b=e-a,_=c*h-d*f,x=(0>g?-1:1)*Math.sqrt(b*b*y-_*_),w=(_*g-v*x)/y,k=(-_*v-g*x)/y,D=(_*g+v*x)/y,C=(-_*v+g*x)/y,M=w-p,S=k-m,P=D-p,A=C-m;return M*M+S*S>P*P+A*A&&(w=D,k=C),[[w-u,k-l],[w*e/b,k*e/b]]}function yi(t){function n(n){function o(){l.push("M",i(t(c),s))}for(var u,l=[],c=[],f=-1,d=n.length,h=Et(e),p=Et(a);++f<d;)r.call(this,u=n[f],f)?c.push([+h.call(this,u,f),+p.call(this,u,f)]):c.length&&(o(),c=[]);return c.length&&o(),l.length?l.join(""):null}var e=He,a=Ie,r=In,i=bi,o=i.key,s=.7;return n.x=function(t){return arguments.length?(e=t,n):e},n.y=function(t){return arguments.length?(a=t,n):a},n.defined=function(t){return arguments.length?(r=t,n):r},n.interpolate=function(t){return arguments.length?(o="function"==typeof t?i=t:(i=Nu.get(t)||bi).key,n):o},n.tension=function(t){return arguments.length?(s=t,n):s},n}function bi(t){return t.join("L")}function _i(t){return bi(t)+"Z"}function xi(t){for(var n=0,e=t.length,a=t[0],r=[a[0],",",a[1]];++n<e;)r.push("H",(a[0]+(a=t[n])[0])/2,"V",a[1]);return e>1&&r.push("H",a[0]),r.join("")}function wi(t){for(var n=0,e=t.length,a=t[0],r=[a[0],",",a[1]];++n<e;)r.push("V",(a=t[n])[1],"H",a[0]);return r.join("")}function ki(t){for(var n=0,e=t.length,a=t[0],r=[a[0],",",a[1]];++n<e;)r.push("H",(a=t[n])[0],"V",a[1]);return r.join("")}function Di(t,n){return t.length<4?bi(t):t[1]+Si(t.slice(1,-1),Pi(t,n))}function Ci(t,n){return t.length<3?bi(t):t[0]+Si((t.push(t[0]),t),Pi([t[t.length-2]].concat(t,[t[1]]),n))}function Mi(t,n){return t.length<3?bi(t):t[0]+Si(t,Pi(t,n))}function Si(t,n){if(n.length<1||t.length!=n.length&&t.length!=n.length+2)return bi(t);var e=t.length!=n.length,a="",r=t[0],i=t[1],o=n[0],s=o,u=1;if(e&&(a+="Q"+(i[0]-2*o[0]/3)+","+(i[1]-2*o[1]/3)+","+i[0]+","+i[1],r=t[1],u=2),n.length>1){s=n[1],i=t[u],u++,a+="C"+(r[0]+o[0])+","+(r[1]+o[1])+","+(i[0]-s[0])+","+(i[1]-s[1])+","+i[0]+","+i[1];for(var l=2;l<n.length;l++,u++)i=t[u],s=n[l],a+="S"+(i[0]-s[0])+","+(i[1]-s[1])+","+i[0]+","+i[1]}if(e){var c=t[u];a+="Q"+(i[0]+2*s[0]/3)+","+(i[1]+2*s[1]/3)+","+c[0]+","+c[1]}return a}function Pi(t,n){for(var e,a=[],r=(1-n)/2,i=t[0],o=t[1],s=1,u=t.length;++s<u;)e=i,i=o,o=t[s],a.push([r*(o[0]-e[0]),r*(o[1]-e[1])]);return a}function Ai(t){if(t.length<3)return bi(t);var n=1,e=t.length,a=t[0],r=a[0],i=a[1],o=[r,r,r,(a=t[1])[0]],s=[i,i,i,a[1]],u=[r,",",i,"L",Hi(zu,o),",",Hi(zu,s)];for(t.push(t[e-1]);++n<=e;)a=t[n],o.shift(),o.push(a[0]),s.shift(),s.push(a[1]),Ii(u,o,s);return t.pop(),u.push("L",a),u.join("")}function Ti(t){if(t.length<4)return bi(t);for(var n,e=[],a=-1,r=t.length,i=[0],o=[0];++a<3;)n=t[a],i.push(n[0]),o.push(n[1]);for(e.push(Hi(zu,i)+","+Hi(zu,o)),--a;++a<r;)n=t[a],i.shift(),i.push(n[0]),o.shift(),o.push(n[1]),Ii(e,i,o);return e.join("")}function Ei(t){for(var n,e,a=-1,r=t.length,i=r+4,o=[],s=[];++a<4;)e=t[a%r],o.push(e[0]),s.push(e[1]);for(n=[Hi(zu,o),",",Hi(zu,s)],--a;++a<i;)e=t[a%r],o.shift(),o.push(e[0]),s.shift(),s.push(e[1]),Ii(n,o,s);return n.join("")}function Ni(t,n){var e=t.length-1;if(e)for(var a,r,i=t[0][0],o=t[0][1],s=t[e][0]-i,u=t[e][1]-o,l=-1;++l<=e;)a=t[l],r=l/e,a[0]=n*a[0]+(1-n)*(i+r*s),a[1]=n*a[1]+(1-n)*(o+r*u);return Ai(t)}function Hi(t,n){return t[0]*n[0]+t[1]*n[1]+t[2]*n[2]+t[3]*n[3]}function Ii(t,n,e){t.push("C",Hi(Hu,n),",",Hi(Hu,e),",",Hi(Iu,n),",",Hi(Iu,e),",",Hi(zu,n),",",Hi(zu,e))}function zi(t,n){return(n[1]-t[1])/(n[0]-t[0])}function Ri(t){for(var n=0,e=t.length-1,a=[],r=t[0],i=t[1],o=a[0]=zi(r,i);++n<e;)a[n]=(o+(o=zi(r=i,i=t[n+1])))/2;return a[n]=o,a}function Ui(t){for(var n,e,a,r,i=[],o=Ri(t),s=-1,u=t.length-1;++s<u;)n=zi(t[s],t[s+1]),bo(n)<zo?o[s]=o[s+1]=0:(e=o[s]/n,a=o[s+1]/n,r=e*e+a*a,r>9&&(r=3*n/Math.sqrt(r),o[s]=r*e,o[s+1]=r*a));for(s=-1;++s<=u;)r=(t[Math.min(u,s+1)][0]-t[Math.max(0,s-1)][0])/(6*(1+o[s]*o[s])),i.push([r||0,o[s]*r||0]);return i}function Li(t){return t.length<3?bi(t):t[0]+Si(t,Ui(t))}function Fi(t){for(var n,e,a,r=-1,i=t.length;++r<i;)n=t[r],e=n[0],a=n[1]-jo,n[0]=e*Math.cos(a),n[1]=e*Math.sin(a);return t}function ji(t){function n(n){function u(){m.push("M",s(t(g),f),c,l(t(v.reverse()),f),"Z")}for(var d,h,p,m=[],v=[],g=[],y=-1,b=n.length,_=Et(e),x=Et(r),w=e===a?function(){return h}:Et(a),k=r===i?function(){return p}:Et(i);++y<b;)o.call(this,d=n[y],y)?(v.push([h=+_.call(this,d,y),p=+x.call(this,d,y)]),g.push([+w.call(this,d,y),+k.call(this,d,y)])):v.length&&(u(),v=[],g=[]);return v.length&&u(),m.length?m.join(""):null}var e=He,a=He,r=0,i=Ie,o=In,s=bi,u=s.key,l=s,c="L",f=.7;return n.x=function(t){return arguments.length?(e=a=t,n):a},n.x0=function(t){return arguments.length?(e=t,n):e},n.x1=function(t){return arguments.length?(a=t,n):a},n.y=function(t){return arguments.length?(r=i=t,n):i},n.y0=function(t){return arguments.length?(r=t,n):r},n.y1=function(t){return arguments.length?(i=t,n):i},n.defined=function(t){return arguments.length?(o=t,n):o},n.interpolate=function(t){return arguments.length?(u="function"==typeof t?s=t:(s=Nu.get(t)||bi).key,l=s.reverse||s,c=s.closed?"M":"L",n):u},n.tension=function(t){return arguments.length?(f=t,n):f},n}function Bi(t){return t.radius}function qi(t){return[t.x,t.y]}function Oi(t){return function(){var n=t.apply(this,arguments),e=n[0],a=n[1]-jo;return[e*Math.cos(a),e*Math.sin(a)]}}function Vi(){return 64}function $i(){return"circle"}function Zi(t){var n=Math.sqrt(t/Uo);return"M0,"+n+"A"+n+","+n+" 0 1,1 0,"+-n+"A"+n+","+n+" 0 1,1 0,"+n+"Z"}function Yi(t){return function(){var n,e;(n=this[t])&&(e=n[n.active])&&(--n.count?delete n[n.active]:delete this[t],n.active+=.5,e.event&&e.event.interrupt.call(this,this.__data__,e.index))}}function Ki(t,n,e){return Do(t,qu),t.namespace=n,t.id=e,t}function Wi(t,n,e,a){var r=t.id,i=t.namespace;return K(t,"function"==typeof e?function(t,o,s){t[i][r].tween.set(n,a(e.call(t,t.__data__,o,s)))}:(e=a(e),function(t){t[i][r].tween.set(n,e)}))}function Gi(t){return null==t&&(t=""),function(){this.textContent=t}}function Xi(t){return null==t?"__transition__":"__transition_"+t+"__"}function Ji(t,n,e,a,r){var i=t[e]||(t[e]={active:0,count:0}),o=i[a];if(!o){var s=r.time;o=i[a]={tween:new p,time:s,delay:r.delay,duration:r.duration,ease:r.ease,index:n},r=null,++i.count,oo.timer(function(r){function u(e){if(i.active>a)return c();var r=i[i.active];r&&(--i.count,delete i[i.active],r.event&&r.event.interrupt.call(t,t.__data__,r.index)),i.active=a,o.event&&o.event.start.call(t,t.__data__,n),o.tween.forEach(function(e,a){(a=a.call(t,t.__data__,n))&&m.push(a)}),d=o.ease,f=o.duration,oo.timer(function(){return p.c=l(e||1)?In:l,1},0,s)}function l(e){if(i.active!==a)return 1;for(var r=e/f,s=d(r),u=m.length;u>0;)m[--u].call(t,s);return r>=1?(o.event&&o.event.end.call(t,t.__data__,n),c()):void 0}function c(){return--i.count?delete i[a]:delete t[e],1}var f,d,h=o.delay,p=us,m=[];return p.t=h+s,r>=h?u(r-h):void(p.c=u)},0,s)}}function Qi(t,n,e){t.attr("transform",function(t){var a=n(t);return"translate("+(isFinite(a)?a:e(t))+",0)"})}function to(t,n,e){t.attr("transform",function(t){var a=n(t);return"translate(0,"+(isFinite(a)?a:e(t))+")"})}function no(t){return t.toISOString()}function eo(t,n,e){function a(n){return t(n)}function r(t,e){var a=t[1]-t[0],r=a/e,i=oo.bisect(Xu,r);return i==Xu.length?[n.year,Xr(t.map(function(t){return t/31536e6}),e)[2]]:i?n[r/Xu[i-1]<Xu[i]/r?i-1:i]:[tl,Xr(t,e)[2]]}return a.invert=function(n){return ao(t.invert(n))},a.domain=function(n){return arguments.length?(t.domain(n),a):t.domain().map(ao)},a.nice=function(t,n){function e(e){return!isNaN(e)&&!t.range(e,ao(+e+1),n).length}var i=a.domain(),o=qr(i),s=null==t?r(o,10):"number"==typeof t&&r(o,t);return s&&(t=s[0],n=s[1]),a.domain($r(i,n>1?{floor:function(n){for(;e(n=t.floor(n));)n=ao(n-1);return n},ceil:function(n){for(;e(n=t.ceil(n));)n=ao(+n+1);return n}}:t))},a.ticks=function(t,n){var e=qr(a.domain()),i=null==t?r(e,10):"number"==typeof t?r(e,t):!t.range&&[{range:t},n];return i&&(t=i[0],n=i[1]),t.range(e[0],ao(+e[1]+1),1>n?1:n)},a.tickFormat=function(){return e},a.copy=function(){return eo(t.copy(),n,e)},Wr(a,t)}function ao(t){return new Date(t)}function ro(t){return JSON.parse(t.responseText)}function io(t){var n=lo.createRange();return n.selectNode(lo.body),n.createContextualFragment(t.responseText)}var oo={version:"3.5.6"},so=[].slice,uo=function(t){return so.call(t)},lo=this.document;if(lo)try{uo(lo.documentElement.childNodes)[0].nodeType}catch(co){uo=function(t){for(var n=t.length,e=new Array(n);n--;)e[n]=t[n];return e}}if(Date.now||(Date.now=function(){return+new Date}),lo)try{lo.createElement("DIV").style.setProperty("opacity",0,"")}catch(fo){var ho=this.Element.prototype,po=ho.setAttribute,mo=ho.setAttributeNS,vo=this.CSSStyleDeclaration.prototype,go=vo.setProperty;ho.setAttribute=function(t,n){po.call(this,t,n+"")},ho.setAttributeNS=function(t,n,e){mo.call(this,t,n,e+"")},vo.setProperty=function(t,n,e){go.call(this,t,n+"",e)}}oo.ascending=s,oo.descending=function(t,n){return t>n?-1:n>t?1:n>=t?0:NaN},oo.min=function(t,n){var e,a,r=-1,i=t.length;if(1===arguments.length){for(;++r<i;)if(null!=(a=t[r])&&a>=a){e=a;break}for(;++r<i;)null!=(a=t[r])&&e>a&&(e=a)}else{for(;++r<i;)if(null!=(a=n.call(t,t[r],r))&&a>=a){e=a;break}for(;++r<i;)null!=(a=n.call(t,t[r],r))&&e>a&&(e=a)}return e},oo.max=function(t,n){var e,a,r=-1,i=t.length;if(1===arguments.length){for(;++r<i;)if(null!=(a=t[r])&&a>=a){e=a;break}for(;++r<i;)null!=(a=t[r])&&a>e&&(e=a)}else{for(;++r<i;)if(null!=(a=n.call(t,t[r],r))&&a>=a){e=a;break}for(;++r<i;)null!=(a=n.call(t,t[r],r))&&a>e&&(e=a)}return e},oo.extent=function(t,n){var e,a,r,i=-1,o=t.length;if(1===arguments.length){for(;++i<o;)if(null!=(a=t[i])&&a>=a){e=r=a;break}for(;++i<o;)null!=(a=t[i])&&(e>a&&(e=a),a>r&&(r=a))}else{for(;++i<o;)if(null!=(a=n.call(t,t[i],i))&&a>=a){e=r=a;break}for(;++i<o;)null!=(a=n.call(t,t[i],i))&&(e>a&&(e=a),a>r&&(r=a))}return[e,r]},oo.sum=function(t,n){var e,a=0,r=t.length,i=-1;if(1===arguments.length)for(;++i<r;)l(e=+t[i])&&(a+=e);else for(;++i<r;)l(e=+n.call(t,t[i],i))&&(a+=e);return a},oo.mean=function(t,n){var e,a=0,r=t.length,i=-1,o=r;if(1===arguments.length)for(;++i<r;)l(e=u(t[i]))?a+=e:--o;else for(;++i<r;)l(e=u(n.call(t,t[i],i)))?a+=e:--o;return o?a/o:void 0},oo.quantile=function(t,n){var e=(t.length-1)*n+1,a=Math.floor(e),r=+t[a-1],i=e-a;return i?r+i*(t[a]-r):r},oo.median=function(t,n){var e,a=[],r=t.length,i=-1;if(1===arguments.length)for(;++i<r;)l(e=u(t[i]))&&a.push(e);else for(;++i<r;)l(e=u(n.call(t,t[i],i)))&&a.push(e);return a.length?oo.quantile(a.sort(s),.5):void 0},oo.variance=function(t,n){var e,a,r=t.length,i=0,o=0,s=-1,c=0;if(1===arguments.length)for(;++s<r;)l(e=u(t[s]))&&(a=e-i,i+=a/++c,o+=a*(e-i));else for(;++s<r;)l(e=u(n.call(t,t[s],s)))&&(a=e-i,i+=a/++c,o+=a*(e-i));return c>1?o/(c-1):void 0},oo.deviation=function(){var t=oo.variance.apply(this,arguments);return t?Math.sqrt(t):t};var yo=c(s);oo.bisectLeft=yo.left,oo.bisect=oo.bisectRight=yo.right,oo.bisector=function(t){return c(1===t.length?function(n,e){return s(t(n),e)}:t)},oo.shuffle=function(t,n,e){(i=arguments.length)<3&&(e=t.length,2>i&&(n=0));for(var a,r,i=e-n;i;)r=Math.random()*i--|0,a=t[i+n],t[i+n]=t[r+n],t[r+n]=a;return t},oo.permute=function(t,n){for(var e=n.length,a=new Array(e);e--;)a[e]=t[n[e]];return a},oo.pairs=function(t){for(var n,e=0,a=t.length-1,r=t[0],i=new Array(0>a?0:a);a>e;)i[e]=[n=r,r=t[++e]];return i},oo.zip=function(){if(!(a=arguments.length))return[];for(var t=-1,n=oo.min(arguments,f),e=new Array(n);++t<n;)for(var a,r=-1,i=e[t]=new Array(a);++r<a;)i[r]=arguments[r][t];return e},oo.transpose=function(t){return oo.zip.apply(oo,t)},oo.keys=function(t){var n=[];for(var e in t)n.push(e);return n},oo.values=function(t){var n=[];for(var e in t)n.push(t[e]);return n},oo.entries=function(t){var n=[];for(var e in t)n.push({key:e,value:t[e]});return n},oo.merge=function(t){for(var n,e,a,r=t.length,i=-1,o=0;++i<r;)o+=t[i].length;for(e=new Array(o);--r>=0;)for(a=t[r],n=a.length;--n>=0;)e[--o]=a[n];return e};var bo=Math.abs;oo.range=function(t,n,e){if(arguments.length<3&&(e=1,arguments.length<2&&(n=t,t=0)),(n-t)/e===1/0)throw new Error("infinite range");var a,r=[],i=d(bo(e)),o=-1;if(t*=i,n*=i,e*=i,0>e)for(;(a=t+e*++o)>n;)r.push(a/i);else for(;(a=t+e*++o)<n;)r.push(a/i);return r},oo.map=function(t,n){var e=new p;if(t instanceof p)t.forEach(function(t,n){e.set(t,n)});else if(Array.isArray(t)){var a,r=-1,i=t.length;if(1===arguments.length)for(;++r<i;)e.set(r,t[r]);else for(;++r<i;)e.set(n.call(t,a=t[r],r),a)}else for(var o in t)e.set(o,t[o]);return e};var _o="__proto__",xo="\x00";h(p,{has:g,get:function(t){return this._[m(t)]},set:function(t,n){return this._[m(t)]=n},remove:y,keys:b,values:function(){var t=[];for(var n in this._)t.push(this._[n]);return t},entries:function(){var t=[];for(var n in this._)t.push({key:v(n),value:this._[n]});return t},size:_,empty:x,forEach:function(t){for(var n in this._)t.call(this,v(n),this._[n])}}),oo.nest=function(){function t(n,o,s){if(s>=i.length)return a?a.call(r,o):e?o.sort(e):o;for(var u,l,c,f,d=-1,h=o.length,m=i[s++],v=new p;++d<h;)(f=v.get(u=m(l=o[d])))?f.push(l):v.set(u,[l]);return n?(l=n(),c=function(e,a){l.set(e,t(n,a,s))}):(l={},c=function(e,a){l[e]=t(n,a,s)}),v.forEach(c),l}function n(t,e){if(e>=i.length)return t;var a=[],r=o[e++];return t.forEach(function(t,r){a.push({key:t,values:n(r,e)})}),
+	r?a.sort(function(t,n){return r(t.key,n.key)}):a}var e,a,r={},i=[],o=[];return r.map=function(n,e){return t(e,n,0)},r.entries=function(e){return n(t(oo.map,e,0),0)},r.key=function(t){return i.push(t),r},r.sortKeys=function(t){return o[i.length-1]=t,r},r.sortValues=function(t){return e=t,r},r.rollup=function(t){return a=t,r},r},oo.set=function(t){var n=new w;if(t)for(var e=0,a=t.length;a>e;++e)n.add(t[e]);return n},h(w,{has:g,add:function(t){return this._[m(t+="")]=!0,t},remove:y,values:b,size:_,empty:x,forEach:function(t){for(var n in this._)t.call(this,v(n))}}),oo.behavior={},oo.rebind=function(t,n){for(var e,a=1,r=arguments.length;++a<r;)t[e=arguments[a]]=D(t,n,n[e]);return t};var wo=["webkit","ms","moz","Moz","o","O"];oo.dispatch=function(){for(var t=new S,n=-1,e=arguments.length;++n<e;)t[arguments[n]]=P(t);return t},S.prototype.on=function(t,n){var e=t.indexOf("."),a="";if(e>=0&&(a=t.slice(e+1),t=t.slice(0,e)),t)return arguments.length<2?this[t].on(a):this[t].on(a,n);if(2===arguments.length){if(null==n)for(t in this)this.hasOwnProperty(t)&&this[t].on(a,null);return this}},oo.event=null,oo.requote=function(t){return t.replace(ko,"\\$&")};var ko=/[\\\^\$\*\+\?\|\[\]\(\)\.\{\}]/g,Do={}.__proto__?function(t,n){t.__proto__=n}:function(t,n){for(var e in n)t[e]=n[e]},Co=function(t,n){return n.querySelector(t)},Mo=function(t,n){return n.querySelectorAll(t)},So=function(t,n){var e=t.matches||t[C(t,"matchesSelector")];return(So=function(t,n){return e.call(t,n)})(t,n)};"function"==typeof Sizzle&&(Co=function(t,n){return Sizzle(t,n)[0]||null},Mo=Sizzle,So=Sizzle.matchesSelector),oo.selection=function(){return oo.select(lo.documentElement)};var Po=oo.selection.prototype=[];Po.select=function(t){var n,e,a,r,i=[];t=H(t);for(var o=-1,s=this.length;++o<s;){i.push(n=[]),n.parentNode=(a=this[o]).parentNode;for(var u=-1,l=a.length;++u<l;)(r=a[u])?(n.push(e=t.call(r,r.__data__,u,o)),e&&"__data__"in r&&(e.__data__=r.__data__)):n.push(null)}return N(i)},Po.selectAll=function(t){var n,e,a=[];t=I(t);for(var r=-1,i=this.length;++r<i;)for(var o=this[r],s=-1,u=o.length;++s<u;)(e=o[s])&&(a.push(n=uo(t.call(e,e.__data__,s,r))),n.parentNode=e);return N(a)};var Ao={svg:"http://www.w3.org/2000/svg",xhtml:"http://www.w3.org/1999/xhtml",xlink:"http://www.w3.org/1999/xlink",xml:"http://www.w3.org/XML/1998/namespace",xmlns:"http://www.w3.org/2000/xmlns/"};oo.ns={prefix:Ao,qualify:function(t){var n=t.indexOf(":"),e=t;return n>=0&&(e=t.slice(0,n),t=t.slice(n+1)),Ao.hasOwnProperty(e)?{space:Ao[e],local:t}:t}},Po.attr=function(t,n){if(arguments.length<2){if("string"==typeof t){var e=this.node();return t=oo.ns.qualify(t),t.local?e.getAttributeNS(t.space,t.local):e.getAttribute(t)}for(n in t)this.each(z(n,t[n]));return this}return this.each(z(t,n))},Po.classed=function(t,n){if(arguments.length<2){if("string"==typeof t){var e=this.node(),a=(t=L(t)).length,r=-1;if(n=e.classList){for(;++r<a;)if(!n.contains(t[r]))return!1}else for(n=e.getAttribute("class");++r<a;)if(!U(t[r]).test(n))return!1;return!0}for(n in t)this.each(F(n,t[n]));return this}return this.each(F(t,n))},Po.style=function(t,n,e){var a=arguments.length;if(3>a){if("string"!=typeof t){2>a&&(n="");for(e in t)this.each(B(e,t[e],n));return this}if(2>a){var r=this.node();return o(r).getComputedStyle(r,null).getPropertyValue(t)}e=""}return this.each(B(t,n,e))},Po.property=function(t,n){if(arguments.length<2){if("string"==typeof t)return this.node()[t];for(n in t)this.each(q(n,t[n]));return this}return this.each(q(t,n))},Po.text=function(t){return arguments.length?this.each("function"==typeof t?function(){var n=t.apply(this,arguments);this.textContent=null==n?"":n}:null==t?function(){this.textContent=""}:function(){this.textContent=t}):this.node().textContent},Po.html=function(t){return arguments.length?this.each("function"==typeof t?function(){var n=t.apply(this,arguments);this.innerHTML=null==n?"":n}:null==t?function(){this.innerHTML=""}:function(){this.innerHTML=t}):this.node().innerHTML},Po.append=function(t){return t=O(t),this.select(function(){return this.appendChild(t.apply(this,arguments))})},Po.insert=function(t,n){return t=O(t),n=H(n),this.select(function(){return this.insertBefore(t.apply(this,arguments),n.apply(this,arguments)||null)})},Po.remove=function(){return this.each(V)},Po.data=function(t,n){function e(t,e){var a,r,i,o=t.length,c=e.length,f=Math.min(o,c),d=new Array(c),h=new Array(c),m=new Array(o);if(n){var v,g=new p,y=new Array(o);for(a=-1;++a<o;)g.has(v=n.call(r=t[a],r.__data__,a))?m[a]=r:g.set(v,r),y[a]=v;for(a=-1;++a<c;)(r=g.get(v=n.call(e,i=e[a],a)))?r!==!0&&(d[a]=r,r.__data__=i):h[a]=$(i),g.set(v,!0);for(a=-1;++a<o;)g.get(y[a])!==!0&&(m[a]=t[a])}else{for(a=-1;++a<f;)r=t[a],i=e[a],r?(r.__data__=i,d[a]=r):h[a]=$(i);for(;c>a;++a)h[a]=$(e[a]);for(;o>a;++a)m[a]=t[a]}h.update=d,h.parentNode=d.parentNode=m.parentNode=t.parentNode,s.push(h),u.push(d),l.push(m)}var a,r,i=-1,o=this.length;if(!arguments.length){for(t=new Array(o=(a=this[0]).length);++i<o;)(r=a[i])&&(t[i]=r.__data__);return t}var s=W([]),u=N([]),l=N([]);if("function"==typeof t)for(;++i<o;)e(a=this[i],t.call(a,a.parentNode.__data__,i));else for(;++i<o;)e(a=this[i],t);return u.enter=function(){return s},u.exit=function(){return l},u},Po.datum=function(t){return arguments.length?this.property("__data__",t):this.property("__data__")},Po.filter=function(t){var n,e,a,r=[];"function"!=typeof t&&(t=Z(t));for(var i=0,o=this.length;o>i;i++){r.push(n=[]),n.parentNode=(e=this[i]).parentNode;for(var s=0,u=e.length;u>s;s++)(a=e[s])&&t.call(a,a.__data__,s,i)&&n.push(a)}return N(r)},Po.order=function(){for(var t=-1,n=this.length;++t<n;)for(var e,a=this[t],r=a.length-1,i=a[r];--r>=0;)(e=a[r])&&(i&&i!==e.nextSibling&&i.parentNode.insertBefore(e,i),i=e);return this},Po.sort=function(t){t=Y.apply(this,arguments);for(var n=-1,e=this.length;++n<e;)this[n].sort(t);return this.order()},Po.each=function(t){return K(this,function(n,e,a){t.call(n,n.__data__,e,a)})},Po.call=function(t){var n=uo(arguments);return t.apply(n[0]=this,n),this},Po.empty=function(){return!this.node()},Po.node=function(){for(var t=0,n=this.length;n>t;t++)for(var e=this[t],a=0,r=e.length;r>a;a++){var i=e[a];if(i)return i}return null},Po.size=function(){var t=0;return K(this,function(){++t}),t};var To=[];oo.selection.enter=W,oo.selection.enter.prototype=To,To.append=Po.append,To.empty=Po.empty,To.node=Po.node,To.call=Po.call,To.size=Po.size,To.select=function(t){for(var n,e,a,r,i,o=[],s=-1,u=this.length;++s<u;){a=(r=this[s]).update,o.push(n=[]),n.parentNode=r.parentNode;for(var l=-1,c=r.length;++l<c;)(i=r[l])?(n.push(a[l]=e=t.call(r.parentNode,i.__data__,l,s)),e.__data__=i.__data__):n.push(null)}return N(o)},To.insert=function(t,n){return arguments.length<2&&(n=G(this)),Po.insert.call(this,t,n)},oo.select=function(t){var n;return"string"==typeof t?(n=[Co(t,lo)],n.parentNode=lo.documentElement):(n=[t],n.parentNode=i(t)),N([n])},oo.selectAll=function(t){var n;return"string"==typeof t?(n=uo(Mo(t,lo)),n.parentNode=lo.documentElement):(n=t,n.parentNode=null),N([n])},Po.on=function(t,n,e){var a=arguments.length;if(3>a){if("string"!=typeof t){2>a&&(n=!1);for(e in t)this.each(X(e,t[e],n));return this}if(2>a)return(a=this.node()["__on"+t])&&a._;e=!1}return this.each(X(t,n,e))};var Eo=oo.map({mouseenter:"mouseover",mouseleave:"mouseout"});lo&&Eo.forEach(function(t){"on"+t in lo&&Eo.remove(t)});var No,Ho=0;oo.mouse=function(t){return nt(t,T())};var Io=this.navigator&&/WebKit/.test(this.navigator.userAgent)?-1:0;oo.touch=function(t,n,e){if(arguments.length<3&&(e=n,n=T().changedTouches),n)for(var a,r=0,i=n.length;i>r;++r)if((a=n[r]).identifier===e)return nt(t,a)},oo.behavior.drag=function(){function t(){this.on("mousedown.drag",r).on("touchstart.drag",i)}function n(t,n,r,i,o){return function(){function s(){var t,e,a=n(d,m);a&&(t=a[0]-b[0],e=a[1]-b[1],p|=t|e,b=a,h({type:"drag",x:a[0]+l[0],y:a[1]+l[1],dx:t,dy:e}))}function u(){n(d,m)&&(g.on(i+v,null).on(o+v,null),y(p&&oo.event.target===f),h({type:"dragend"}))}var l,c=this,f=oo.event.target,d=c.parentNode,h=e.of(c,arguments),p=0,m=t(),v=".drag"+(null==m?"":"-"+m),g=oo.select(r(f)).on(i+v,s).on(o+v,u),y=tt(f),b=n(d,m);a?(l=a.apply(c,arguments),l=[l.x-b[0],l.y-b[1]]):l=[0,0],h({type:"dragstart"})}}var e=E(t,"drag","dragstart","dragend"),a=null,r=n(M,oo.mouse,o,"mousemove","mouseup"),i=n(et,oo.touch,k,"touchmove","touchend");return t.origin=function(n){return arguments.length?(a=n,t):a},oo.rebind(t,e,"on")},oo.touches=function(t,n){return arguments.length<2&&(n=T().touches),n?uo(n).map(function(n){var e=nt(t,n);return e.identifier=n.identifier,e}):[]};var zo=1e-6,Ro=zo*zo,Uo=Math.PI,Lo=2*Uo,Fo=Lo-zo,jo=Uo/2,Bo=Uo/180,qo=180/Uo,Oo=Math.SQRT2,Vo=2,$o=4;oo.interpolateZoom=function(t,n){function e(t){var n=t*y;if(g){var e=ut(m),o=i/(Vo*d)*(e*lt(Oo*n+m)-st(m));return[a+o*l,r+o*c,i*e/ut(Oo*n+m)]}return[a+t*l,r+t*c,i*Math.exp(Oo*n)]}var a=t[0],r=t[1],i=t[2],o=n[0],s=n[1],u=n[2],l=o-a,c=s-r,f=l*l+c*c,d=Math.sqrt(f),h=(u*u-i*i+$o*f)/(2*i*Vo*d),p=(u*u-i*i-$o*f)/(2*u*Vo*d),m=Math.log(Math.sqrt(h*h+1)-h),v=Math.log(Math.sqrt(p*p+1)-p),g=v-m,y=(g||Math.log(u/i))/Oo;return e.duration=1e3*y,e},oo.behavior.zoom=function(){function t(t){t.on(T,f).on(Yo+".zoom",h).on("dblclick.zoom",p).on(I,d)}function n(t){return[(t[0]-D.x)/D.k,(t[1]-D.y)/D.k]}function e(t){return[t[0]*D.k+D.x,t[1]*D.k+D.y]}function a(t){D.k=Math.max(M[0],Math.min(M[1],t))}function r(t,n){n=e(n),D.x+=t[0]-n[0],D.y+=t[1]-n[1]}function i(n,e,i,o){n.__chart__={x:D.x,y:D.y,k:D.k},a(Math.pow(2,o)),r(v=e,i),n=oo.select(n),S>0&&(n=n.transition().duration(S)),n.call(t.event)}function s(){x&&x.domain(_.range().map(function(t){return(t-D.x)/D.k}).map(_.invert)),k&&k.domain(w.range().map(function(t){return(t-D.y)/D.k}).map(w.invert))}function u(t){P++||t({type:"zoomstart"})}function l(t){s(),t({type:"zoom",scale:D.k,translate:[D.x,D.y]})}function c(t){--P||(t({type:"zoomend"}),v=null)}function f(){function t(){f=1,r(oo.mouse(a),h),l(s)}function e(){d.on(N,null).on(H,null),p(f&&oo.event.target===i),c(s)}var a=this,i=oo.event.target,s=z.of(a,arguments),f=0,d=oo.select(o(a)).on(N,t).on(H,e),h=n(oo.mouse(a)),p=tt(a);Bu.call(a),u(s)}function d(){function t(){var t=oo.touches(p);return h=D.k,t.forEach(function(t){t.identifier in v&&(v[t.identifier]=n(t))}),t}function e(){var n=oo.event.target;oo.select(n).on(_,o).on(x,s),w.push(n);for(var e=oo.event.changedTouches,a=0,r=e.length;r>a;++a)v[e[a].identifier]=null;var u=t(),l=Date.now();if(1===u.length){if(500>l-b){var c=u[0];i(p,c,v[c.identifier],Math.floor(Math.log(D.k)/Math.LN2)+1),A()}b=l}else if(u.length>1){var c=u[0],f=u[1],d=c[0]-f[0],h=c[1]-f[1];g=d*d+h*h}}function o(){var t,n,e,i,o=oo.touches(p);Bu.call(p);for(var s=0,u=o.length;u>s;++s,i=null)if(e=o[s],i=v[e.identifier]){if(n)break;t=e,n=i}if(i){var c=(c=e[0]-t[0])*c+(c=e[1]-t[1])*c,f=g&&Math.sqrt(c/g);t=[(t[0]+e[0])/2,(t[1]+e[1])/2],n=[(n[0]+i[0])/2,(n[1]+i[1])/2],a(f*h)}b=null,r(t,n),l(m)}function s(){if(oo.event.touches.length){for(var n=oo.event.changedTouches,e=0,a=n.length;a>e;++e)delete v[n[e].identifier];for(var r in v)return void t()}oo.selectAll(w).on(y,null),k.on(T,f).on(I,d),C(),c(m)}var h,p=this,m=z.of(p,arguments),v={},g=0,y=".zoom-"+oo.event.changedTouches[0].identifier,_="touchmove"+y,x="touchend"+y,w=[],k=oo.select(p),C=tt(p);e(),u(m),k.on(T,null).on(I,e)}function h(){var t=z.of(this,arguments);y?clearTimeout(y):(Bu.call(this),m=n(v=g||oo.mouse(this)),u(t)),y=setTimeout(function(){y=null,c(t)},50),A(),a(Math.pow(2,.002*Zo())*D.k),r(v,m),l(t)}function p(){var t=oo.mouse(this),e=Math.log(D.k)/Math.LN2;i(this,t,n(t),oo.event.shiftKey?Math.ceil(e)-1:Math.floor(e)+1)}var m,v,g,y,b,_,x,w,k,D={x:0,y:0,k:1},C=[960,500],M=Ko,S=250,P=0,T="mousedown.zoom",N="mousemove.zoom",H="mouseup.zoom",I="touchstart.zoom",z=E(t,"zoomstart","zoom","zoomend");return Yo||(Yo="onwheel"in lo?(Zo=function(){return-oo.event.deltaY*(oo.event.deltaMode?120:1)},"wheel"):"onmousewheel"in lo?(Zo=function(){return oo.event.wheelDelta},"mousewheel"):(Zo=function(){return-oo.event.detail},"MozMousePixelScroll")),t.event=function(t){t.each(function(){var t=z.of(this,arguments),n=D;Fu?oo.select(this).transition().each("start.zoom",function(){D=this.__chart__||{x:0,y:0,k:1},u(t)}).tween("zoom:zoom",function(){var e=C[0],a=C[1],r=v?v[0]:e/2,i=v?v[1]:a/2,o=oo.interpolateZoom([(r-D.x)/D.k,(i-D.y)/D.k,e/D.k],[(r-n.x)/n.k,(i-n.y)/n.k,e/n.k]);return function(n){var a=o(n),s=e/a[2];this.__chart__=D={x:r-a[0]*s,y:i-a[1]*s,k:s},l(t)}}).each("interrupt.zoom",function(){c(t)}).each("end.zoom",function(){c(t)}):(this.__chart__=D,u(t),l(t),c(t))})},t.translate=function(n){return arguments.length?(D={x:+n[0],y:+n[1],k:D.k},s(),t):[D.x,D.y]},t.scale=function(n){return arguments.length?(D={x:D.x,y:D.y,k:+n},s(),t):D.k},t.scaleExtent=function(n){return arguments.length?(M=null==n?Ko:[+n[0],+n[1]],t):M},t.center=function(n){return arguments.length?(g=n&&[+n[0],+n[1]],t):g},t.size=function(n){return arguments.length?(C=n&&[+n[0],+n[1]],t):C},t.duration=function(n){return arguments.length?(S=+n,t):S},t.x=function(n){return arguments.length?(x=n,_=n.copy(),D={x:0,y:0,k:1},t):x},t.y=function(n){return arguments.length?(k=n,w=n.copy(),D={x:0,y:0,k:1},t):k},oo.rebind(t,z,"on")};var Zo,Yo,Ko=[0,1/0];oo.color=ft,ft.prototype.toString=function(){return this.rgb()+""},oo.hsl=dt;var Wo=dt.prototype=new ft;Wo.brighter=function(t){return t=Math.pow(.7,arguments.length?t:1),new dt(this.h,this.s,this.l/t)},Wo.darker=function(t){return t=Math.pow(.7,arguments.length?t:1),new dt(this.h,this.s,t*this.l)},Wo.rgb=function(){return ht(this.h,this.s,this.l)},oo.hcl=pt;var Go=pt.prototype=new ft;Go.brighter=function(t){return new pt(this.h,this.c,Math.min(100,this.l+Xo*(arguments.length?t:1)))},Go.darker=function(t){return new pt(this.h,this.c,Math.max(0,this.l-Xo*(arguments.length?t:1)))},Go.rgb=function(){return mt(this.h,this.c,this.l).rgb()},oo.lab=vt;var Xo=18,Jo=.95047,Qo=1,ts=1.08883,ns=vt.prototype=new ft;ns.brighter=function(t){return new vt(Math.min(100,this.l+Xo*(arguments.length?t:1)),this.a,this.b)},ns.darker=function(t){return new vt(Math.max(0,this.l-Xo*(arguments.length?t:1)),this.a,this.b)},ns.rgb=function(){return gt(this.l,this.a,this.b)},oo.rgb=wt;var es=wt.prototype=new ft;es.brighter=function(t){t=Math.pow(.7,arguments.length?t:1);var n=this.r,e=this.g,a=this.b,r=30;return n||e||a?(n&&r>n&&(n=r),e&&r>e&&(e=r),a&&r>a&&(a=r),new wt(Math.min(255,n/t),Math.min(255,e/t),Math.min(255,a/t))):new wt(r,r,r)},es.darker=function(t){return t=Math.pow(.7,arguments.length?t:1),new wt(t*this.r,t*this.g,t*this.b)},es.hsl=function(){return St(this.r,this.g,this.b)},es.toString=function(){return"#"+Ct(this.r)+Ct(this.g)+Ct(this.b)};var as=oo.map({aliceblue:15792383,antiquewhite:16444375,aqua:65535,aquamarine:8388564,azure:15794175,beige:16119260,bisque:16770244,black:0,blanchedalmond:16772045,blue:255,blueviolet:9055202,brown:10824234,burlywood:14596231,cadetblue:6266528,chartreuse:8388352,chocolate:13789470,coral:16744272,cornflowerblue:6591981,cornsilk:16775388,crimson:14423100,cyan:65535,darkblue:139,darkcyan:35723,darkgoldenrod:12092939,darkgray:11119017,darkgreen:25600,darkgrey:11119017,darkkhaki:12433259,darkmagenta:9109643,darkolivegreen:5597999,darkorange:16747520,darkorchid:10040012,darkred:9109504,darksalmon:15308410,darkseagreen:9419919,darkslateblue:4734347,darkslategray:3100495,darkslategrey:3100495,darkturquoise:52945,darkviolet:9699539,deeppink:16716947,deepskyblue:49151,dimgray:6908265,dimgrey:6908265,dodgerblue:2003199,firebrick:11674146,floralwhite:16775920,forestgreen:2263842,fuchsia:16711935,gainsboro:14474460,ghostwhite:16316671,gold:16766720,goldenrod:14329120,gray:8421504,green:32768,greenyellow:11403055,grey:8421504,honeydew:15794160,hotpink:16738740,indianred:13458524,indigo:4915330,ivory:16777200,khaki:15787660,lavender:15132410,lavenderblush:16773365,lawngreen:8190976,lemonchiffon:16775885,lightblue:11393254,lightcoral:15761536,lightcyan:14745599,lightgoldenrodyellow:16448210,lightgray:13882323,lightgreen:9498256,lightgrey:13882323,lightpink:16758465,lightsalmon:16752762,lightseagreen:2142890,lightskyblue:8900346,lightslategray:7833753,lightslategrey:7833753,lightsteelblue:11584734,lightyellow:16777184,lime:65280,limegreen:3329330,linen:16445670,magenta:16711935,maroon:8388608,mediumaquamarine:6737322,mediumblue:205,mediumorchid:12211667,mediumpurple:9662683,mediumseagreen:3978097,mediumslateblue:8087790,mediumspringgreen:64154,mediumturquoise:4772300,mediumvioletred:13047173,midnightblue:1644912,mintcream:16121850,mistyrose:16770273,moccasin:16770229,navajowhite:16768685,navy:128,oldlace:16643558,olive:8421376,olivedrab:7048739,orange:16753920,orangered:16729344,orchid:14315734,palegoldenrod:15657130,palegreen:10025880,paleturquoise:11529966,palevioletred:14381203,papayawhip:16773077,peachpuff:16767673,peru:13468991,pink:16761035,plum:14524637,powderblue:11591910,purple:8388736,rebeccapurple:6697881,red:16711680,rosybrown:12357519,royalblue:4286945,saddlebrown:9127187,salmon:16416882,sandybrown:16032864,seagreen:3050327,seashell:16774638,sienna:10506797,silver:12632256,skyblue:8900331,slateblue:6970061,slategray:7372944,slategrey:7372944,snow:16775930,springgreen:65407,steelblue:4620980,tan:13808780,teal:32896,thistle:14204888,tomato:16737095,turquoise:4251856,violet:15631086,wheat:16113331,white:16777215,whitesmoke:16119285,yellow:16776960,yellowgreen:10145074});as.forEach(function(t,n){as.set(t,kt(n))}),oo.functor=Et,oo.xhr=Nt(k),oo.dsv=function(t,n){function e(t,e,i){arguments.length<3&&(i=e,e=null);var o=Ht(t,n,null==e?a:r(e),i);return o.row=function(t){return arguments.length?o.response(null==(e=t)?a:r(t)):e},o}function a(t){return e.parse(t.responseText)}function r(t){return function(n){return e.parse(n.responseText,t)}}function i(n){return n.map(o).join(t)}function o(t){return s.test(t)?'"'+t.replace(/\"/g,'""')+'"':t}var s=new RegExp('["'+t+"\n]"),u=t.charCodeAt(0);return e.parse=function(t,n){var a;return e.parseRows(t,function(t,e){if(a)return a(t,e-1);var r=new Function("d","return {"+t.map(function(t,n){return JSON.stringify(t)+": d["+n+"]"}).join(",")+"}");a=n?function(t,e){return n(r(t),e)}:r})},e.parseRows=function(t,n){function e(){if(c>=l)return o;if(r)return r=!1,i;var n=c;if(34===t.charCodeAt(n)){for(var e=n;e++<l;)if(34===t.charCodeAt(e)){if(34!==t.charCodeAt(e+1))break;++e}c=e+2;var a=t.charCodeAt(e+1);return 13===a?(r=!0,10===t.charCodeAt(e+2)&&++c):10===a&&(r=!0),t.slice(n+1,e).replace(/""/g,'"')}for(;l>c;){var a=t.charCodeAt(c++),s=1;if(10===a)r=!0;else if(13===a)r=!0,10===t.charCodeAt(c)&&(++c,++s);else if(a!==u)continue;return t.slice(n,c-s)}return t.slice(n)}for(var a,r,i={},o={},s=[],l=t.length,c=0,f=0;(a=e())!==o;){for(var d=[];a!==i&&a!==o;)d.push(a),a=e();n&&null==(d=n(d,f++))||s.push(d)}return s},e.format=function(n){if(Array.isArray(n[0]))return e.formatRows(n);var a=new w,r=[];return n.forEach(function(t){for(var n in t)a.has(n)||r.push(a.add(n))}),[r.map(o).join(t)].concat(n.map(function(n){return r.map(function(t){return o(n[t])}).join(t)})).join("\n")},e.formatRows=function(t){return t.map(i).join("\n")},e},oo.csv=oo.dsv(",","text/csv"),oo.tsv=oo.dsv("	","text/tab-separated-values");var rs,is,os,ss,us,ls=this[C(this,"requestAnimationFrame")]||function(t){setTimeout(t,17)};oo.timer=function(t,n,e){var a=arguments.length;2>a&&(n=0),3>a&&(e=Date.now());var r=e+n,i={c:t,t:r,f:!1,n:null};is?is.n=i:rs=i,is=i,os||(ss=clearTimeout(ss),os=1,ls(Rt))},oo.timer.flush=function(){Ut(),Lt()},oo.round=function(t,n){return n?Math.round(t*(n=Math.pow(10,n)))/n:Math.round(t)};var cs=["y","z","a","f","p","n","µ","m","","k","M","G","T","P","E","Z","Y"].map(jt);oo.formatPrefix=function(t,n){var e=0;return t&&(0>t&&(t*=-1),n&&(t=oo.round(t,Ft(t,n))),e=1+Math.floor(1e-12+Math.log(t)/Math.LN10),e=Math.max(-24,Math.min(24,3*Math.floor((e-1)/3)))),cs[8+e/3]};var fs=/(?:([^{])?([<>=^]))?([+\- ])?([$#])?(0)?(\d+)?(,)?(\.-?\d+)?([a-z%])?/i,ds=oo.map({b:function(t){return t.toString(2)},c:function(t){return String.fromCharCode(t)},o:function(t){return t.toString(8)},x:function(t){return t.toString(16)},X:function(t){return t.toString(16).toUpperCase()},g:function(t,n){return t.toPrecision(n)},e:function(t,n){return t.toExponential(n)},f:function(t,n){return t.toFixed(n)},r:function(t,n){return(t=oo.round(t,Ft(t,n))).toFixed(Math.max(0,Math.min(20,Ft(t*(1+1e-15),n))))}}),hs=oo.time={},ps=Date;Ot.prototype={getDate:function(){return this._.getUTCDate()},getDay:function(){return this._.getUTCDay()},getFullYear:function(){return this._.getUTCFullYear()},getHours:function(){return this._.getUTCHours()},getMilliseconds:function(){return this._.getUTCMilliseconds()},getMinutes:function(){return this._.getUTCMinutes()},getMonth:function(){return this._.getUTCMonth()},getSeconds:function(){return this._.getUTCSeconds()},getTime:function(){return this._.getTime()},getTimezoneOffset:function(){return 0},valueOf:function(){return this._.valueOf()},setDate:function(){ms.setUTCDate.apply(this._,arguments)},setDay:function(){ms.setUTCDay.apply(this._,arguments)},setFullYear:function(){ms.setUTCFullYear.apply(this._,arguments)},setHours:function(){ms.setUTCHours.apply(this._,arguments)},setMilliseconds:function(){ms.setUTCMilliseconds.apply(this._,arguments)},setMinutes:function(){ms.setUTCMinutes.apply(this._,arguments)},setMonth:function(){ms.setUTCMonth.apply(this._,arguments)},setSeconds:function(){ms.setUTCSeconds.apply(this._,arguments)},setTime:function(){ms.setTime.apply(this._,arguments)}};var ms=Date.prototype;hs.year=Vt(function(t){return t=hs.day(t),t.setMonth(0,1),t},function(t,n){t.setFullYear(t.getFullYear()+n)},function(t){return t.getFullYear()}),hs.years=hs.year.range,hs.years.utc=hs.year.utc.range,hs.day=Vt(function(t){var n=new ps(2e3,0);return n.setFullYear(t.getFullYear(),t.getMonth(),t.getDate()),n},function(t,n){t.setDate(t.getDate()+n)},function(t){return t.getDate()-1}),hs.days=hs.day.range,hs.days.utc=hs.day.utc.range,hs.dayOfYear=function(t){var n=hs.year(t);return Math.floor((t-n-6e4*(t.getTimezoneOffset()-n.getTimezoneOffset()))/864e5)},["sunday","monday","tuesday","wednesday","thursday","friday","saturday"].forEach(function(t,n){n=7-n;var e=hs[t]=Vt(function(t){return(t=hs.day(t)).setDate(t.getDate()-(t.getDay()+n)%7),t},function(t,n){t.setDate(t.getDate()+7*Math.floor(n))},function(t){var e=hs.year(t).getDay();return Math.floor((hs.dayOfYear(t)+(e+n)%7)/7)-(e!==n)});hs[t+"s"]=e.range,hs[t+"s"].utc=e.utc.range,hs[t+"OfYear"]=function(t){var e=hs.year(t).getDay();return Math.floor((hs.dayOfYear(t)+(e+n)%7)/7)}}),hs.week=hs.sunday,hs.weeks=hs.sunday.range,hs.weeks.utc=hs.sunday.utc.range,hs.weekOfYear=hs.sundayOfYear;var vs={"-":"",_:" ",0:"0"},gs=/^\s*\d+/,ys=/^%/;oo.locale=function(t){return{numberFormat:Bt(t),timeFormat:Zt(t)}};var bs=oo.locale({decimal:".",thousands:",",grouping:[3],currency:["$",""],dateTime:"%a %b %e %X %Y",date:"%m/%d/%Y",time:"%H:%M:%S",periods:["AM","PM"],days:["Sunday","Monday","Tuesday","Wednesday","Thursday","Friday","Saturday"],shortDays:["Sun","Mon","Tue","Wed","Thu","Fri","Sat"],months:["January","February","March","April","May","June","July","August","September","October","November","December"],shortMonths:["Jan","Feb","Mar","Apr","May","Jun","Jul","Aug","Sep","Oct","Nov","Dec"]});oo.format=bs.numberFormat,oo.geo={},pn.prototype={s:0,t:0,add:function(t){mn(t,this.t,_s),mn(_s.s,this.s,this),this.s?this.t+=_s.t:this.s=_s.t},reset:function(){this.s=this.t=0},valueOf:function(){return this.s}};var _s=new pn;oo.geo.stream=function(t,n){t&&xs.hasOwnProperty(t.type)?xs[t.type](t,n):vn(t,n)};var xs={Feature:function(t,n){vn(t.geometry,n)},FeatureCollection:function(t,n){for(var e=t.features,a=-1,r=e.length;++a<r;)vn(e[a].geometry,n)}},ws={Sphere:function(t,n){n.sphere()},Point:function(t,n){t=t.coordinates,n.point(t[0],t[1],t[2])},MultiPoint:function(t,n){for(var e=t.coordinates,a=-1,r=e.length;++a<r;)t=e[a],n.point(t[0],t[1],t[2])},LineString:function(t,n){gn(t.coordinates,n,0)},MultiLineString:function(t,n){for(var e=t.coordinates,a=-1,r=e.length;++a<r;)gn(e[a],n,0)},Polygon:function(t,n){yn(t.coordinates,n)},MultiPolygon:function(t,n){for(var e=t.coordinates,a=-1,r=e.length;++a<r;)yn(e[a],n)},GeometryCollection:function(t,n){for(var e=t.geometries,a=-1,r=e.length;++a<r;)vn(e[a],n)}};oo.geo.area=function(t){return ks=0,oo.geo.stream(t,Cs),ks};var ks,Ds=new pn,Cs={sphere:function(){ks+=4*Uo},point:M,lineStart:M,lineEnd:M,polygonStart:function(){Ds.reset(),Cs.lineStart=bn},polygonEnd:function(){var t=2*Ds;ks+=0>t?4*Uo+t:t,Cs.lineStart=Cs.lineEnd=Cs.point=M}};oo.geo.bounds=function(){function t(t,n){b.push(_=[c=t,d=t]),f>n&&(f=n),n>h&&(h=n)}function n(n,e){var a=_n([n*Bo,e*Bo]);if(g){var r=wn(g,a),i=[r[1],-r[0],0],o=wn(i,r);Cn(o),o=Mn(o);var u=n-p,l=u>0?1:-1,m=o[0]*qo*l,v=bo(u)>180;if(v^(m>l*p&&l*n>m)){var y=o[1]*qo;y>h&&(h=y)}else if(m=(m+360)%360-180,v^(m>l*p&&l*n>m)){var y=-o[1]*qo;f>y&&(f=y)}else f>e&&(f=e),e>h&&(h=e);v?p>n?s(c,n)>s(c,d)&&(d=n):s(n,d)>s(c,d)&&(c=n):d>=c?(c>n&&(c=n),n>d&&(d=n)):n>p?s(c,n)>s(c,d)&&(d=n):s(n,d)>s(c,d)&&(c=n)}else t(n,e);g=a,p=n}function e(){x.point=n}function a(){_[0]=c,_[1]=d,x.point=t,g=null}function r(t,e){if(g){var a=t-p;y+=bo(a)>180?a+(a>0?360:-360):a}else m=t,v=e;Cs.point(t,e),n(t,e)}function i(){Cs.lineStart()}function o(){r(m,v),Cs.lineEnd(),bo(y)>zo&&(c=-(d=180)),_[0]=c,_[1]=d,g=null}function s(t,n){return(n-=t)<0?n+360:n}function u(t,n){return t[0]-n[0]}function l(t,n){return n[0]<=n[1]?n[0]<=t&&t<=n[1]:t<n[0]||n[1]<t}var c,f,d,h,p,m,v,g,y,b,_,x={point:t,lineStart:e,lineEnd:a,polygonStart:function(){x.point=r,x.lineStart=i,x.lineEnd=o,y=0,Cs.polygonStart()},polygonEnd:function(){Cs.polygonEnd(),x.point=t,x.lineStart=e,x.lineEnd=a,0>Ds?(c=-(d=180),f=-(h=90)):y>zo?h=90:-zo>y&&(f=-90),_[0]=c,_[1]=d}};return function(t){h=d=-(c=f=1/0),b=[],oo.geo.stream(t,x);var n=b.length;if(n){b.sort(u);for(var e,a=1,r=b[0],i=[r];n>a;++a)e=b[a],l(e[0],r)||l(e[1],r)?(s(r[0],e[1])>s(r[0],r[1])&&(r[1]=e[1]),s(e[0],r[1])>s(r[0],r[1])&&(r[0]=e[0])):i.push(r=e);for(var o,e,p=-(1/0),n=i.length-1,a=0,r=i[n];n>=a;r=e,++a)e=i[a],(o=s(r[1],e[0]))>p&&(p=o,c=e[0],d=r[1])}return b=_=null,c===1/0||f===1/0?[[NaN,NaN],[NaN,NaN]]:[[c,f],[d,h]]}}(),oo.geo.centroid=function(t){Ms=Ss=Ps=As=Ts=Es=Ns=Hs=Is=zs=Rs=0,oo.geo.stream(t,Us);var n=Is,e=zs,a=Rs,r=n*n+e*e+a*a;return Ro>r&&(n=Es,e=Ns,a=Hs,zo>Ss&&(n=Ps,e=As,a=Ts),r=n*n+e*e+a*a,Ro>r)?[NaN,NaN]:[Math.atan2(e,n)*qo,ot(a/Math.sqrt(r))*qo]};var Ms,Ss,Ps,As,Ts,Es,Ns,Hs,Is,zs,Rs,Us={sphere:M,point:Pn,lineStart:Tn,lineEnd:En,polygonStart:function(){Us.lineStart=Nn},polygonEnd:function(){Us.lineStart=Tn}},Ls=Ln(In,qn,Vn,[-Uo,-Uo/2]),Fs=1e9;oo.geo.clipExtent=function(){var t,n,e,a,r,i,o={stream:function(t){return r&&(r.valid=!1),r=i(t),r.valid=!0,r},extent:function(s){return arguments.length?(i=Kn(t=+s[0][0],n=+s[0][1],e=+s[1][0],a=+s[1][1]),r&&(r.valid=!1,r=null),o):[[t,n],[e,a]]}};return o.extent([[0,0],[960,500]])},(oo.geo.conicEqualArea=function(){return Wn(Gn)}).raw=Gn,oo.geo.albers=function(){return oo.geo.conicEqualArea().rotate([96,0]).center([-.6,38.7]).parallels([29.5,45.5]).scale(1070)},oo.geo.albersUsa=function(){function t(t){var i=t[0],o=t[1];return n=null,e(i,o),n||(a(i,o),n)||r(i,o),n}var n,e,a,r,i=oo.geo.albers(),o=oo.geo.conicEqualArea().rotate([154,0]).center([-2,58.5]).parallels([55,65]),s=oo.geo.conicEqualArea().rotate([157,0]).center([-3,19.9]).parallels([8,18]),u={point:function(t,e){n=[t,e]}};return t.invert=function(t){var n=i.scale(),e=i.translate(),a=(t[0]-e[0])/n,r=(t[1]-e[1])/n;return(r>=.12&&.234>r&&a>=-.425&&-.214>a?o:r>=.166&&.234>r&&a>=-.214&&-.115>a?s:i).invert(t)},t.stream=function(t){var n=i.stream(t),e=o.stream(t),a=s.stream(t);return{point:function(t,r){n.point(t,r),e.point(t,r),a.point(t,r)},sphere:function(){n.sphere(),e.sphere(),a.sphere()},lineStart:function(){n.lineStart(),e.lineStart(),a.lineStart()},lineEnd:function(){n.lineEnd(),e.lineEnd(),a.lineEnd()},polygonStart:function(){n.polygonStart(),e.polygonStart(),a.polygonStart()},polygonEnd:function(){n.polygonEnd(),e.polygonEnd(),a.polygonEnd()}}},t.precision=function(n){return arguments.length?(i.precision(n),o.precision(n),s.precision(n),t):i.precision()},t.scale=function(n){return arguments.length?(i.scale(n),o.scale(.35*n),s.scale(n),t.translate(i.translate())):i.scale()},t.translate=function(n){if(!arguments.length)return i.translate();var l=i.scale(),c=+n[0],f=+n[1];return e=i.translate(n).clipExtent([[c-.455*l,f-.238*l],[c+.455*l,f+.238*l]]).stream(u).point,a=o.translate([c-.307*l,f+.201*l]).clipExtent([[c-.425*l+zo,f+.12*l+zo],[c-.214*l-zo,f+.234*l-zo]]).stream(u).point,r=s.translate([c-.205*l,f+.212*l]).clipExtent([[c-.214*l+zo,f+.166*l+zo],[c-.115*l-zo,f+.234*l-zo]]).stream(u).point,t},t.scale(1070)};var js,Bs,qs,Os,Vs,$s,Zs={point:M,lineStart:M,lineEnd:M,polygonStart:function(){Bs=0,Zs.lineStart=Xn},polygonEnd:function(){Zs.lineStart=Zs.lineEnd=Zs.point=M,js+=bo(Bs/2)}},Ys={point:Jn,lineStart:M,lineEnd:M,polygonStart:M,polygonEnd:M},Ks={point:ne,lineStart:ee,lineEnd:ae,polygonStart:function(){Ks.lineStart=re},polygonEnd:function(){Ks.point=ne,Ks.lineStart=ee,Ks.lineEnd=ae}};oo.geo.path=function(){function t(t){return t&&("function"==typeof s&&i.pointRadius(+s.apply(this,arguments)),o&&o.valid||(o=r(i)),oo.geo.stream(t,o)),i.result()}function n(){return o=null,t}var e,a,r,i,o,s=4.5;return t.area=function(t){return js=0,oo.geo.stream(t,r(Zs)),js},t.centroid=function(t){return Ps=As=Ts=Es=Ns=Hs=Is=zs=Rs=0,oo.geo.stream(t,r(Ks)),Rs?[Is/Rs,zs/Rs]:Hs?[Es/Hs,Ns/Hs]:Ts?[Ps/Ts,As/Ts]:[NaN,NaN]},t.bounds=function(t){return Vs=$s=-(qs=Os=1/0),oo.geo.stream(t,r(Ys)),[[qs,Os],[Vs,$s]]},t.projection=function(t){return arguments.length?(r=(e=t)?t.stream||se(t):k,n()):e},t.context=function(t){return arguments.length?(i=null==(a=t)?new Qn:new ie(t),"function"!=typeof s&&i.pointRadius(s),n()):a},t.pointRadius=function(n){return arguments.length?(s="function"==typeof n?n:(i.pointRadius(+n),+n),t):s},t.projection(oo.geo.albersUsa()).context(null)},oo.geo.transform=function(t){return{stream:function(n){var e=new ue(n);for(var a in t)e[a]=t[a];return e}}},ue.prototype={point:function(t,n){this.stream.point(t,n)},sphere:function(){this.stream.sphere()},lineStart:function(){this.stream.lineStart()},lineEnd:function(){this.stream.lineEnd()},polygonStart:function(){this.stream.polygonStart()},polygonEnd:function(){this.stream.polygonEnd()}},oo.geo.projection=ce,oo.geo.projectionMutator=fe,(oo.geo.equirectangular=function(){return ce(he)}).raw=he.invert=he,oo.geo.rotation=function(t){function n(n){return n=t(n[0]*Bo,n[1]*Bo),n[0]*=qo,n[1]*=qo,n}return t=me(t[0]%360*Bo,t[1]*Bo,t.length>2?t[2]*Bo:0),n.invert=function(n){return n=t.invert(n[0]*Bo,n[1]*Bo),n[0]*=qo,n[1]*=qo,n},n},pe.invert=he,oo.geo.circle=function(){function t(){var t="function"==typeof a?a.apply(this,arguments):a,n=me(-t[0]*Bo,-t[1]*Bo,0).invert,r=[];return e(null,null,1,{point:function(t,e){r.push(t=n(t,e)),t[0]*=qo,t[1]*=qo}}),{type:"Polygon",coordinates:[r]}}var n,e,a=[0,0],r=6;return t.origin=function(n){return arguments.length?(a=n,t):a},t.angle=function(a){return arguments.length?(e=be((n=+a)*Bo,r*Bo),t):n},t.precision=function(a){return arguments.length?(e=be(n*Bo,(r=+a)*Bo),t):r},t.angle(90)},oo.geo.distance=function(t,n){var e,a=(n[0]-t[0])*Bo,r=t[1]*Bo,i=n[1]*Bo,o=Math.sin(a),s=Math.cos(a),u=Math.sin(r),l=Math.cos(r),c=Math.sin(i),f=Math.cos(i);return Math.atan2(Math.sqrt((e=f*o)*e+(e=l*c-u*f*s)*e),u*c+l*f*s)},oo.geo.graticule=function(){function t(){return{type:"MultiLineString",coordinates:n()}}function n(){return oo.range(Math.ceil(i/v)*v,r,v).map(d).concat(oo.range(Math.ceil(l/g)*g,u,g).map(h)).concat(oo.range(Math.ceil(a/p)*p,e,p).filter(function(t){return bo(t%v)>zo}).map(c)).concat(oo.range(Math.ceil(s/m)*m,o,m).filter(function(t){return bo(t%g)>zo}).map(f))}var e,a,r,i,o,s,u,l,c,f,d,h,p=10,m=p,v=90,g=360,y=2.5;return t.lines=function(){return n().map(function(t){return{type:"LineString",coordinates:t}})},t.outline=function(){return{type:"Polygon",coordinates:[d(i).concat(h(u).slice(1),d(r).reverse().slice(1),h(l).reverse().slice(1))]
+	}},t.extent=function(n){return arguments.length?t.majorExtent(n).minorExtent(n):t.minorExtent()},t.majorExtent=function(n){return arguments.length?(i=+n[0][0],r=+n[1][0],l=+n[0][1],u=+n[1][1],i>r&&(n=i,i=r,r=n),l>u&&(n=l,l=u,u=n),t.precision(y)):[[i,l],[r,u]]},t.minorExtent=function(n){return arguments.length?(a=+n[0][0],e=+n[1][0],s=+n[0][1],o=+n[1][1],a>e&&(n=a,a=e,e=n),s>o&&(n=s,s=o,o=n),t.precision(y)):[[a,s],[e,o]]},t.step=function(n){return arguments.length?t.majorStep(n).minorStep(n):t.minorStep()},t.majorStep=function(n){return arguments.length?(v=+n[0],g=+n[1],t):[v,g]},t.minorStep=function(n){return arguments.length?(p=+n[0],m=+n[1],t):[p,m]},t.precision=function(n){return arguments.length?(y=+n,c=xe(s,o,90),f=we(a,e,y),d=xe(l,u,90),h=we(i,r,y),t):y},t.majorExtent([[-180,-90+zo],[180,90-zo]]).minorExtent([[-180,-80-zo],[180,80+zo]])},oo.geo.greatArc=function(){function t(){return{type:"LineString",coordinates:[n||a.apply(this,arguments),e||r.apply(this,arguments)]}}var n,e,a=ke,r=De;return t.distance=function(){return oo.geo.distance(n||a.apply(this,arguments),e||r.apply(this,arguments))},t.source=function(e){return arguments.length?(a=e,n="function"==typeof e?null:e,t):a},t.target=function(n){return arguments.length?(r=n,e="function"==typeof n?null:n,t):r},t.precision=function(){return arguments.length?t:0},t},oo.geo.interpolate=function(t,n){return Ce(t[0]*Bo,t[1]*Bo,n[0]*Bo,n[1]*Bo)},oo.geo.length=function(t){return Ws=0,oo.geo.stream(t,Gs),Ws};var Ws,Gs={sphere:M,point:M,lineStart:Me,lineEnd:M,polygonStart:M,polygonEnd:M},Xs=Se(function(t){return Math.sqrt(2/(1+t))},function(t){return 2*Math.asin(t/2)});(oo.geo.azimuthalEqualArea=function(){return ce(Xs)}).raw=Xs;var Js=Se(function(t){var n=Math.acos(t);return n&&n/Math.sin(n)},k);(oo.geo.azimuthalEquidistant=function(){return ce(Js)}).raw=Js,(oo.geo.conicConformal=function(){return Wn(Pe)}).raw=Pe,(oo.geo.conicEquidistant=function(){return Wn(Ae)}).raw=Ae;var Qs=Se(function(t){return 1/t},Math.atan);(oo.geo.gnomonic=function(){return ce(Qs)}).raw=Qs,Te.invert=function(t,n){return[t,2*Math.atan(Math.exp(n))-jo]},(oo.geo.mercator=function(){return Ee(Te)}).raw=Te;var tu=Se(function(){return 1},Math.asin);(oo.geo.orthographic=function(){return ce(tu)}).raw=tu;var nu=Se(function(t){return 1/(1+t)},function(t){return 2*Math.atan(t)});(oo.geo.stereographic=function(){return ce(nu)}).raw=nu,Ne.invert=function(t,n){return[-n,2*Math.atan(Math.exp(t))-jo]},(oo.geo.transverseMercator=function(){var t=Ee(Ne),n=t.center,e=t.rotate;return t.center=function(t){return t?n([-t[1],t[0]]):(t=n(),[t[1],-t[0]])},t.rotate=function(t){return t?e([t[0],t[1],t.length>2?t[2]+90:90]):(t=e(),[t[0],t[1],t[2]-90])},e([0,0,90])}).raw=Ne,oo.geom={},oo.geom.hull=function(t){function n(t){if(t.length<3)return[];var n,r=Et(e),i=Et(a),o=t.length,s=[],u=[];for(n=0;o>n;n++)s.push([+r.call(this,t[n],n),+i.call(this,t[n],n),n]);for(s.sort(Re),n=0;o>n;n++)u.push([s[n][0],-s[n][1]]);var l=ze(s),c=ze(u),f=c[0]===l[0],d=c[c.length-1]===l[l.length-1],h=[];for(n=l.length-1;n>=0;--n)h.push(t[s[l[n]][2]]);for(n=+f;n<c.length-d;++n)h.push(t[s[c[n]][2]]);return h}var e=He,a=Ie;return arguments.length?n(t):(n.x=function(t){return arguments.length?(e=t,n):e},n.y=function(t){return arguments.length?(a=t,n):a},n)},oo.geom.polygon=function(t){return Do(t,eu),t};var eu=oo.geom.polygon.prototype=[];eu.area=function(){for(var t,n=-1,e=this.length,a=this[e-1],r=0;++n<e;)t=a,a=this[n],r+=t[1]*a[0]-t[0]*a[1];return.5*r},eu.centroid=function(t){var n,e,a=-1,r=this.length,i=0,o=0,s=this[r-1];for(arguments.length||(t=-1/(6*this.area()));++a<r;)n=s,s=this[a],e=n[0]*s[1]-s[0]*n[1],i+=(n[0]+s[0])*e,o+=(n[1]+s[1])*e;return[i*t,o*t]},eu.clip=function(t){for(var n,e,a,r,i,o,s=Fe(t),u=-1,l=this.length-Fe(this),c=this[l-1];++u<l;){for(n=t.slice(),t.length=0,r=this[u],i=n[(a=n.length-s)-1],e=-1;++e<a;)o=n[e],Ue(o,c,r)?(Ue(i,c,r)||t.push(Le(i,o,c,r)),t.push(o)):Ue(i,c,r)&&t.push(Le(i,o,c,r)),i=o;s&&t.push(t[0]),c=r}return t};var au,ru,iu,ou,su,uu=[],lu=[];Ye.prototype.prepare=function(){for(var t,n=this.edges,e=n.length;e--;)t=n[e].edge,t.b&&t.a||n.splice(e,1);return n.sort(We),n.length},ia.prototype={start:function(){return this.edge.l===this.site?this.edge.a:this.edge.b},end:function(){return this.edge.l===this.site?this.edge.b:this.edge.a}},oa.prototype={insert:function(t,n){var e,a,r;if(t){if(n.P=t,n.N=t.N,t.N&&(t.N.P=n),t.N=n,t.R){for(t=t.R;t.L;)t=t.L;t.L=n}else t.R=n;e=t}else this._?(t=ca(this._),n.P=null,n.N=t,t.P=t.L=n,e=t):(n.P=n.N=null,this._=n,e=null);for(n.L=n.R=null,n.U=e,n.C=!0,t=n;e&&e.C;)a=e.U,e===a.L?(r=a.R,r&&r.C?(e.C=r.C=!1,a.C=!0,t=a):(t===e.R&&(ua(this,e),t=e,e=t.U),e.C=!1,a.C=!0,la(this,a))):(r=a.L,r&&r.C?(e.C=r.C=!1,a.C=!0,t=a):(t===e.L&&(la(this,e),t=e,e=t.U),e.C=!1,a.C=!0,ua(this,a))),e=t.U;this._.C=!1},remove:function(t){t.N&&(t.N.P=t.P),t.P&&(t.P.N=t.N),t.N=t.P=null;var n,e,a,r=t.U,i=t.L,o=t.R;if(e=i?o?ca(o):i:o,r?r.L===t?r.L=e:r.R=e:this._=e,i&&o?(a=e.C,e.C=t.C,e.L=i,i.U=e,e!==o?(r=e.U,e.U=t.U,t=e.R,r.L=t,e.R=o,o.U=e):(e.U=r,r=e,t=e.R)):(a=t.C,t=e),t&&(t.U=r),!a){if(t&&t.C)return void(t.C=!1);do{if(t===this._)break;if(t===r.L){if(n=r.R,n.C&&(n.C=!1,r.C=!0,ua(this,r),n=r.R),n.L&&n.L.C||n.R&&n.R.C){n.R&&n.R.C||(n.L.C=!1,n.C=!0,la(this,n),n=r.R),n.C=r.C,r.C=n.R.C=!1,ua(this,r),t=this._;break}}else if(n=r.L,n.C&&(n.C=!1,r.C=!0,la(this,r),n=r.L),n.L&&n.L.C||n.R&&n.R.C){n.L&&n.L.C||(n.R.C=!1,n.C=!0,ua(this,n),n=r.L),n.C=r.C,r.C=n.L.C=!1,la(this,r),t=this._;break}n.C=!0,t=r,r=r.U}while(!t.C);t&&(t.C=!1)}}},oo.geom.voronoi=function(t){function n(t){var n=new Array(t.length),a=s[0][0],r=s[0][1],i=s[1][0],o=s[1][1];return fa(e(t),s).cells.forEach(function(e,s){var u=e.edges,l=e.site,c=n[s]=u.length?u.map(function(t){var n=t.start();return[n.x,n.y]}):l.x>=a&&l.x<=i&&l.y>=r&&l.y<=o?[[a,o],[i,o],[i,r],[a,r]]:[];c.point=t[s]}),n}function e(t){return t.map(function(t,n){return{x:Math.round(i(t,n)/zo)*zo,y:Math.round(o(t,n)/zo)*zo,i:n}})}var a=He,r=Ie,i=a,o=r,s=cu;return t?n(t):(n.links=function(t){return fa(e(t)).edges.filter(function(t){return t.l&&t.r}).map(function(n){return{source:t[n.l.i],target:t[n.r.i]}})},n.triangles=function(t){var n=[];return fa(e(t)).cells.forEach(function(e,a){for(var r,i,o=e.site,s=e.edges.sort(We),u=-1,l=s.length,c=s[l-1].edge,f=c.l===o?c.r:c.l;++u<l;)r=c,i=f,c=s[u].edge,f=c.l===o?c.r:c.l,a<i.i&&a<f.i&&ha(o,i,f)<0&&n.push([t[a],t[i.i],t[f.i]])}),n},n.x=function(t){return arguments.length?(i=Et(a=t),n):a},n.y=function(t){return arguments.length?(o=Et(r=t),n):r},n.clipExtent=function(t){return arguments.length?(s=null==t?cu:t,n):s===cu?null:s},n.size=function(t){return arguments.length?n.clipExtent(t&&[[0,0],t]):s===cu?null:s&&s[1]},n)};var cu=[[-1e6,-1e6],[1e6,1e6]];oo.geom.delaunay=function(t){return oo.geom.voronoi().triangles(t)},oo.geom.quadtree=function(t,n,e,a,r){function i(t){function i(t,n,e,a,r,i,o,s){if(!isNaN(e)&&!isNaN(a))if(t.leaf){var u=t.x,c=t.y;if(null!=u)if(bo(u-e)+bo(c-a)<.01)l(t,n,e,a,r,i,o,s);else{var f=t.point;t.x=t.y=t.point=null,l(t,f,u,c,r,i,o,s),l(t,n,e,a,r,i,o,s)}else t.x=e,t.y=a,t.point=n}else l(t,n,e,a,r,i,o,s)}function l(t,n,e,a,r,o,s,u){var l=.5*(r+s),c=.5*(o+u),f=e>=l,d=a>=c,h=d<<1|f;t.leaf=!1,t=t.nodes[h]||(t.nodes[h]=va()),f?r=l:s=l,d?o=c:u=c,i(t,n,e,a,r,o,s,u)}var c,f,d,h,p,m,v,g,y,b=Et(s),_=Et(u);if(null!=n)m=n,v=e,g=a,y=r;else if(g=y=-(m=v=1/0),f=[],d=[],p=t.length,o)for(h=0;p>h;++h)c=t[h],c.x<m&&(m=c.x),c.y<v&&(v=c.y),c.x>g&&(g=c.x),c.y>y&&(y=c.y),f.push(c.x),d.push(c.y);else for(h=0;p>h;++h){var x=+b(c=t[h],h),w=+_(c,h);m>x&&(m=x),v>w&&(v=w),x>g&&(g=x),w>y&&(y=w),f.push(x),d.push(w)}var k=g-m,D=y-v;k>D?y=v+k:g=m+D;var C=va();if(C.add=function(t){i(C,t,+b(t,++h),+_(t,h),m,v,g,y)},C.visit=function(t){ga(t,C,m,v,g,y)},C.find=function(t){return ya(C,t[0],t[1],m,v,g,y)},h=-1,null==n){for(;++h<p;)i(C,t[h],f[h],d[h],m,v,g,y);--h}else t.forEach(C.add);return f=d=t=c=null,C}var o,s=He,u=Ie;return(o=arguments.length)?(s=pa,u=ma,3===o&&(r=e,a=n,e=n=0),i(t)):(i.x=function(t){return arguments.length?(s=t,i):s},i.y=function(t){return arguments.length?(u=t,i):u},i.extent=function(t){return arguments.length?(null==t?n=e=a=r=null:(n=+t[0][0],e=+t[0][1],a=+t[1][0],r=+t[1][1]),i):null==n?null:[[n,e],[a,r]]},i.size=function(t){return arguments.length?(null==t?n=e=a=r=null:(n=e=0,a=+t[0],r=+t[1]),i):null==n?null:[a-n,r-e]},i)},oo.interpolateRgb=ba,oo.interpolateObject=_a,oo.interpolateNumber=xa,oo.interpolateString=wa;var fu=/[-+]?(?:\d+\.?\d*|\.?\d+)(?:[eE][-+]?\d+)?/g,du=new RegExp(fu.source,"g");oo.interpolate=ka,oo.interpolators=[function(t,n){var e=typeof n;return("string"===e?as.has(n.toLowerCase())||/^(#|rgb\(|hsl\()/i.test(n)?ba:wa:n instanceof ft?ba:Array.isArray(n)?Da:"object"===e&&isNaN(n)?_a:xa)(t,n)}],oo.interpolateArray=Da;var hu=function(){return k},pu=oo.map({linear:hu,poly:Ea,quad:function(){return Pa},cubic:function(){return Aa},sin:function(){return Na},exp:function(){return Ha},circle:function(){return Ia},elastic:za,back:Ra,bounce:function(){return Ua}}),mu=oo.map({"in":k,out:Ma,"in-out":Sa,"out-in":function(t){return Sa(Ma(t))}});oo.ease=function(t){var n=t.indexOf("-"),e=n>=0?t.slice(0,n):t,a=n>=0?t.slice(n+1):"in";return e=pu.get(e)||hu,a=mu.get(a)||k,Ca(a(e.apply(null,so.call(arguments,1))))},oo.interpolateHcl=La,oo.interpolateHsl=Fa,oo.interpolateLab=ja,oo.interpolateRound=Ba,oo.transform=function(t){var n=lo.createElementNS(oo.ns.prefix.svg,"g");return(oo.transform=function(t){if(null!=t){n.setAttribute("transform",t);var e=n.transform.baseVal.consolidate()}return new qa(e?e.matrix:vu)})(t)},qa.prototype.toString=function(){return"translate("+this.translate+")rotate("+this.rotate+")skewX("+this.skew+")scale("+this.scale+")"};var vu={a:1,b:0,c:0,d:1,e:0,f:0};oo.interpolateTransform=Za,oo.layout={},oo.layout.bundle=function(){return function(t){for(var n=[],e=-1,a=t.length;++e<a;)n.push(Wa(t[e]));return n}},oo.layout.chord=function(){function t(){var t,l,f,d,h,p={},m=[],v=oo.range(i),g=[];for(e=[],a=[],t=0,d=-1;++d<i;){for(l=0,h=-1;++h<i;)l+=r[d][h];m.push(l),g.push(oo.range(i)),t+=l}for(o&&v.sort(function(t,n){return o(m[t],m[n])}),s&&g.forEach(function(t,n){t.sort(function(t,e){return s(r[n][t],r[n][e])})}),t=(Lo-c*i)/t,l=0,d=-1;++d<i;){for(f=l,h=-1;++h<i;){var y=v[d],b=g[y][h],_=r[y][b],x=l,w=l+=_*t;p[y+"-"+b]={index:y,subindex:b,startAngle:x,endAngle:w,value:_}}a[y]={index:y,startAngle:f,endAngle:l,value:(l-f)/t},l+=c}for(d=-1;++d<i;)for(h=d-1;++h<i;){var k=p[d+"-"+h],D=p[h+"-"+d];(k.value||D.value)&&e.push(k.value<D.value?{source:D,target:k}:{source:k,target:D})}u&&n()}function n(){e.sort(function(t,n){return u((t.source.value+t.target.value)/2,(n.source.value+n.target.value)/2)})}var e,a,r,i,o,s,u,l={},c=0;return l.matrix=function(t){return arguments.length?(i=(r=t)&&r.length,e=a=null,l):r},l.padding=function(t){return arguments.length?(c=t,e=a=null,l):c},l.sortGroups=function(t){return arguments.length?(o=t,e=a=null,l):o},l.sortSubgroups=function(t){return arguments.length?(s=t,e=null,l):s},l.sortChords=function(t){return arguments.length?(u=t,e&&n(),l):u},l.chords=function(){return e||t(),e},l.groups=function(){return a||t(),a},l},oo.layout.force=function(){function t(t){return function(n,e,a,r){if(n.point!==t){var i=n.cx-t.x,o=n.cy-t.y,s=r-e,u=i*i+o*o;if(u>s*s/v){if(p>u){var l=n.charge/u;t.px-=i*l,t.py-=o*l}return!0}if(n.point&&u&&p>u){var l=n.pointCharge/u;t.px-=i*l,t.py-=o*l}}return!n.charge}}function n(t){t.px=oo.event.x,t.py=oo.event.y,s.resume()}var e,a,r,i,o,s={},u=oo.dispatch("start","tick","end"),l=[1,1],c=.9,f=gu,d=yu,h=-30,p=bu,m=.1,v=.64,g=[],y=[];return s.tick=function(){if((a*=.99)<.005)return u.end({type:"end",alpha:a=0}),!0;var n,e,s,f,d,p,v,b,_,x=g.length,w=y.length;for(e=0;w>e;++e)s=y[e],f=s.source,d=s.target,b=d.x-f.x,_=d.y-f.y,(p=b*b+_*_)&&(p=a*i[e]*((p=Math.sqrt(p))-r[e])/p,b*=p,_*=p,d.x-=b*(v=f.weight/(d.weight+f.weight)),d.y-=_*v,f.x+=b*(v=1-v),f.y+=_*v);if((v=a*m)&&(b=l[0]/2,_=l[1]/2,e=-1,v))for(;++e<x;)s=g[e],s.x+=(b-s.x)*v,s.y+=(_-s.y)*v;if(h)for(er(n=oo.geom.quadtree(g),a,o),e=-1;++e<x;)(s=g[e]).fixed||n.visit(t(s));for(e=-1;++e<x;)s=g[e],s.fixed?(s.x=s.px,s.y=s.py):(s.x-=(s.px-(s.px=s.x))*c,s.y-=(s.py-(s.py=s.y))*c);u.tick({type:"tick",alpha:a})},s.nodes=function(t){return arguments.length?(g=t,s):g},s.links=function(t){return arguments.length?(y=t,s):y},s.size=function(t){return arguments.length?(l=t,s):l},s.linkDistance=function(t){return arguments.length?(f="function"==typeof t?t:+t,s):f},s.distance=s.linkDistance,s.linkStrength=function(t){return arguments.length?(d="function"==typeof t?t:+t,s):d},s.friction=function(t){return arguments.length?(c=+t,s):c},s.charge=function(t){return arguments.length?(h="function"==typeof t?t:+t,s):h},s.chargeDistance=function(t){return arguments.length?(p=t*t,s):Math.sqrt(p)},s.gravity=function(t){return arguments.length?(m=+t,s):m},s.theta=function(t){return arguments.length?(v=t*t,s):Math.sqrt(v)},s.alpha=function(t){return arguments.length?(t=+t,a?a=t>0?t:0:t>0&&(u.start({type:"start",alpha:a=t}),oo.timer(s.tick)),s):a},s.start=function(){function t(t,a){if(!e){for(e=new Array(u),s=0;u>s;++s)e[s]=[];for(s=0;c>s;++s){var r=y[s];e[r.source.index].push(r.target),e[r.target.index].push(r.source)}}for(var i,o=e[n],s=-1,l=o.length;++s<l;)if(!isNaN(i=o[s][t]))return i;return Math.random()*a}var n,e,a,u=g.length,c=y.length,p=l[0],m=l[1];for(n=0;u>n;++n)(a=g[n]).index=n,a.weight=0;for(n=0;c>n;++n)a=y[n],"number"==typeof a.source&&(a.source=g[a.source]),"number"==typeof a.target&&(a.target=g[a.target]),++a.source.weight,++a.target.weight;for(n=0;u>n;++n)a=g[n],isNaN(a.x)&&(a.x=t("x",p)),isNaN(a.y)&&(a.y=t("y",m)),isNaN(a.px)&&(a.px=a.x),isNaN(a.py)&&(a.py=a.y);if(r=[],"function"==typeof f)for(n=0;c>n;++n)r[n]=+f.call(this,y[n],n);else for(n=0;c>n;++n)r[n]=f;if(i=[],"function"==typeof d)for(n=0;c>n;++n)i[n]=+d.call(this,y[n],n);else for(n=0;c>n;++n)i[n]=d;if(o=[],"function"==typeof h)for(n=0;u>n;++n)o[n]=+h.call(this,g[n],n);else for(n=0;u>n;++n)o[n]=h;return s.resume()},s.resume=function(){return s.alpha(.1)},s.stop=function(){return s.alpha(0)},s.drag=function(){return e||(e=oo.behavior.drag().origin(k).on("dragstart.force",Ja).on("drag.force",n).on("dragend.force",Qa)),arguments.length?void this.on("mouseover.force",tr).on("mouseout.force",nr).call(e):e},oo.rebind(s,u,"on")};var gu=20,yu=1,bu=1/0;oo.layout.hierarchy=function(){function t(r){var i,o=[r],s=[];for(r.depth=0;null!=(i=o.pop());)if(s.push(i),(l=e.call(t,i,i.depth))&&(u=l.length)){for(var u,l,c;--u>=0;)o.push(c=l[u]),c.parent=i,c.depth=i.depth+1;a&&(i.value=0),i.children=l}else a&&(i.value=+a.call(t,i,i.depth)||0),delete i.children;return ir(r,function(t){var e,r;n&&(e=t.children)&&e.sort(n),a&&(r=t.parent)&&(r.value+=t.value)}),s}var n=ur,e=or,a=sr;return t.sort=function(e){return arguments.length?(n=e,t):n},t.children=function(n){return arguments.length?(e=n,t):e},t.value=function(n){return arguments.length?(a=n,t):a},t.revalue=function(n){return a&&(rr(n,function(t){t.children&&(t.value=0)}),ir(n,function(n){var e;n.children||(n.value=+a.call(t,n,n.depth)||0),(e=n.parent)&&(e.value+=n.value)})),n},t},oo.layout.partition=function(){function t(n,e,a,r){var i=n.children;if(n.x=e,n.y=n.depth*r,n.dx=a,n.dy=r,i&&(o=i.length)){var o,s,u,l=-1;for(a=n.value?a/n.value:0;++l<o;)t(s=i[l],e,u=s.value*a,r),e+=u}}function n(t){var e=t.children,a=0;if(e&&(r=e.length))for(var r,i=-1;++i<r;)a=Math.max(a,n(e[i]));return 1+a}function e(e,i){var o=a.call(this,e,i);return t(o[0],0,r[0],r[1]/n(o[0])),o}var a=oo.layout.hierarchy(),r=[1,1];return e.size=function(t){return arguments.length?(r=t,e):r},ar(e,a)},oo.layout.pie=function(){function t(o){var s,u=o.length,l=o.map(function(e,a){return+n.call(t,e,a)}),c=+("function"==typeof a?a.apply(this,arguments):a),f=("function"==typeof r?r.apply(this,arguments):r)-c,d=Math.min(Math.abs(f)/u,+("function"==typeof i?i.apply(this,arguments):i)),h=d*(0>f?-1:1),p=(f-u*h)/oo.sum(l),m=oo.range(u),v=[];return null!=e&&m.sort(e===_u?function(t,n){return l[n]-l[t]}:function(t,n){return e(o[t],o[n])}),m.forEach(function(t){v[t]={data:o[t],value:s=l[t],startAngle:c,endAngle:c+=s*p+h,padAngle:d}}),v}var n=Number,e=_u,a=0,r=Lo,i=0;return t.value=function(e){return arguments.length?(n=e,t):n},t.sort=function(n){return arguments.length?(e=n,t):e},t.startAngle=function(n){return arguments.length?(a=n,t):a},t.endAngle=function(n){return arguments.length?(r=n,t):r},t.padAngle=function(n){return arguments.length?(i=n,t):i},t};var _u={};oo.layout.stack=function(){function t(s,u){if(!(d=s.length))return s;var l=s.map(function(e,a){return n.call(t,e,a)}),c=l.map(function(n){return n.map(function(n,e){return[i.call(t,n,e),o.call(t,n,e)]})}),f=e.call(t,c,u);l=oo.permute(l,f),c=oo.permute(c,f);var d,h,p,m,v=a.call(t,c,u),g=l[0].length;for(p=0;g>p;++p)for(r.call(t,l[0][p],m=v[p],c[0][p][1]),h=1;d>h;++h)r.call(t,l[h][p],m+=c[h-1][p][1],c[h][p][1]);return s}var n=k,e=hr,a=pr,r=dr,i=cr,o=fr;return t.values=function(e){return arguments.length?(n=e,t):n},t.order=function(n){return arguments.length?(e="function"==typeof n?n:xu.get(n)||hr,t):e},t.offset=function(n){return arguments.length?(a="function"==typeof n?n:wu.get(n)||pr,t):a},t.x=function(n){return arguments.length?(i=n,t):i},t.y=function(n){return arguments.length?(o=n,t):o},t.out=function(n){return arguments.length?(r=n,t):r},t};var xu=oo.map({"inside-out":function(t){var n,e,a=t.length,r=t.map(mr),i=t.map(vr),o=oo.range(a).sort(function(t,n){return r[t]-r[n]}),s=0,u=0,l=[],c=[];for(n=0;a>n;++n)e=o[n],u>s?(s+=i[e],l.push(e)):(u+=i[e],c.push(e));return c.reverse().concat(l)},reverse:function(t){return oo.range(t.length).reverse()},"default":hr}),wu=oo.map({silhouette:function(t){var n,e,a,r=t.length,i=t[0].length,o=[],s=0,u=[];for(e=0;i>e;++e){for(n=0,a=0;r>n;n++)a+=t[n][e][1];a>s&&(s=a),o.push(a)}for(e=0;i>e;++e)u[e]=(s-o[e])/2;return u},wiggle:function(t){var n,e,a,r,i,o,s,u,l,c=t.length,f=t[0],d=f.length,h=[];for(h[0]=u=l=0,e=1;d>e;++e){for(n=0,r=0;c>n;++n)r+=t[n][e][1];for(n=0,i=0,s=f[e][0]-f[e-1][0];c>n;++n){for(a=0,o=(t[n][e][1]-t[n][e-1][1])/(2*s);n>a;++a)o+=(t[a][e][1]-t[a][e-1][1])/s;i+=o*t[n][e][1]}h[e]=u-=r?i/r*s:0,l>u&&(l=u)}for(e=0;d>e;++e)h[e]-=l;return h},expand:function(t){var n,e,a,r=t.length,i=t[0].length,o=1/r,s=[];for(e=0;i>e;++e){for(n=0,a=0;r>n;n++)a+=t[n][e][1];if(a)for(n=0;r>n;n++)t[n][e][1]/=a;else for(n=0;r>n;n++)t[n][e][1]=o}for(e=0;i>e;++e)s[e]=0;return s},zero:pr});oo.layout.histogram=function(){function t(t,i){for(var o,s,u=[],l=t.map(e,this),c=a.call(this,l,i),f=r.call(this,c,l,i),i=-1,d=l.length,h=f.length-1,p=n?1:1/d;++i<h;)o=u[i]=[],o.dx=f[i+1]-(o.x=f[i]),o.y=0;if(h>0)for(i=-1;++i<d;)s=l[i],s>=c[0]&&s<=c[1]&&(o=u[oo.bisect(f,s,1,h)-1],o.y+=p,o.push(t[i]));return u}var n=!0,e=Number,a=_r,r=yr;return t.value=function(n){return arguments.length?(e=n,t):e},t.range=function(n){return arguments.length?(a=Et(n),t):a},t.bins=function(n){return arguments.length?(r="number"==typeof n?function(t){return br(t,n)}:Et(n),t):r},t.frequency=function(e){return arguments.length?(n=!!e,t):n},t},oo.layout.pack=function(){function t(t,i){var o=e.call(this,t,i),s=o[0],u=r[0],l=r[1],c=null==n?Math.sqrt:"function"==typeof n?n:function(){return n};if(s.x=s.y=0,ir(s,function(t){t.r=+c(t.value)}),ir(s,Cr),a){var f=a*(n?1:Math.max(2*s.r/u,2*s.r/l))/2;ir(s,function(t){t.r+=f}),ir(s,Cr),ir(s,function(t){t.r-=f})}return Pr(s,u/2,l/2,n?1:1/Math.max(2*s.r/u,2*s.r/l)),o}var n,e=oo.layout.hierarchy().sort(xr),a=0,r=[1,1];return t.size=function(n){return arguments.length?(r=n,t):r},t.radius=function(e){return arguments.length?(n=null==e||"function"==typeof e?e:+e,t):n},t.padding=function(n){return arguments.length?(a=+n,t):a},ar(t,e)},oo.layout.tree=function(){function t(t,r){var c=o.call(this,t,r),f=c[0],d=n(f);if(ir(d,e),d.parent.m=-d.z,rr(d,a),l)rr(f,i);else{var h=f,p=f,m=f;rr(f,function(t){t.x<h.x&&(h=t),t.x>p.x&&(p=t),t.depth>m.depth&&(m=t)});var v=s(h,p)/2-h.x,g=u[0]/(p.x+s(p,h)/2+v),y=u[1]/(m.depth||1);rr(f,function(t){t.x=(t.x+v)*g,t.y=t.depth*y})}return c}function n(t){for(var n,e={A:null,children:[t]},a=[e];null!=(n=a.pop());)for(var r,i=n.children,o=0,s=i.length;s>o;++o)a.push((i[o]=r={_:i[o],parent:n,children:(r=i[o].children)&&r.slice()||[],A:null,a:null,z:0,m:0,c:0,s:0,t:null,i:o}).a=r);return e.children[0]}function e(t){var n=t.children,e=t.parent.children,a=t.i?e[t.i-1]:null;if(n.length){Ir(t);var i=(n[0].z+n[n.length-1].z)/2;a?(t.z=a.z+s(t._,a._),t.m=t.z-i):t.z=i}else a&&(t.z=a.z+s(t._,a._));t.parent.A=r(t,a,t.parent.A||e[0])}function a(t){t._.x=t.z+t.parent.m,t.m+=t.parent.m}function r(t,n,e){if(n){for(var a,r=t,i=t,o=n,u=r.parent.children[0],l=r.m,c=i.m,f=o.m,d=u.m;o=Nr(o),r=Er(r),o&&r;)u=Er(u),i=Nr(i),i.a=t,a=o.z+f-r.z-l+s(o._,r._),a>0&&(Hr(zr(o,t,e),t,a),l+=a,c+=a),f+=o.m,l+=r.m,d+=u.m,c+=i.m;o&&!Nr(i)&&(i.t=o,i.m+=f-c),r&&!Er(u)&&(u.t=r,u.m+=l-d,e=t)}return e}function i(t){t.x*=u[0],t.y=t.depth*u[1]}var o=oo.layout.hierarchy().sort(null).value(null),s=Tr,u=[1,1],l=null;return t.separation=function(n){return arguments.length?(s=n,t):s},t.size=function(n){return arguments.length?(l=null==(u=n)?i:null,t):l?null:u},t.nodeSize=function(n){return arguments.length?(l=null==(u=n)?null:i,t):l?u:null},ar(t,o)},oo.layout.cluster=function(){function t(t,i){var o,s=n.call(this,t,i),u=s[0],l=0;ir(u,function(t){var n=t.children;n&&n.length?(t.x=Ur(n),t.y=Rr(n)):(t.x=o?l+=e(t,o):0,t.y=0,o=t)});var c=Lr(u),f=Fr(u),d=c.x-e(c,f)/2,h=f.x+e(f,c)/2;return ir(u,r?function(t){t.x=(t.x-u.x)*a[0],t.y=(u.y-t.y)*a[1]}:function(t){t.x=(t.x-d)/(h-d)*a[0],t.y=(1-(u.y?t.y/u.y:1))*a[1]}),s}var n=oo.layout.hierarchy().sort(null).value(null),e=Tr,a=[1,1],r=!1;return t.separation=function(n){return arguments.length?(e=n,t):e},t.size=function(n){return arguments.length?(r=null==(a=n),t):r?null:a},t.nodeSize=function(n){return arguments.length?(r=null!=(a=n),t):r?a:null},ar(t,n)},oo.layout.treemap=function(){function t(t,n){for(var e,a,r=-1,i=t.length;++r<i;)a=(e=t[r]).value*(0>n?0:n),e.area=isNaN(a)||0>=a?0:a}function n(e){var i=e.children;if(i&&i.length){var o,s,u,l=f(e),c=[],d=i.slice(),p=1/0,m="slice"===h?l.dx:"dice"===h?l.dy:"slice-dice"===h?1&e.depth?l.dy:l.dx:Math.min(l.dx,l.dy);for(t(d,l.dx*l.dy/e.value),c.area=0;(u=d.length)>0;)c.push(o=d[u-1]),c.area+=o.area,"squarify"!==h||(s=a(c,m))<=p?(d.pop(),p=s):(c.area-=c.pop().area,r(c,m,l,!1),m=Math.min(l.dx,l.dy),c.length=c.area=0,p=1/0);c.length&&(r(c,m,l,!0),c.length=c.area=0),i.forEach(n)}}function e(n){var a=n.children;if(a&&a.length){var i,o=f(n),s=a.slice(),u=[];for(t(s,o.dx*o.dy/n.value),u.area=0;i=s.pop();)u.push(i),u.area+=i.area,null!=i.z&&(r(u,i.z?o.dx:o.dy,o,!s.length),u.length=u.area=0);a.forEach(e)}}function a(t,n){for(var e,a=t.area,r=0,i=1/0,o=-1,s=t.length;++o<s;)(e=t[o].area)&&(i>e&&(i=e),e>r&&(r=e));return a*=a,n*=n,a?Math.max(n*r*p/a,a/(n*i*p)):1/0}function r(t,n,e,a){var r,i=-1,o=t.length,s=e.x,l=e.y,c=n?u(t.area/n):0;if(n==e.dx){for((a||c>e.dy)&&(c=e.dy);++i<o;)r=t[i],r.x=s,r.y=l,r.dy=c,s+=r.dx=Math.min(e.x+e.dx-s,c?u(r.area/c):0);r.z=!0,r.dx+=e.x+e.dx-s,e.y+=c,e.dy-=c}else{for((a||c>e.dx)&&(c=e.dx);++i<o;)r=t[i],r.x=s,r.y=l,r.dx=c,l+=r.dy=Math.min(e.y+e.dy-l,c?u(r.area/c):0);r.z=!1,r.dy+=e.y+e.dy-l,e.x+=c,e.dx-=c}}function i(a){var r=o||s(a),i=r[0];return i.x=0,i.y=0,i.dx=l[0],i.dy=l[1],o&&s.revalue(i),t([i],i.dx*i.dy/i.value),(o?e:n)(i),d&&(o=r),r}var o,s=oo.layout.hierarchy(),u=Math.round,l=[1,1],c=null,f=jr,d=!1,h="squarify",p=.5*(1+Math.sqrt(5));return i.size=function(t){return arguments.length?(l=t,i):l},i.padding=function(t){function n(n){var e=t.call(i,n,n.depth);return null==e?jr(n):Br(n,"number"==typeof e?[e,e,e,e]:e)}function e(n){return Br(n,t)}if(!arguments.length)return c;var a;return f=null==(c=t)?jr:"function"==(a=typeof t)?n:"number"===a?(t=[t,t,t,t],e):e,i},i.round=function(t){return arguments.length?(u=t?Math.round:Number,i):u!=Number},i.sticky=function(t){return arguments.length?(d=t,o=null,i):d},i.ratio=function(t){return arguments.length?(p=t,i):p},i.mode=function(t){return arguments.length?(h=t+"",i):h},ar(i,s)},oo.random={normal:function(t,n){var e=arguments.length;return 2>e&&(n=1),1>e&&(t=0),function(){var e,a,r;do e=2*Math.random()-1,a=2*Math.random()-1,r=e*e+a*a;while(!r||r>1);return t+n*e*Math.sqrt(-2*Math.log(r)/r)}},logNormal:function(){var t=oo.random.normal.apply(oo,arguments);return function(){return Math.exp(t())}},bates:function(t){var n=oo.random.irwinHall(t);return function(){return n()/t}},irwinHall:function(t){return function(){for(var n=0,e=0;t>e;e++)n+=Math.random();return n}}},oo.scale={};var ku={floor:k,ceil:k};oo.scale.linear=function(){return Kr([0,1],[0,1],ka,!1)};var Du={s:1,g:1,p:1,r:1,e:1};oo.scale.log=function(){return ei(oo.scale.linear().domain([0,1]),10,!0,[1,10])};var Cu=oo.format(".0e"),Mu={floor:function(t){return-Math.ceil(-t)},ceil:function(t){return-Math.floor(-t)}};oo.scale.pow=function(){return ai(oo.scale.linear(),1,[0,1])},oo.scale.sqrt=function(){return oo.scale.pow().exponent(.5)},oo.scale.ordinal=function(){return ii([],{t:"range",a:[[]]})},oo.scale.category10=function(){return oo.scale.ordinal().range(Su)},oo.scale.category20=function(){return oo.scale.ordinal().range(Pu)},oo.scale.category20b=function(){return oo.scale.ordinal().range(Au)},oo.scale.category20c=function(){return oo.scale.ordinal().range(Tu)};var Su=[2062260,16744206,2924588,14034728,9725885,9197131,14907330,8355711,12369186,1556175].map(Dt),Pu=[2062260,11454440,16744206,16759672,2924588,10018698,14034728,16750742,9725885,12955861,9197131,12885140,14907330,16234194,8355711,13092807,12369186,14408589,1556175,10410725].map(Dt),Au=[3750777,5395619,7040719,10264286,6519097,9216594,11915115,13556636,9202993,12426809,15186514,15190932,8666169,11356490,14049643,15177372,8077683,10834324,13528509,14589654].map(Dt),Tu=[3244733,7057110,10406625,13032431,15095053,16616764,16625259,16634018,3253076,7652470,10607003,13101504,7695281,10394312,12369372,14342891,6513507,9868950,12434877,14277081].map(Dt);oo.scale.quantile=function(){return oi([],[])},oo.scale.quantize=function(){return si(0,1,[0,1])},oo.scale.threshold=function(){return ui([.5],[0,1])},oo.scale.identity=function(){return li([0,1])},oo.svg={},oo.svg.arc=function(){function t(){var t=Math.max(0,+e.apply(this,arguments)),l=Math.max(0,+a.apply(this,arguments)),c=o.apply(this,arguments)-jo,f=s.apply(this,arguments)-jo,d=Math.abs(f-c),h=c>f?0:1;if(t>l&&(p=l,l=t,t=p),d>=Fo)return n(l,h)+(t?n(t,1-h):"")+"Z";var p,m,v,g,y,b,_,x,w,k,D,C,M=0,S=0,P=[];if((g=(+u.apply(this,arguments)||0)/2)&&(v=i===Eu?Math.sqrt(t*t+l*l):+i.apply(this,arguments),h||(S*=-1),l&&(S=ot(v/l*Math.sin(g))),t&&(M=ot(v/t*Math.sin(g)))),l){y=l*Math.cos(c+S),b=l*Math.sin(c+S),_=l*Math.cos(f-S),x=l*Math.sin(f-S);var A=Math.abs(f-c-2*S)<=Uo?0:1;if(S&&vi(y,b,_,x)===h^A){var T=(c+f)/2;y=l*Math.cos(T),b=l*Math.sin(T),_=x=null}}else y=b=0;if(t){w=t*Math.cos(f-M),k=t*Math.sin(f-M),D=t*Math.cos(c+M),C=t*Math.sin(c+M);var E=Math.abs(c-f+2*M)<=Uo?0:1;if(M&&vi(w,k,D,C)===1-h^E){var N=(c+f)/2;w=t*Math.cos(N),k=t*Math.sin(N),D=C=null}}else w=k=0;if((p=Math.min(Math.abs(l-t)/2,+r.apply(this,arguments)))>.001){m=l>t^h?0:1;var H=null==D?[w,k]:null==_?[y,b]:Le([y,b],[D,C],[_,x],[w,k]),I=y-H[0],z=b-H[1],R=_-H[0],U=x-H[1],L=1/Math.sin(Math.acos((I*R+z*U)/(Math.sqrt(I*I+z*z)*Math.sqrt(R*R+U*U)))/2),F=Math.sqrt(H[0]*H[0]+H[1]*H[1]);if(null!=_){var j=Math.min(p,(l-F)/(L+1)),B=gi(null==D?[w,k]:[D,C],[y,b],l,j,h),q=gi([_,x],[w,k],l,j,h);p===j?P.push("M",B[0],"A",j,",",j," 0 0,",m," ",B[1],"A",l,",",l," 0 ",1-h^vi(B[1][0],B[1][1],q[1][0],q[1][1]),",",h," ",q[1],"A",j,",",j," 0 0,",m," ",q[0]):P.push("M",B[0],"A",j,",",j," 0 1,",m," ",q[0])}else P.push("M",y,",",b);if(null!=D){var O=Math.min(p,(t-F)/(L-1)),V=gi([y,b],[D,C],t,-O,h),$=gi([w,k],null==_?[y,b]:[_,x],t,-O,h);p===O?P.push("L",$[0],"A",O,",",O," 0 0,",m," ",$[1],"A",t,",",t," 0 ",h^vi($[1][0],$[1][1],V[1][0],V[1][1]),",",1-h," ",V[1],"A",O,",",O," 0 0,",m," ",V[0]):P.push("L",$[0],"A",O,",",O," 0 0,",m," ",V[0])}else P.push("L",w,",",k)}else P.push("M",y,",",b),null!=_&&P.push("A",l,",",l," 0 ",A,",",h," ",_,",",x),P.push("L",w,",",k),null!=D&&P.push("A",t,",",t," 0 ",E,",",1-h," ",D,",",C);return P.push("Z"),P.join("")}function n(t,n){return"M0,"+t+"A"+t+","+t+" 0 1,"+n+" 0,"+-t+"A"+t+","+t+" 0 1,"+n+" 0,"+t}var e=fi,a=di,r=ci,i=Eu,o=hi,s=pi,u=mi;return t.innerRadius=function(n){return arguments.length?(e=Et(n),t):e},t.outerRadius=function(n){return arguments.length?(a=Et(n),t):a},t.cornerRadius=function(n){return arguments.length?(r=Et(n),t):r},t.padRadius=function(n){return arguments.length?(i=n==Eu?Eu:Et(n),t):i},t.startAngle=function(n){return arguments.length?(o=Et(n),t):o},t.endAngle=function(n){return arguments.length?(s=Et(n),t):s},t.padAngle=function(n){return arguments.length?(u=Et(n),t):u},t.centroid=function(){var t=(+e.apply(this,arguments)+ +a.apply(this,arguments))/2,n=(+o.apply(this,arguments)+ +s.apply(this,arguments))/2-jo;return[Math.cos(n)*t,Math.sin(n)*t]},t};var Eu="auto";oo.svg.line=function(){return yi(k)};var Nu=oo.map({linear:bi,"linear-closed":_i,step:xi,"step-before":wi,"step-after":ki,basis:Ai,"basis-open":Ti,"basis-closed":Ei,bundle:Ni,cardinal:Mi,"cardinal-open":Di,"cardinal-closed":Ci,monotone:Li});Nu.forEach(function(t,n){n.key=t,n.closed=/-closed$/.test(t)});var Hu=[0,2/3,1/3,0],Iu=[0,1/3,2/3,0],zu=[0,1/6,2/3,1/6];oo.svg.line.radial=function(){var t=yi(Fi);return t.radius=t.x,delete t.x,t.angle=t.y,delete t.y,t},wi.reverse=ki,ki.reverse=wi,oo.svg.area=function(){return ji(k)},oo.svg.area.radial=function(){var t=ji(Fi);return t.radius=t.x,delete t.x,t.innerRadius=t.x0,delete t.x0,t.outerRadius=t.x1,delete t.x1,t.angle=t.y,delete t.y,t.startAngle=t.y0,delete t.y0,t.endAngle=t.y1,delete t.y1,t},oo.svg.chord=function(){function t(t,s){var u=n(this,i,t,s),l=n(this,o,t,s);return"M"+u.p0+a(u.r,u.p1,u.a1-u.a0)+(e(u,l)?r(u.r,u.p1,u.r,u.p0):r(u.r,u.p1,l.r,l.p0)+a(l.r,l.p1,l.a1-l.a0)+r(l.r,l.p1,u.r,u.p0))+"Z"}function n(t,n,e,a){var r=n.call(t,e,a),i=s.call(t,r,a),o=u.call(t,r,a)-jo,c=l.call(t,r,a)-jo;return{r:i,a0:o,a1:c,p0:[i*Math.cos(o),i*Math.sin(o)],p1:[i*Math.cos(c),i*Math.sin(c)]}}function e(t,n){return t.a0==n.a0&&t.a1==n.a1}function a(t,n,e){return"A"+t+","+t+" 0 "+ +(e>Uo)+",1 "+n}function r(t,n,e,a){return"Q 0,0 "+a}var i=ke,o=De,s=Bi,u=hi,l=pi;return t.radius=function(n){return arguments.length?(s=Et(n),t):s},t.source=function(n){return arguments.length?(i=Et(n),t):i},t.target=function(n){return arguments.length?(o=Et(n),t):o},t.startAngle=function(n){return arguments.length?(u=Et(n),t):u},t.endAngle=function(n){return arguments.length?(l=Et(n),t):l},t},oo.svg.diagonal=function(){function t(t,r){var i=n.call(this,t,r),o=e.call(this,t,r),s=(i.y+o.y)/2,u=[i,{x:i.x,y:s},{x:o.x,y:s},o];return u=u.map(a),"M"+u[0]+"C"+u[1]+" "+u[2]+" "+u[3]}var n=ke,e=De,a=qi;return t.source=function(e){return arguments.length?(n=Et(e),t):n},t.target=function(n){return arguments.length?(e=Et(n),t):e},t.projection=function(n){return arguments.length?(a=n,t):a},t},oo.svg.diagonal.radial=function(){var t=oo.svg.diagonal(),n=qi,e=t.projection;return t.projection=function(t){return arguments.length?e(Oi(n=t)):n},t},oo.svg.symbol=function(){function t(t,a){return(Ru.get(n.call(this,t,a))||Zi)(e.call(this,t,a))}var n=$i,e=Vi;return t.type=function(e){return arguments.length?(n=Et(e),t):n},t.size=function(n){return arguments.length?(e=Et(n),t):e},t};var Ru=oo.map({circle:Zi,cross:function(t){var n=Math.sqrt(t/5)/2;return"M"+-3*n+","+-n+"H"+-n+"V"+-3*n+"H"+n+"V"+-n+"H"+3*n+"V"+n+"H"+n+"V"+3*n+"H"+-n+"V"+n+"H"+-3*n+"Z"},diamond:function(t){var n=Math.sqrt(t/(2*Lu)),e=n*Lu;return"M0,"+-n+"L"+e+",0 0,"+n+" "+-e+",0Z"},square:function(t){var n=Math.sqrt(t)/2;return"M"+-n+","+-n+"L"+n+","+-n+" "+n+","+n+" "+-n+","+n+"Z"},"triangle-down":function(t){var n=Math.sqrt(t/Uu),e=n*Uu/2;return"M0,"+e+"L"+n+","+-e+" "+-n+","+-e+"Z"},"triangle-up":function(t){var n=Math.sqrt(t/Uu),e=n*Uu/2;return"M0,"+-e+"L"+n+","+e+" "+-n+","+e+"Z"}});oo.svg.symbolTypes=Ru.keys();var Uu=Math.sqrt(3),Lu=Math.tan(30*Bo);Po.transition=function(t){
+	for(var n,e,a=Fu||++Ou,r=Xi(t),i=[],o=ju||{time:Date.now(),ease:Ta,delay:0,duration:250},s=-1,u=this.length;++s<u;){i.push(n=[]);for(var l=this[s],c=-1,f=l.length;++c<f;)(e=l[c])&&Ji(e,c,r,a,o),n.push(e)}return Ki(i,r,a)},Po.interrupt=function(t){return this.each(null==t?Bu:Yi(Xi(t)))};var Fu,ju,Bu=Yi(Xi()),qu=[],Ou=0;qu.call=Po.call,qu.empty=Po.empty,qu.node=Po.node,qu.size=Po.size,oo.transition=function(t,n){return t&&t.transition?Fu?t.transition(n):t:oo.selection().transition(t)},oo.transition.prototype=qu,qu.select=function(t){var n,e,a,r=this.id,i=this.namespace,o=[];t=H(t);for(var s=-1,u=this.length;++s<u;){o.push(n=[]);for(var l=this[s],c=-1,f=l.length;++c<f;)(a=l[c])&&(e=t.call(a,a.__data__,c,s))?("__data__"in a&&(e.__data__=a.__data__),Ji(e,c,i,r,a[i][r]),n.push(e)):n.push(null)}return Ki(o,i,r)},qu.selectAll=function(t){var n,e,a,r,i,o=this.id,s=this.namespace,u=[];t=I(t);for(var l=-1,c=this.length;++l<c;)for(var f=this[l],d=-1,h=f.length;++d<h;)if(a=f[d]){i=a[s][o],e=t.call(a,a.__data__,d,l),u.push(n=[]);for(var p=-1,m=e.length;++p<m;)(r=e[p])&&Ji(r,p,s,o,i),n.push(r)}return Ki(u,s,o)},qu.filter=function(t){var n,e,a,r=[];"function"!=typeof t&&(t=Z(t));for(var i=0,o=this.length;o>i;i++){r.push(n=[]);for(var e=this[i],s=0,u=e.length;u>s;s++)(a=e[s])&&t.call(a,a.__data__,s,i)&&n.push(a)}return Ki(r,this.namespace,this.id)},qu.tween=function(t,n){var e=this.id,a=this.namespace;return arguments.length<2?this.node()[a][e].tween.get(t):K(this,null==n?function(n){n[a][e].tween.remove(t)}:function(r){r[a][e].tween.set(t,n)})},qu.attr=function(t,n){function e(){this.removeAttribute(s)}function a(){this.removeAttributeNS(s.space,s.local)}function r(t){return null==t?e:(t+="",function(){var n,e=this.getAttribute(s);return e!==t&&(n=o(e,t),function(t){this.setAttribute(s,n(t))})})}function i(t){return null==t?a:(t+="",function(){var n,e=this.getAttributeNS(s.space,s.local);return e!==t&&(n=o(e,t),function(t){this.setAttributeNS(s.space,s.local,n(t))})})}if(arguments.length<2){for(n in t)this.attr(n,t[n]);return this}var o="transform"==t?Za:ka,s=oo.ns.qualify(t);return Wi(this,"attr."+t,n,s.local?i:r)},qu.attrTween=function(t,n){function e(t,e){var a=n.call(this,t,e,this.getAttribute(r));return a&&function(t){this.setAttribute(r,a(t))}}function a(t,e){var a=n.call(this,t,e,this.getAttributeNS(r.space,r.local));return a&&function(t){this.setAttributeNS(r.space,r.local,a(t))}}var r=oo.ns.qualify(t);return this.tween("attr."+t,r.local?a:e)},qu.style=function(t,n,e){function a(){this.style.removeProperty(t)}function r(n){return null==n?a:(n+="",function(){var a,r=o(this).getComputedStyle(this,null).getPropertyValue(t);return r!==n&&(a=ka(r,n),function(n){this.style.setProperty(t,a(n),e)})})}var i=arguments.length;if(3>i){if("string"!=typeof t){2>i&&(n="");for(e in t)this.style(e,t[e],n);return this}e=""}return Wi(this,"style."+t,n,r)},qu.styleTween=function(t,n,e){function a(a,r){var i=n.call(this,a,r,o(this).getComputedStyle(this,null).getPropertyValue(t));return i&&function(n){this.style.setProperty(t,i(n),e)}}return arguments.length<3&&(e=""),this.tween("style."+t,a)},qu.text=function(t){return Wi(this,"text",t,Gi)},qu.remove=function(){var t=this.namespace;return this.each("end.transition",function(){var n;this[t].count<2&&(n=this.parentNode)&&n.removeChild(this)})},qu.ease=function(t){var n=this.id,e=this.namespace;return arguments.length<1?this.node()[e][n].ease:("function"!=typeof t&&(t=oo.ease.apply(oo,arguments)),K(this,function(a){a[e][n].ease=t}))},qu.delay=function(t){var n=this.id,e=this.namespace;return arguments.length<1?this.node()[e][n].delay:K(this,"function"==typeof t?function(a,r,i){a[e][n].delay=+t.call(a,a.__data__,r,i)}:(t=+t,function(a){a[e][n].delay=t}))},qu.duration=function(t){var n=this.id,e=this.namespace;return arguments.length<1?this.node()[e][n].duration:K(this,"function"==typeof t?function(a,r,i){a[e][n].duration=Math.max(1,t.call(a,a.__data__,r,i))}:(t=Math.max(1,t),function(a){a[e][n].duration=t}))},qu.each=function(t,n){var e=this.id,a=this.namespace;if(arguments.length<2){var r=ju,i=Fu;try{Fu=e,K(this,function(n,r,i){ju=n[a][e],t.call(n,n.__data__,r,i)})}finally{ju=r,Fu=i}}else K(this,function(r){var i=r[a][e];(i.event||(i.event=oo.dispatch("start","end","interrupt"))).on(t,n)});return this},qu.transition=function(){for(var t,n,e,a,r=this.id,i=++Ou,o=this.namespace,s=[],u=0,l=this.length;l>u;u++){s.push(t=[]);for(var n=this[u],c=0,f=n.length;f>c;c++)(e=n[c])&&(a=e[o][r],Ji(e,c,o,i,{time:a.time,ease:a.ease,delay:a.delay+a.duration,duration:a.duration})),t.push(e)}return Ki(s,o,i)},oo.svg.axis=function(){function t(t){t.each(function(){var t,l=oo.select(this),c=this.__chart__||e,f=this.__chart__=e.copy(),d=null==u?f.ticks?f.ticks.apply(f,s):f.domain():u,h=null==n?f.tickFormat?f.tickFormat.apply(f,s):k:n,p=l.selectAll(".tick").data(d,f),m=p.enter().insert("g",".domain").attr("class","tick").style("opacity",zo),v=oo.transition(p.exit()).style("opacity",zo).remove(),g=oo.transition(p.order()).style("opacity",1),y=Math.max(r,0)+o,b=Or(f),_=l.selectAll(".domain").data([0]),x=(_.enter().append("path").attr("class","domain"),oo.transition(_));m.append("line"),m.append("text");var w,D,C,M,S=m.select("line"),P=g.select("line"),A=p.select("text").text(h),T=m.select("text"),E=g.select("text"),N="top"===a||"left"===a?-1:1;if("bottom"===a||"top"===a?(t=Qi,w="x",C="y",D="x2",M="y2",A.attr("dy",0>N?"0em":".71em").style("text-anchor","middle"),x.attr("d","M"+b[0]+","+N*i+"V0H"+b[1]+"V"+N*i)):(t=to,w="y",C="x",D="y2",M="x2",A.attr("dy",".32em").style("text-anchor",0>N?"end":"start"),x.attr("d","M"+N*i+","+b[0]+"H0V"+b[1]+"H"+N*i)),S.attr(M,N*r),T.attr(C,N*y),P.attr(D,0).attr(M,N*r),E.attr(w,0).attr(C,N*y),f.rangeBand){var H=f,I=H.rangeBand()/2;c=f=function(t){return H(t)+I}}else c.rangeBand?c=f:v.call(t,f,c);m.call(t,c,f),g.call(t,f,f)})}var n,e=oo.scale.linear(),a=Vu,r=6,i=6,o=3,s=[10],u=null;return t.scale=function(n){return arguments.length?(e=n,t):e},t.orient=function(n){return arguments.length?(a=n in $u?n+"":Vu,t):a},t.ticks=function(){return arguments.length?(s=arguments,t):s},t.tickValues=function(n){return arguments.length?(u=n,t):u},t.tickFormat=function(e){return arguments.length?(n=e,t):n},t.tickSize=function(n){var e=arguments.length;return e?(r=+n,i=+arguments[e-1],t):r},t.innerTickSize=function(n){return arguments.length?(r=+n,t):r},t.outerTickSize=function(n){return arguments.length?(i=+n,t):i},t.tickPadding=function(n){return arguments.length?(o=+n,t):o},t.tickSubdivide=function(){return arguments.length&&t},t};var Vu="bottom",$u={top:1,right:1,bottom:1,left:1};oo.svg.brush=function(){function t(i){i.each(function(){var i=oo.select(this).style("pointer-events","all").style("-webkit-tap-highlight-color","rgba(0,0,0,0)").on("mousedown.brush",r).on("touchstart.brush",r),o=i.selectAll(".background").data([0]);o.enter().append("rect").attr("class","background").style("visibility","hidden").style("cursor","crosshair"),i.selectAll(".extent").data([0]).enter().append("rect").attr("class","extent").style("cursor","move");var s=i.selectAll(".resize").data(m,k);s.exit().remove(),s.enter().append("g").attr("class",function(t){return"resize "+t}).style("cursor",function(t){return Zu[t]}).append("rect").attr("x",function(t){return/[ew]$/.test(t)?-3:null}).attr("y",function(t){return/^[ns]/.test(t)?-3:null}).attr("width",6).attr("height",6).style("visibility","hidden"),s.style("display",t.empty()?"none":null);var u,f=oo.transition(i),d=oo.transition(o);l&&(u=Or(l),d.attr("x",u[0]).attr("width",u[1]-u[0]),e(f)),c&&(u=Or(c),d.attr("y",u[0]).attr("height",u[1]-u[0]),a(f)),n(f)})}function n(t){t.selectAll(".resize").attr("transform",function(t){return"translate("+f[+/e$/.test(t)]+","+d[+/^s/.test(t)]+")"})}function e(t){t.select(".extent").attr("x",f[0]),t.selectAll(".extent,.n>rect,.s>rect").attr("width",f[1]-f[0])}function a(t){t.select(".extent").attr("y",d[0]),t.selectAll(".extent,.e>rect,.w>rect").attr("height",d[1]-d[0])}function r(){function r(){32==oo.event.keyCode&&(P||(b=null,E[0]-=f[1],E[1]-=d[1],P=2),A())}function m(){32==oo.event.keyCode&&2==P&&(E[0]+=f[1],E[1]+=d[1],P=0,A())}function v(){var t=oo.mouse(x),r=!1;_&&(t[0]+=_[0],t[1]+=_[1]),P||(oo.event.altKey?(b||(b=[(f[0]+f[1])/2,(d[0]+d[1])/2]),E[0]=f[+(t[0]<b[0])],E[1]=d[+(t[1]<b[1])]):b=null),M&&g(t,l,0)&&(e(D),r=!0),S&&g(t,c,1)&&(a(D),r=!0),r&&(n(D),k({type:"brush",mode:P?"move":"resize"}))}function g(t,n,e){var a,r,o=Or(n),u=o[0],l=o[1],c=E[e],m=e?d:f,v=m[1]-m[0];return P&&(u-=c,l-=v+c),a=(e?p:h)?Math.max(u,Math.min(l,t[e])):t[e],P?r=(a+=c)+v:(b&&(c=Math.max(u,Math.min(l,2*b[e]-a))),a>c?(r=a,a=c):r=c),m[0]!=a||m[1]!=r?(e?s=null:i=null,m[0]=a,m[1]=r,!0):void 0}function y(){v(),D.style("pointer-events","all").selectAll(".resize").style("display",t.empty()?"none":null),oo.select("body").style("cursor",null),N.on("mousemove.brush",null).on("mouseup.brush",null).on("touchmove.brush",null).on("touchend.brush",null).on("keydown.brush",null).on("keyup.brush",null),T(),k({type:"brushend"})}var b,_,x=this,w=oo.select(oo.event.target),k=u.of(x,arguments),D=oo.select(x),C=w.datum(),M=!/^(n|s)$/.test(C)&&l,S=!/^(e|w)$/.test(C)&&c,P=w.classed("extent"),T=tt(x),E=oo.mouse(x),N=oo.select(o(x)).on("keydown.brush",r).on("keyup.brush",m);if(oo.event.changedTouches?N.on("touchmove.brush",v).on("touchend.brush",y):N.on("mousemove.brush",v).on("mouseup.brush",y),D.interrupt().selectAll("*").interrupt(),P)E[0]=f[0]-E[0],E[1]=d[0]-E[1];else if(C){var H=+/w$/.test(C),I=+/^n/.test(C);_=[f[1-H]-E[0],d[1-I]-E[1]],E[0]=f[H],E[1]=d[I]}else oo.event.altKey&&(b=E.slice());D.style("pointer-events","none").selectAll(".resize").style("display",null),oo.select("body").style("cursor",w.style("cursor")),k({type:"brushstart"}),v()}var i,s,u=E(t,"brushstart","brush","brushend"),l=null,c=null,f=[0,0],d=[0,0],h=!0,p=!0,m=Yu[0];return t.event=function(t){t.each(function(){var t=u.of(this,arguments),n={x:f,y:d,i:i,j:s},e=this.__chart__||n;this.__chart__=n,Fu?oo.select(this).transition().each("start.brush",function(){i=e.i,s=e.j,f=e.x,d=e.y,t({type:"brushstart"})}).tween("brush:brush",function(){var e=Da(f,n.x),a=Da(d,n.y);return i=s=null,function(r){f=n.x=e(r),d=n.y=a(r),t({type:"brush",mode:"resize"})}}).each("end.brush",function(){i=n.i,s=n.j,t({type:"brush",mode:"resize"}),t({type:"brushend"})}):(t({type:"brushstart"}),t({type:"brush",mode:"resize"}),t({type:"brushend"}))})},t.x=function(n){return arguments.length?(l=n,m=Yu[!l<<1|!c],t):l},t.y=function(n){return arguments.length?(c=n,m=Yu[!l<<1|!c],t):c},t.clamp=function(n){return arguments.length?(l&&c?(h=!!n[0],p=!!n[1]):l?h=!!n:c&&(p=!!n),t):l&&c?[h,p]:l?h:c?p:null},t.extent=function(n){var e,a,r,o,u;return arguments.length?(l&&(e=n[0],a=n[1],c&&(e=e[0],a=a[0]),i=[e,a],l.invert&&(e=l(e),a=l(a)),e>a&&(u=e,e=a,a=u),(e!=f[0]||a!=f[1])&&(f=[e,a])),c&&(r=n[0],o=n[1],l&&(r=r[1],o=o[1]),s=[r,o],c.invert&&(r=c(r),o=c(o)),r>o&&(u=r,r=o,o=u),(r!=d[0]||o!=d[1])&&(d=[r,o])),t):(l&&(i?(e=i[0],a=i[1]):(e=f[0],a=f[1],l.invert&&(e=l.invert(e),a=l.invert(a)),e>a&&(u=e,e=a,a=u))),c&&(s?(r=s[0],o=s[1]):(r=d[0],o=d[1],c.invert&&(r=c.invert(r),o=c.invert(o)),r>o&&(u=r,r=o,o=u))),l&&c?[[e,r],[a,o]]:l?[e,a]:c&&[r,o])},t.clear=function(){return t.empty()||(f=[0,0],d=[0,0],i=s=null),t},t.empty=function(){return!!l&&f[0]==f[1]||!!c&&d[0]==d[1]},oo.rebind(t,u,"on")};var Zu={n:"ns-resize",e:"ew-resize",s:"ns-resize",w:"ew-resize",nw:"nwse-resize",ne:"nesw-resize",se:"nwse-resize",sw:"nesw-resize"},Yu=[["n","e","s","w","nw","ne","se","sw"],["e","w"],["n","s"],[]],Ku=hs.format=bs.timeFormat,Wu=Ku.utc,Gu=Wu("%Y-%m-%dT%H:%M:%S.%LZ");Ku.iso=Date.prototype.toISOString&&+new Date("2000-01-01T00:00:00.000Z")?no:Gu,no.parse=function(t){var n=new Date(t);return isNaN(n)?null:n},no.toString=Gu.toString,hs.second=Vt(function(t){return new ps(1e3*Math.floor(t/1e3))},function(t,n){t.setTime(t.getTime()+1e3*Math.floor(n))},function(t){return t.getSeconds()}),hs.seconds=hs.second.range,hs.seconds.utc=hs.second.utc.range,hs.minute=Vt(function(t){return new ps(6e4*Math.floor(t/6e4))},function(t,n){t.setTime(t.getTime()+6e4*Math.floor(n))},function(t){return t.getMinutes()}),hs.minutes=hs.minute.range,hs.minutes.utc=hs.minute.utc.range,hs.hour=Vt(function(t){var n=t.getTimezoneOffset()/60;return new ps(36e5*(Math.floor(t/36e5-n)+n))},function(t,n){t.setTime(t.getTime()+36e5*Math.floor(n))},function(t){return t.getHours()}),hs.hours=hs.hour.range,hs.hours.utc=hs.hour.utc.range,hs.month=Vt(function(t){return t=hs.day(t),t.setDate(1),t},function(t,n){t.setMonth(t.getMonth()+n)},function(t){return t.getMonth()}),hs.months=hs.month.range,hs.months.utc=hs.month.utc.range;var Xu=[1e3,5e3,15e3,3e4,6e4,3e5,9e5,18e5,36e5,108e5,216e5,432e5,864e5,1728e5,6048e5,2592e6,7776e6,31536e6],Ju=[[hs.second,1],[hs.second,5],[hs.second,15],[hs.second,30],[hs.minute,1],[hs.minute,5],[hs.minute,15],[hs.minute,30],[hs.hour,1],[hs.hour,3],[hs.hour,6],[hs.hour,12],[hs.day,1],[hs.day,2],[hs.week,1],[hs.month,1],[hs.month,3],[hs.year,1]],Qu=Ku.multi([[".%L",function(t){return t.getMilliseconds()}],[":%S",function(t){return t.getSeconds()}],["%I:%M",function(t){return t.getMinutes()}],["%I %p",function(t){return t.getHours()}],["%a %d",function(t){return t.getDay()&&1!=t.getDate()}],["%b %d",function(t){return 1!=t.getDate()}],["%B",function(t){return t.getMonth()}],["%Y",In]]),tl={range:function(t,n,e){return oo.range(Math.ceil(t/e)*e,+n,e).map(ao)},floor:k,ceil:k};Ju.year=hs.year,hs.scale=function(){return eo(oo.scale.linear(),Ju,Qu)};var nl=Ju.map(function(t){return[t[0].utc,t[1]]}),el=Wu.multi([[".%L",function(t){return t.getUTCMilliseconds()}],[":%S",function(t){return t.getUTCSeconds()}],["%I:%M",function(t){return t.getUTCMinutes()}],["%I %p",function(t){return t.getUTCHours()}],["%a %d",function(t){return t.getUTCDay()&&1!=t.getUTCDate()}],["%b %d",function(t){return 1!=t.getUTCDate()}],["%B",function(t){return t.getUTCMonth()}],["%Y",In]]);nl.year=hs.year.utc,hs.scale.utc=function(){return eo(oo.scale.linear(),nl,el)},oo.text=Nt(function(t){return t.responseText}),oo.json=function(t,n){return Ht(t,"application/json",ro,n)},oo.html=function(t,n){return Ht(t,"text/html",io,n)},oo.xml=Nt(function(t){return t.responseXML}),a=oo,r="function"==typeof a?a.call(n,e,n,t):a,!(void 0!==r&&(t.exports=r)),this.d3=oo}()},function(t,n,e){"use strict";t.exports=function(t){function n(t,n){return{scope:{visible:"=",seatData:"=",statsData:"=",tableData:"=",selectedStats:"="},controller:"HUDInfoPanelCtrl",controllerAs:"vm",bindToController:!0,link:function(a,r,i){var o=n.getTemplateUrl(e(88),"./hud-info-panel.template",i.version);r.html(o),t(r.contents())(a)}}}function a(t){function n(){t.$watch("vm.visible",function(t){t&&(a.visible=t)})}function e(t,n){return n>=0?t+n:""}var a=this;window.infoPanelVM=a,a.getVipStatusClass=e,n()}t.directive("hudInfoPanel",n).controller("HUDInfoPanelCtrl",a),n.$inject=["$compile","templateService"],a.$inject=["$scope"]}},function(t,n,e){function a(t){return e(r(t))}function r(t){return i[t]||function(){throw new Error("Cannot find module '"+t+"'.")}()}var i={"./hud-info-panel.component":87,"./hud-info-panel.component.js":87,"./hud-info-panel.template":89,"./hud-info-panel.template.html":89,"./hud-info-panel.template.v2":90,"./hud-info-panel.template.v2.html":90,"./hud-info-panel.template.v3":91,"./hud-info-panel.template.v3.html":91,"./hud-info-panel.template.v4":92,"./hud-info-panel.template.v4.html":92};a.keys=function(){return Object.keys(i)},a.resolve=r,t.exports=a,a.id=88},function(t,n){t.exports='<div class="InfoPanel" title="{{ vm.seatData.notes.label.name }}" ng-class="{\'is-visible\' : vm.visible }">\n	<div class="InfoPanel-playerDetails u-textTruncate">\n		<div class="InfoPanel-playerName">{{ vm.seatData.name }}</div>\n		<span class="InfoPanel-playerStack">{{ ( vm.seatData.stacksize / vm.tableData.currency.divisor ) | chipsCurrency:vm.tableData.currency.symbol }}</span>\n        <span class="InfoPanel-bigBlinds">\n            <span class="InfoPanel-bigBlindsValue">{{ vm.seatData.BBs | bigBlindsNumber }}<span ng-if="vm.seatData.all_in" class="is-negative"> ({{ vm.seatData.BBs_bet | bigBlindsNumber }})</span></span>BB\n        </span>\n	</div>\n	<p class="InfoPanel-playerStatus" ng-if="vm.seatData.sit_out || vm.seatData.is_afk">Sitting out</p>\n\n	<div class="InfoPanel-stats js-coreStats is-hidden" ng-if="!(vm.seatData.sit_out || vm.seatData.is_afk)">\n		<hud-stat stat-data="vm.statsData.core.stat1" class="is-first"></hud-stat>\n		<hud-stat stat-data="vm.statsData.core.stat2"></hud-stat>\n		<hud-stat stat-data="vm.statsData.core.stat3" class="is-last"></hud-stat>\n	</div>\n\n	<div class="InfoPanel-stats js-liveStats" ng-if="!(vm.seatData.sit_out || vm.seatData.is_afk)">\n		<hud-stat stat-data="vm.statsData[vm.selectedStats].stat1" class="is-first"></hud-stat>\n		<hud-stat stat-data="vm.statsData[vm.selectedStats].stat2"></hud-stat>\n		<hud-stat stat-data="vm.statsData[vm.selectedStats].stat3" class="is-last"></hud-stat>\n	</div>\n\n	<div class="InfoPanel-playerLabel" ng-style="{\'border-color\': \'#\' + vm.seatData.notes.label.color }"></div>\n	<div class="InfoPanel-bevel"></div>\n</div>'},function(t,n){t.exports='<div class="InfoPanel">\n	<div class="InfoPanel-playerDetails">\n		<div class="InfoPanel-playerName">{{vm.seatData.name}}</div>\n		<span class="InfoPanel-playerStack">{{ ( vm.seatData.chips / vm.tableData.currency.divisor ) | chipsCurrency:vm.tableData.currency.symbol }}</span>\n        <span class="InfoPanel-bigBlinds">\n            <span class="InfoPanel-bigBlindsValue">{{ ( vm.seatData.chips / vm.tableData.big_blind ) | bigBlindsNumber  }}</span>BB</span>\n	</div>\n\n	<div class="InfoPanel-stats">\n		<div class="InfoPanel-statContainer">\n			<div class="InfoPanel-stat InfoPanel-stat--one">\n				<h2 class="InfoPanel-statValue" style="color: {{ vm.statsData.VPiP.colors.start }}">\n					<span ng-if="vm.statsData.VPiP.statValue >= 0  && vm.statData.VPiP.value !== \'\'">{{ vm.statsData.VPiP.statValue * 100 | number:0 }}</span>\n					<span ng-if="vm.statsData.VPiP.statValue === \'\'">-</span>\n				</h2>\n				<h3 class="InfoPanel-statHeader">VPIP</h3>\n			</div>\n		</div>\n		<div class="InfoPanel-statContainer">\n			<div class="InfoPanel-stat InfoPanel-stat--two">\n				<h2 class="InfoPanel-statValue" style="color: {{ vm.statsData.PFR.colors.start }}">\n					<span ng-if="vm.statsData.PFR.statValue >= 0  && vm.statData.PFR.value !== \'\'">{{ vm.statsData.PFR.statValue * 100 | number:0 }}</span>\n					<span ng-if="vm.statsData.PFR.statValue === \'\'">-</span>\n				</h2>\n				<h3 class="InfoPanel-statHeader">PFR</h3>\n			</div>\n		</div>\n		<div class="InfoPanel-statContainer">\n\n			<div class="InfoPanel-stat InfoPanel-stat--three">\n				<h2 class="InfoPanel-statValue" style="color: {{ vm.statsData.AFq.colors.start }}">\n					<span ng-if="vm.statsData.AFq.statValue >= 0  && vm.statData.AFq.value !== \'\'">{{ vm.statsData.AFq.statValue * 100 | number:0 }}</span>\n					<span ng-if="vm.statsData.AFq.statValue === \'\'">-</span>\n				</h2>\n				<h3 class="InfoPanel-statHeader">AFq</h3>\n			</div>\n		</div>\n	</div>\n</div>'},function(t,n){t.exports='<div class="InfoPanel" title="{{ vm.seatData.notes.label.name }}">\n	<div class="InfoPanel-playerDetails">\n		<div class="InfoPanel-playerName">{{vm.seatData.name}}</div>\n		<span class="InfoPanel-playerStack">{{ ( vm.seatData.stacksize / vm.tableData.currency.divisor ) | chipsCurrency:vm.tableData.currency.symbol }}</span>\n        <span class="InfoPanel-bigBlinds">\n            <span class="InfoPanel-bigBlindsValue">{{ vm.seatData.BBs | bigBlindsNumber  }}</span>BB\n        </span>\n	</div>\n	<p class="InfoPanel-playerStatus" ng-if="vm.seatData.sit_out">Sitting out</p>\n\n	<div class="InfoPanel-stats" ng-if="!vm.seatData.sit_out">\n		<hud-stat stat-data="vm.statsData.core.stat1" class="is-first"></hud-stat>\n		<hud-stat stat-data="vm.statsData.core.stat2"></hud-stat>\n		<hud-stat stat-data="vm.statsData.core.stat3" class="is-last"></hud-stat>\n	</div>\n\n	<div class="InfoPanel-playerLabel" ng-style="{\'border-color\': \'#\' + vm.seatData.notes.label.color}"></div>\n	<div class="InfoPanel-bevel"></div>\n	<div class="InfoPanel-vip" ng-class="vm.getVipStatusClass(\'InfoPanel-vip--\', vm.seatData.client.vip_level)" title="{{ vm.seatData.client.vip_name }}" ng-if="vm.seatData.client.vip_level !== -1"></div>\n</div>'},function(t,n){t.exports='<div class="InfoPanel" title="{{ vm.seatData.notes.label.name }}" ng-class="{\'is-visible\' : vm.visible }">\n	<div class="InfoPanel-playerDetails u-textTruncate">\n		<div class="InfoPanel-playerName">{{ vm.seatData.name }}</div>\n		<span class="InfoPanel-playerStack">{{ ( vm.seatData.stacksize / vm.tableData.currency.divisor ) | chipsCurrency:vm.tableData.currency.symbol }}</span>\n        <span class="InfoPanel-bigBlinds">\n            <span class="InfoPanel-bigBlindsValue">{{ vm.seatData.BBs | bigBlindsNumber }}<span ng-if="vm.seatData.all_in && vm.seatData.bet_bb > 0" class="is-negative"> ({{ vm.seatData.bet_bb | bigBlindsNumber }})</span></span>BB\n        </span>\n	</div>\n	<p class="InfoPanel-playerStatus" ng-if="vm.seatData.sit_out || vm.seatData.is_afk">Sitting out</p>\n\n	<div class="InfoPanel-stats js-coreStats is-hidden" ng-if="!(vm.seatData.sit_out || vm.seatData.is_afk)">\n		<hud-stat stat-data="vm.statsData.core.stat1" class="is-first"></hud-stat>\n		<hud-stat stat-data="vm.statsData.core.stat2"></hud-stat>\n		<hud-stat stat-data="vm.statsData.core.stat3" class="is-last"></hud-stat>\n	</div>\n\n	<div class="InfoPanel-stats js-liveStats" ng-if="!(vm.seatData.sit_out || vm.seatData.is_afk)">\n		<hud-stat stat-data="vm.statsData[vm.selectedStats].stat1" class="is-first"></hud-stat>\n		<hud-stat stat-data="vm.statsData[vm.selectedStats].stat2"></hud-stat>\n		<hud-stat stat-data="vm.statsData[vm.selectedStats].stat3" class="is-last"></hud-stat>\n	</div>\n\n	<div class="InfoPanel-playerLabel" ng-style="{\'border-color\': \'#\' + vm.seatData.notes.label.color }"></div>\n	<div class="InfoPanel-bevel"></div>\n	<div class="InfoPanel-vip" ng-class="vm.getVipStatusClass(\'InfoPanel-vip--\', vm.seatData.client.vip_level)" title="{{ vm.seatData.client.vip_name }}" ng-if="vm.seatData.client.vip_level !== -1"></div>\n</div>'},function(t,n,e){"use strict";t.exports=function(t){function n(){return{restrict:"E",scope:{statData:"="},controller:"HUDStatCtrl",controllerAs:"vm",bindToController:!0,template:e(94)}}function a(){}t.directive("hudStat",n).controller("HUDStatCtrl",a)}},function(t,n){t.exports='<div class="InfoPanel-statContainer" title="{{ vm.statData.title }}">\n	<div class="InfoPanel-stat">\n		<h2 class="InfoPanel-statValue" style="color: {{ vm.statData.color }}">\n			<span ng-if="vm.statData.value >= 0 && vm.statData.value !== \'\'">{{ vm.statData.value * 100 | number:0 }}</span>\n			<span ng-if="vm.statData.value === \'\'">-</span>\n		</h2>\n		<h3 class="InfoPanel-statHeader">{{ vm.statData.name }}</h3>\n	</div>\n</div>'},function(t,n,e){"use strict";t.exports=function(t){function n(){return{scope:{frameData:"="},replace:!0,controller:"HUDToolbarCtrl",controllerAs:"vm",bindToController:!0,template:e(96)}}function a(t){function n(){t.$watch("vm.frameData.table_data.active_hand",function(){u.selectedStreet="",t.$emit("hud:street-update","live")})}function e(t){return u.frameData&&u.frameData.current_street?t===u.frameData.current_street:"preflop"===t}function a(t){return t===u.selectedStreet}function r(){t.$emit("hud:bring-to-front")}function i(n,e){e.stopPropagation(),u.selectedStreet!==n?u.selectedStreet=n:u.selectedStreet="",t.$emit("hud:street-update",n)}function o(){t.$emit("hud:mark-previous-hand")}function s(){t.$emit("hud:mark-current-hand")}var u=this;u.selectedStreet="",u.bringStripToFront=r,u.hudStreetUpdate=i,u.markPreviousHand=o,u.markCurrentHand=s,u.isStreetActive=e,u.isStreetSelected=a,n()}t.directive("hudToolbar",n).controller("HUDToolbarCtrl",a),a.$inject=["$scope"]}},function(t,n){t.exports='<div class="HudToolbar">\n	<button class="HudToolbar-button HudToolbar-button--preflop Tooltip" data-title="Preflop stats" ng-class="{\'is-active\': vm.isStreetActive(\'preflop\'), \'is-selected\': vm.isStreetSelected(\'preflop\')}" ng-click="vm.hudStreetUpdate(\'preflop\', $event)"><span class="HudToolbar-buttonIcon">Preflop</span></button>\n	<button class="HudToolbar-button HudToolbar-button--flop Tooltip" data-title="Flop stats" ng-class="{\'is-active\': vm.isStreetActive(\'flop\'), \'is-selected\': vm.isStreetSelected(\'flop\')}" ng-click="vm.hudStreetUpdate(\'flop\', $event)"><span class="HudToolbar-buttonIcon">Flop</span></button>\n	<button class="HudToolbar-button HudToolbar-button--turn Tooltip" data-title="Turn stats" ng-class="{\'is-active\': vm.isStreetActive(\'turn\'), \'is-selected\': vm.isStreetSelected(\'turn\')}" ng-click="vm.hudStreetUpdate(\'turn\', $event)"><span class="HudToolbar-buttonIcon">Turn</span></button>\n	<button class="HudToolbar-button HudToolbar-button--river Tooltip" data-title="River stats" ng-class="{\'is-active\': vm.isStreetActive(\'river\'), \'is-selected\': vm.isStreetSelected(\'river\')}" ng-click="vm.hudStreetUpdate(\'river\', $event)"><span class="HudToolbar-buttonIcon">River</span></button>\n	<!--<button class="HudToolbar-button" ng-click="vm.markPreviousHand()">-H</button>-->\n	<!--<button class="HudToolbar-button" ng-click="vm.markCurrentHand()">H</button>-->\n</div>'},function(t,n,e){(function(n){"use strict";t.exports=function(t){function a(){return{scope:{frameData:"="},replace:!0,controller:"HudCommandCenterCtrl",controllerAs:"vm",bindToController:!0,template:e(99)}}function r(t,e,a){function r(){e(function(){c.frameData.table_data.game_id&&(c.gameId=c.frameData.table_data.game_id);var t=a.commandCenter.getVisibilityForGame(c.gameId);if(t===!0||t===!1)c.showCommandCenter=t;else{var n=a.commandCenter.getVisibility();(n===!0||n===!1)&&(c.showCommandCenter=a.commandCenter.getVisibility())}})}function i(t){return n.size(t)}function o(t){return void 0===t||null===t||""===t}function s(t){t.stopPropagation(),c.showCommandCenter=!0,a.commandCenter.saveVisbilityForGame(c.gameId,!0)}function u(t){t.stopPropagation(),c.showCommandCenter=!1,a.commandCenter.saveVisbilityForGame(c.gameId,!1)}function l(n){n.stopPropagation(),t.$emit("hud:bring-to-front")}var c=this;c.gameId=0,c.showCommandCenter=!0,c.bringStripToFront=l,c.closeCommandCenter=u,c.openCommandCenter=s,c.getCount=i,c.isNullOrEmpty=o,r()}t.directive("hudCommandCenter",a).controller("HudCommandCenterCtrl",r),r.$inject=["$scope","$timeout","HudSettings"]}}).call(n,e(98))},function(t,n,e){var a,r;(function(){function e(t){function n(n,e,a,r,i,o){for(;i>=0&&o>i;i+=t){var s=r?r[i]:i;a=e(a,n[s],s,n)}return a}return function(e,a,r,i){a=k(a,i,4);var o=!T(e)&&w.keys(e),s=(o||e).length,u=t>0?0:s-1;return arguments.length<3&&(r=e[o?o[u]:u],u+=t),n(e,a,r,o,u,s)}}function i(t){return function(n,e,a){e=D(e,a);for(var r=A(n),i=t>0?0:r-1;i>=0&&r>i;i+=t)if(e(n[i],i,n))return i;return-1}}function o(t,n,e){return function(a,r,i){var o=0,s=A(a);if("number"==typeof i)t>0?o=i>=0?i:Math.max(i+s,o):s=i>=0?Math.min(i+1,s):i+s+1;else if(e&&i&&s)return i=e(a,r),a[i]===r?i:-1;if(r!==r)return i=n(p.call(a,o,s),w.isNaN),i>=0?i+o:-1;for(i=t>0?o:s-1;i>=0&&s>i;i+=t)if(a[i]===r)return i;return-1}}function s(t,n){var e=z.length,a=t.constructor,r=w.isFunction(a)&&a.prototype||f,i="constructor";for(w.has(t,i)&&!w.contains(n,i)&&n.push(i);e--;)i=z[e],i in t&&t[i]!==r[i]&&!w.contains(n,i)&&n.push(i)}var u=this,l=u._,c=Array.prototype,f=Object.prototype,d=Function.prototype,h=c.push,p=c.slice,m=f.toString,v=f.hasOwnProperty,g=Array.isArray,y=Object.keys,b=d.bind,_=Object.create,x=function(){},w=function(t){return t instanceof w?t:this instanceof w?void(this._wrapped=t):new w(t)};"undefined"!=typeof t&&t.exports&&(n=t.exports=w),n._=w,w.VERSION="1.8.3";var k=function(t,n,e){if(void 0===n)return t;switch(null==e?3:e){case 1:return function(e){return t.call(n,e)};case 2:return function(e,a){return t.call(n,e,a)};case 3:return function(e,a,r){return t.call(n,e,a,r)};case 4:return function(e,a,r,i){return t.call(n,e,a,r,i)}}return function(){return t.apply(n,arguments)}},D=function(t,n,e){return null==t?w.identity:w.isFunction(t)?k(t,n,e):w.isObject(t)?w.matcher(t):w.property(t)};w.iteratee=function(t,n){return D(t,n,1/0)};var C=function(t,n){return function(e){var a=arguments.length;if(2>a||null==e)return e;for(var r=1;a>r;r++)for(var i=arguments[r],o=t(i),s=o.length,u=0;s>u;u++){var l=o[u];n&&void 0!==e[l]||(e[l]=i[l])}return e}},M=function(t){if(!w.isObject(t))return{};if(_)return _(t);x.prototype=t;var n=new x;return x.prototype=null,n},S=function(t){return function(n){return null==n?void 0:n[t]}},P=Math.pow(2,53)-1,A=S("length"),T=function(t){var n=A(t);return"number"==typeof n&&n>=0&&P>=n};w.each=w.forEach=function(t,n,e){n=k(n,e);var a,r;if(T(t))for(a=0,r=t.length;r>a;a++)n(t[a],a,t);else{var i=w.keys(t);for(a=0,r=i.length;r>a;a++)n(t[i[a]],i[a],t)}return t},w.map=w.collect=function(t,n,e){n=D(n,e);for(var a=!T(t)&&w.keys(t),r=(a||t).length,i=Array(r),o=0;r>o;o++){var s=a?a[o]:o;i[o]=n(t[s],s,t)}return i},w.reduce=w.foldl=w.inject=e(1),w.reduceRight=w.foldr=e(-1),w.find=w.detect=function(t,n,e){var a;return a=T(t)?w.findIndex(t,n,e):w.findKey(t,n,e),void 0!==a&&-1!==a?t[a]:void 0},w.filter=w.select=function(t,n,e){var a=[];return n=D(n,e),w.each(t,function(t,e,r){n(t,e,r)&&a.push(t)}),a},w.reject=function(t,n,e){return w.filter(t,w.negate(D(n)),e)},w.every=w.all=function(t,n,e){n=D(n,e);for(var a=!T(t)&&w.keys(t),r=(a||t).length,i=0;r>i;i++){var o=a?a[i]:i;if(!n(t[o],o,t))return!1}return!0},w.some=w.any=function(t,n,e){n=D(n,e);for(var a=!T(t)&&w.keys(t),r=(a||t).length,i=0;r>i;i++){var o=a?a[i]:i;if(n(t[o],o,t))return!0}return!1},w.contains=w.includes=w.include=function(t,n,e,a){return T(t)||(t=w.values(t)),("number"!=typeof e||a)&&(e=0),w.indexOf(t,n,e)>=0},w.invoke=function(t,n){var e=p.call(arguments,2),a=w.isFunction(n);return w.map(t,function(t){var r=a?n:t[n];return null==r?r:r.apply(t,e)})},w.pluck=function(t,n){return w.map(t,w.property(n))},w.where=function(t,n){return w.filter(t,w.matcher(n))},w.findWhere=function(t,n){return w.find(t,w.matcher(n))},w.max=function(t,n,e){var a,r,i=-(1/0),o=-(1/0);if(null==n&&null!=t){t=T(t)?t:w.values(t);for(var s=0,u=t.length;u>s;s++)a=t[s],a>i&&(i=a)}else n=D(n,e),w.each(t,function(t,e,a){r=n(t,e,a),(r>o||r===-(1/0)&&i===-(1/0))&&(i=t,o=r)});return i},w.min=function(t,n,e){var a,r,i=1/0,o=1/0;if(null==n&&null!=t){t=T(t)?t:w.values(t);for(var s=0,u=t.length;u>s;s++)a=t[s],i>a&&(i=a)}else n=D(n,e),w.each(t,function(t,e,a){r=n(t,e,a),(o>r||r===1/0&&i===1/0)&&(i=t,o=r)});return i},w.shuffle=function(t){for(var n,e=T(t)?t:w.values(t),a=e.length,r=Array(a),i=0;a>i;i++)n=w.random(0,i),n!==i&&(r[i]=r[n]),r[n]=e[i];return r},w.sample=function(t,n,e){return null==n||e?(T(t)||(t=w.values(t)),t[w.random(t.length-1)]):w.shuffle(t).slice(0,Math.max(0,n))},w.sortBy=function(t,n,e){return n=D(n,e),w.pluck(w.map(t,function(t,e,a){return{value:t,index:e,criteria:n(t,e,a)}}).sort(function(t,n){var e=t.criteria,a=n.criteria;if(e!==a){if(e>a||void 0===e)return 1;if(a>e||void 0===a)return-1}return t.index-n.index}),"value")};var E=function(t){return function(n,e,a){var r={};return e=D(e,a),w.each(n,function(a,i){var o=e(a,i,n);t(r,a,o)}),r}};w.groupBy=E(function(t,n,e){w.has(t,e)?t[e].push(n):t[e]=[n]}),w.indexBy=E(function(t,n,e){t[e]=n}),w.countBy=E(function(t,n,e){w.has(t,e)?t[e]++:t[e]=1}),w.toArray=function(t){return t?w.isArray(t)?p.call(t):T(t)?w.map(t,w.identity):w.values(t):[]},w.size=function(t){return null==t?0:T(t)?t.length:w.keys(t).length},w.partition=function(t,n,e){n=D(n,e);var a=[],r=[];return w.each(t,function(t,e,i){(n(t,e,i)?a:r).push(t)}),[a,r]},w.first=w.head=w.take=function(t,n,e){return null!=t?null==n||e?t[0]:w.initial(t,t.length-n):void 0},w.initial=function(t,n,e){return p.call(t,0,Math.max(0,t.length-(null==n||e?1:n)))},w.last=function(t,n,e){
+	return null!=t?null==n||e?t[t.length-1]:w.rest(t,Math.max(0,t.length-n)):void 0},w.rest=w.tail=w.drop=function(t,n,e){return p.call(t,null==n||e?1:n)},w.compact=function(t){return w.filter(t,w.identity)};var N=function(t,n,e,a){for(var r=[],i=0,o=a||0,s=A(t);s>o;o++){var u=t[o];if(T(u)&&(w.isArray(u)||w.isArguments(u))){n||(u=N(u,n,e));var l=0,c=u.length;for(r.length+=c;c>l;)r[i++]=u[l++]}else e||(r[i++]=u)}return r};w.flatten=function(t,n){return N(t,n,!1)},w.without=function(t){return w.difference(t,p.call(arguments,1))},w.uniq=w.unique=function(t,n,e,a){w.isBoolean(n)||(a=e,e=n,n=!1),null!=e&&(e=D(e,a));for(var r=[],i=[],o=0,s=A(t);s>o;o++){var u=t[o],l=e?e(u,o,t):u;n?(o&&i===l||r.push(u),i=l):e?w.contains(i,l)||(i.push(l),r.push(u)):w.contains(r,u)||r.push(u)}return r},w.union=function(){return w.uniq(N(arguments,!0,!0))},w.intersection=function(t){for(var n=[],e=arguments.length,a=0,r=A(t);r>a;a++){var i=t[a];if(!w.contains(n,i)){for(var o=1;e>o&&w.contains(arguments[o],i);o++);o===e&&n.push(i)}}return n},w.difference=function(t){var n=N(arguments,!0,!0,1);return w.filter(t,function(t){return!w.contains(n,t)})},w.zip=function(){return w.unzip(arguments)},w.unzip=function(t){for(var n=t&&w.max(t,A).length||0,e=Array(n),a=0;n>a;a++)e[a]=w.pluck(t,a);return e},w.object=function(t,n){for(var e={},a=0,r=A(t);r>a;a++)n?e[t[a]]=n[a]:e[t[a][0]]=t[a][1];return e},w.findIndex=i(1),w.findLastIndex=i(-1),w.sortedIndex=function(t,n,e,a){e=D(e,a,1);for(var r=e(n),i=0,o=A(t);o>i;){var s=Math.floor((i+o)/2);e(t[s])<r?i=s+1:o=s}return i},w.indexOf=o(1,w.findIndex,w.sortedIndex),w.lastIndexOf=o(-1,w.findLastIndex),w.range=function(t,n,e){null==n&&(n=t||0,t=0),e=e||1;for(var a=Math.max(Math.ceil((n-t)/e),0),r=Array(a),i=0;a>i;i++,t+=e)r[i]=t;return r};var H=function(t,n,e,a,r){if(!(a instanceof n))return t.apply(e,r);var i=M(t.prototype),o=t.apply(i,r);return w.isObject(o)?o:i};w.bind=function(t,n){if(b&&t.bind===b)return b.apply(t,p.call(arguments,1));if(!w.isFunction(t))throw new TypeError("Bind must be called on a function");var e=p.call(arguments,2),a=function(){return H(t,a,n,this,e.concat(p.call(arguments)))};return a},w.partial=function(t){var n=p.call(arguments,1),e=function(){for(var a=0,r=n.length,i=Array(r),o=0;r>o;o++)i[o]=n[o]===w?arguments[a++]:n[o];for(;a<arguments.length;)i.push(arguments[a++]);return H(t,e,this,this,i)};return e},w.bindAll=function(t){var n,e,a=arguments.length;if(1>=a)throw new Error("bindAll must be passed function names");for(n=1;a>n;n++)e=arguments[n],t[e]=w.bind(t[e],t);return t},w.memoize=function(t,n){var e=function(a){var r=e.cache,i=""+(n?n.apply(this,arguments):a);return w.has(r,i)||(r[i]=t.apply(this,arguments)),r[i]};return e.cache={},e},w.delay=function(t,n){var e=p.call(arguments,2);return setTimeout(function(){return t.apply(null,e)},n)},w.defer=w.partial(w.delay,w,1),w.throttle=function(t,n,e){var a,r,i,o=null,s=0;e||(e={});var u=function(){s=e.leading===!1?0:w.now(),o=null,i=t.apply(a,r),o||(a=r=null)};return function(){var l=w.now();s||e.leading!==!1||(s=l);var c=n-(l-s);return a=this,r=arguments,0>=c||c>n?(o&&(clearTimeout(o),o=null),s=l,i=t.apply(a,r),o||(a=r=null)):o||e.trailing===!1||(o=setTimeout(u,c)),i}},w.debounce=function(t,n,e){var a,r,i,o,s,u=function(){var l=w.now()-o;n>l&&l>=0?a=setTimeout(u,n-l):(a=null,e||(s=t.apply(i,r),a||(i=r=null)))};return function(){i=this,r=arguments,o=w.now();var l=e&&!a;return a||(a=setTimeout(u,n)),l&&(s=t.apply(i,r),i=r=null),s}},w.wrap=function(t,n){return w.partial(n,t)},w.negate=function(t){return function(){return!t.apply(this,arguments)}},w.compose=function(){var t=arguments,n=t.length-1;return function(){for(var e=n,a=t[n].apply(this,arguments);e--;)a=t[e].call(this,a);return a}},w.after=function(t,n){return function(){return--t<1?n.apply(this,arguments):void 0}},w.before=function(t,n){var e;return function(){return--t>0&&(e=n.apply(this,arguments)),1>=t&&(n=null),e}},w.once=w.partial(w.before,2);var I=!{toString:null}.propertyIsEnumerable("toString"),z=["valueOf","isPrototypeOf","toString","propertyIsEnumerable","hasOwnProperty","toLocaleString"];w.keys=function(t){if(!w.isObject(t))return[];if(y)return y(t);var n=[];for(var e in t)w.has(t,e)&&n.push(e);return I&&s(t,n),n},w.allKeys=function(t){if(!w.isObject(t))return[];var n=[];for(var e in t)n.push(e);return I&&s(t,n),n},w.values=function(t){for(var n=w.keys(t),e=n.length,a=Array(e),r=0;e>r;r++)a[r]=t[n[r]];return a},w.mapObject=function(t,n,e){n=D(n,e);for(var a,r=w.keys(t),i=r.length,o={},s=0;i>s;s++)a=r[s],o[a]=n(t[a],a,t);return o},w.pairs=function(t){for(var n=w.keys(t),e=n.length,a=Array(e),r=0;e>r;r++)a[r]=[n[r],t[n[r]]];return a},w.invert=function(t){for(var n={},e=w.keys(t),a=0,r=e.length;r>a;a++)n[t[e[a]]]=e[a];return n},w.functions=w.methods=function(t){var n=[];for(var e in t)w.isFunction(t[e])&&n.push(e);return n.sort()},w.extend=C(w.allKeys),w.extendOwn=w.assign=C(w.keys),w.findKey=function(t,n,e){n=D(n,e);for(var a,r=w.keys(t),i=0,o=r.length;o>i;i++)if(a=r[i],n(t[a],a,t))return a},w.pick=function(t,n,e){var a,r,i={},o=t;if(null==o)return i;w.isFunction(n)?(r=w.allKeys(o),a=k(n,e)):(r=N(arguments,!1,!1,1),a=function(t,n,e){return n in e},o=Object(o));for(var s=0,u=r.length;u>s;s++){var l=r[s],c=o[l];a(c,l,o)&&(i[l]=c)}return i},w.omit=function(t,n,e){if(w.isFunction(n))n=w.negate(n);else{var a=w.map(N(arguments,!1,!1,1),String);n=function(t,n){return!w.contains(a,n)}}return w.pick(t,n,e)},w.defaults=C(w.allKeys,!0),w.create=function(t,n){var e=M(t);return n&&w.extendOwn(e,n),e},w.clone=function(t){return w.isObject(t)?w.isArray(t)?t.slice():w.extend({},t):t},w.tap=function(t,n){return n(t),t},w.isMatch=function(t,n){var e=w.keys(n),a=e.length;if(null==t)return!a;for(var r=Object(t),i=0;a>i;i++){var o=e[i];if(n[o]!==r[o]||!(o in r))return!1}return!0};var R=function(t,n,e,a){if(t===n)return 0!==t||1/t===1/n;if(null==t||null==n)return t===n;t instanceof w&&(t=t._wrapped),n instanceof w&&(n=n._wrapped);var r=m.call(t);if(r!==m.call(n))return!1;switch(r){case"[object RegExp]":case"[object String]":return""+t==""+n;case"[object Number]":return+t!==+t?+n!==+n:0===+t?1/+t===1/n:+t===+n;case"[object Date]":case"[object Boolean]":return+t===+n}var i="[object Array]"===r;if(!i){if("object"!=typeof t||"object"!=typeof n)return!1;var o=t.constructor,s=n.constructor;if(o!==s&&!(w.isFunction(o)&&o instanceof o&&w.isFunction(s)&&s instanceof s)&&"constructor"in t&&"constructor"in n)return!1}e=e||[],a=a||[];for(var u=e.length;u--;)if(e[u]===t)return a[u]===n;if(e.push(t),a.push(n),i){if(u=t.length,u!==n.length)return!1;for(;u--;)if(!R(t[u],n[u],e,a))return!1}else{var l,c=w.keys(t);if(u=c.length,w.keys(n).length!==u)return!1;for(;u--;)if(l=c[u],!w.has(n,l)||!R(t[l],n[l],e,a))return!1}return e.pop(),a.pop(),!0};w.isEqual=function(t,n){return R(t,n)},w.isEmpty=function(t){return null==t?!0:T(t)&&(w.isArray(t)||w.isString(t)||w.isArguments(t))?0===t.length:0===w.keys(t).length},w.isElement=function(t){return!(!t||1!==t.nodeType)},w.isArray=g||function(t){return"[object Array]"===m.call(t)},w.isObject=function(t){var n=typeof t;return"function"===n||"object"===n&&!!t},w.each(["Arguments","Function","String","Number","Date","RegExp","Error"],function(t){w["is"+t]=function(n){return m.call(n)==="[object "+t+"]"}}),w.isArguments(arguments)||(w.isArguments=function(t){return w.has(t,"callee")}),"function"!=typeof/./&&"object"!=typeof Int8Array&&(w.isFunction=function(t){return"function"==typeof t||!1}),w.isFinite=function(t){return isFinite(t)&&!isNaN(parseFloat(t))},w.isNaN=function(t){return w.isNumber(t)&&t!==+t},w.isBoolean=function(t){return t===!0||t===!1||"[object Boolean]"===m.call(t)},w.isNull=function(t){return null===t},w.isUndefined=function(t){return void 0===t},w.has=function(t,n){return null!=t&&v.call(t,n)},w.noConflict=function(){return u._=l,this},w.identity=function(t){return t},w.constant=function(t){return function(){return t}},w.noop=function(){},w.property=S,w.propertyOf=function(t){return null==t?function(){}:function(n){return t[n]}},w.matcher=w.matches=function(t){return t=w.extendOwn({},t),function(n){return w.isMatch(n,t)}},w.times=function(t,n,e){var a=Array(Math.max(0,t));n=k(n,e,1);for(var r=0;t>r;r++)a[r]=n(r);return a},w.random=function(t,n){return null==n&&(n=t,t=0),t+Math.floor(Math.random()*(n-t+1))},w.now=Date.now||function(){return(new Date).getTime()};var U={"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#x27;","`":"&#x60;"},L=w.invert(U),F=function(t){var n=function(n){return t[n]},e="(?:"+w.keys(t).join("|")+")",a=RegExp(e),r=RegExp(e,"g");return function(t){return t=null==t?"":""+t,a.test(t)?t.replace(r,n):t}};w.escape=F(U),w.unescape=F(L),w.result=function(t,n,e){var a=null==t?void 0:t[n];return void 0===a&&(a=e),w.isFunction(a)?a.call(t):a};var j=0;w.uniqueId=function(t){var n=++j+"";return t?t+n:n},w.templateSettings={evaluate:/<%([\s\S]+?)%>/g,interpolate:/<%=([\s\S]+?)%>/g,escape:/<%-([\s\S]+?)%>/g};var B=/(.)^/,q={"'":"'","\\":"\\","\r":"r","\n":"n","\u2028":"u2028","\u2029":"u2029"},O=/\\|'|\r|\n|\u2028|\u2029/g,V=function(t){return"\\"+q[t]};w.template=function(t,n,e){!n&&e&&(n=e),n=w.defaults({},n,w.templateSettings);var a=RegExp([(n.escape||B).source,(n.interpolate||B).source,(n.evaluate||B).source].join("|")+"|$","g"),r=0,i="__p+='";t.replace(a,function(n,e,a,o,s){return i+=t.slice(r,s).replace(O,V),r=s+n.length,e?i+="'+\n((__t=("+e+"))==null?'':_.escape(__t))+\n'":a?i+="'+\n((__t=("+a+"))==null?'':__t)+\n'":o&&(i+="';\n"+o+"\n__p+='"),n}),i+="';\n",n.variable||(i="with(obj||{}){\n"+i+"}\n"),i="var __t,__p='',__j=Array.prototype.join,print=function(){__p+=__j.call(arguments,'');};\n"+i+"return __p;\n";try{var o=new Function(n.variable||"obj","_",i)}catch(s){throw s.source=i,s}var u=function(t){return o.call(this,t,w)},l=n.variable||"obj";return u.source="function("+l+"){\n"+i+"}",u},w.chain=function(t){var n=w(t);return n._chain=!0,n};var $=function(t,n){return t._chain?w(n).chain():n};w.mixin=function(t){w.each(w.functions(t),function(n){var e=w[n]=t[n];w.prototype[n]=function(){var t=[this._wrapped];return h.apply(t,arguments),$(this,e.apply(w,t))}})},w.mixin(w),w.each(["pop","push","reverse","shift","sort","splice","unshift"],function(t){var n=c[t];w.prototype[t]=function(){var e=this._wrapped;return n.apply(e,arguments),"shift"!==t&&"splice"!==t||0!==e.length||delete e[0],$(this,e)}}),w.each(["concat","join","slice"],function(t){var n=c[t];w.prototype[t]=function(){return $(this,n.apply(this._wrapped,arguments))}}),w.prototype.value=function(){return this._wrapped},w.prototype.valueOf=w.prototype.toJSON=w.prototype.value,w.prototype.toString=function(){return""+this._wrapped},a=[],r=function(){return w}.apply(n,a),!(void 0!==r&&(t.exports=r))}).call(this)},function(t,n){t.exports='<section class="HudCC">\n\n	<div class="HudCC-toolbar" ng-if="vm.showCommandCenter">\n		<button class="HudCC-button fn-logoButton" ng-click="vm.bringStripToFront($event)"></button>\n		<hud-toolbar frame-data="vm.frameData"></hud-toolbar>\n	</div>\n	<div class="HudCC-toggleButtonWrapper" ng-class="{\'is-active\' : vm.showCommandCenter }">\n		<button class="HudCC-button fn-closeButton" ng-click="vm.closeCommandCenter($event)" ng-if="vm.showCommandCenter">\n			<i class="HudCC-icon--close">Close command center</i></button>\n		<button class="HudCC-button fn-openButton Tooltip--xl" data-title="Open Jivaro\'s command center" ng-click="vm.openCommandCenter($event)" ng-if="!vm.showCommandCenter">\n			<i class="HudCC-icon--logo">Open command center</i></button>\n	</div>\n\n	<div class="HudCC-tableInfoWrapper" ng-if="vm.showCommandCenter">\n\n		<!-- Tournaments -->\n		<section class="HudCC-tableInfo" ng-if="vm.frameData.table_data.game_type === \'tourney\'">\n			<h1 class="HudCC-tableInfo-title" ng-if="!vm.frameData.table_data.tournament_info.title">Waiting for tournament data...</h1>\n			<h1 class="HudCC-tableInfo-title u-textTruncate" ng-if="vm.frameData.table_data.tournament_info.title">{{ vm.frameData.table_data.tournament_info.title }}</h1>\n\n			<dl class="HudCC-keyValueList--horizontal">\n				<dt class="HudCC-keyValueList-term" ng-if="vm.frameData.table_data.tournament_info.entrants">Entrants:</dt>\n				<dd class="HudCC-keyValueList-value" ng-if="vm.frameData.table_data.tournament_info.entrants">{{ vm.frameData.table_data.tournament_info.entrants | number }}</dd>\n				<dt class="HudCC-keyValueList-term" ng-if="vm.frameData.table_data.tournament_info.remaining">Remaining:</dt>\n				<dd class="HudCC-keyValueList-value" ng-if="vm.frameData.table_data.tournament_info.remaining">{{ vm.frameData.table_data.tournament_info.remaining | number }}</dd>\n				<dt class="HudCC-keyValueList-term" ng-if="vm.frameData.table_data.tournament_info.places_paid">Places paid:</dt>\n				<dd class="HudCC-keyValueList-value" ng-if="vm.frameData.table_data.tournament_info.places_paid">{{ vm.frameData.table_data.tournament_info.places_paid | number }}</dd>\n			</dl>\n\n			<div class="HudCC-tableInfo-row">\n\n				<!-- Prizes -->\n				<section class="HudCC-tableInfo-col" ng-if="vm.frameData.table_data.tournament_info.first_prize">\n					<dl class="HudCC-keyValueList">\n						<dt class="HudCC-keyValueList-term" title="First prize" ng-if="vm.frameData.table_data.tournament_info.first_prize"><i class="HudCC-icon--prizeFirst">First prize:</i></dt>\n						<dd class="HudCC-keyValueList-value" title="First prize" ng-if="vm.frameData.table_data.tournament_info.first_prize"><span class="HudCC-currencySymbol">{{ vm.frameData.table_data.currency.symbol }}</span>{{ vm.frameData.table_data.tournament_info.first_prize | chipsCurrency:null }}</dd>\n						<dt class="HudCC-keyValueList-term" title="Next payout" ng-if="vm.frameData.table_data.tournament_info.next_prize"><i class="HudCC-icon--prizeNext">Next payout:</i></dt>\n						<dd class="HudCC-keyValueList-value" title="Next payout" ng-if="vm.frameData.table_data.tournament_info.next_prize"><span class="HudCC-currencySymbol">{{ vm.frameData.table_data.currency.symbol }}</span>{{ vm.frameData.table_data.tournament_info.next_prize | chipsCurrency:null }} <span class="HudCC-playersPayout" title="Remaining players until next payout" ng-if="vm.frameData.table_data.tournament_info.next_prize_players_remaining">( {{ vm.frameData.table_data.tournament_info.next_prize_players_remaining | number }} )</span></dd>\n						<dt class="HudCC-keyValueList-term" title="Current payout" ng-if="vm.frameData.table_data.tournament_info.current_prize  !== \'\'"><i class="HudCC-icon--prizeCurrent" ng-class="{\'is-positive\' : vm.frameData.table_data.tournament_info.current_prize > 0 }">Current prize:</i></dt>\n						<dd class="HudCC-keyValueList-value"  ng-class="{\'is-positive\' : vm.frameData.table_data.tournament_info.current_prize > 0 }" title="Current payout" ng-if="vm.frameData.table_data.tournament_info.current_prize !== \'\'"><span class="HudCC-currencySymbol">{{ vm.frameData.table_data.currency.symbol }}</span>{{ vm.frameData.table_data.tournament_info.current_prize | chipsCurrency:null }}</dd>\n					</dl>\n				</section>\n\n				<!-- Position -->\n				<section class="HudCC-tableInfo-col" ng-if="vm.frameData.table_data.tournament_info.current_position">\n					<div ng-if="vm.frameData.table_data.tournament_info.busted">\n						<h2 class="Heading--four Heading--dark">Finished in</h2>\n						<h3 class="Heading--one Heading--light">{{ vm.frameData.table_data.tournament_info.current_position | number }}\n							<span class="HudCC-headingTweener">of</span> {{ vm.frameData.table_data.tournament_info.entrants | number }}\n						</h3>\n					</div>\n					<div ng-if="!vm.frameData.table_data.tournament_info.busted">\n						<h2 class="Heading--four Heading--dark">My position</h2>\n\n						<h3 class="Heading--one Heading--light">{{ vm.frameData.table_data.tournament_info.current_position | number }}\n							<span class="HudCC-headingTweener">of</span> {{ vm.frameData.table_data.tournament_info.remaining | number }}\n						</h3>\n					</div>\n				</section>\n\n				<!-- Stacks -->\n				<section class="HudCC-tableInfo-col" ng-if="vm.frameData.table_data.tournament_info.largest_stack">\n					<dl class="HudCC-keyValueList">\n						<dt class="HudCC-keyValueList-term" title="Largest stack"><i class="HudCC-icon--stackLarge">Largest stack:</i></dt>\n						<dd class="HudCC-keyValueList-value" title="Largest stack"><span class="HudCC-currencySymbol">{{ vm.frameData.table_data.currency.symbol }}</span>{{ vm.frameData.table_data.tournament_info.largest_stack | chipsCurrency:null }}</dd>\n						<dt class="HudCC-keyValueList-term" title="Average stack"><i class="HudCC-icon--stackAverage">Average stack:</i></dt>\n						<dd class="HudCC-keyValueList-value" title="Average stack"><span class="HudCC-currencySymbol">{{ vm.frameData.table_data.currency.symbol }}</span>{{ vm.frameData.table_data.tournament_info.avg_stack | chipsCurrency:null }}</dd>\n						<dt class="HudCC-keyValueList-term" title="Smallest stack"><i class="HudCC-icon--stackSmall">Smallest stack:</i></dt>\n						<dd class="HudCC-keyValueList-value" title="Smallest stack"><span class="HudCC-currencySymbol">{{ vm.frameData.table_data.currency.symbol }}</span>{{ vm.frameData.table_data.tournament_info.smallest_stack | chipsCurrency:null }}</dd>\n					</dl>\n				</section>\n\n			</div>\n		</section >\n		<!-- / Tournaments -->\n\n		<!-- Cash games -->\n		<section class="HudCC-tableInfo" ng-if="vm.frameData.table_data.game_type === \'cash\'">\n\n			<h1 class="HudCC-tableInfo-title" ng-if="vm.frameData.table_data.table_name">\n				{{ vm.frameData.table_data.table_name }} -\n				{{ vm.frameData.table_data.small_blind / vm.frameData.table_data.currency.divisor | chipsCurrency:vm.frameData.table_data.currency.symbol }} / {{ vm.frameData.table_data.big_blind / vm.frameData.table_data.currency.divisor | chipsCurrency:vm.frameData.table_data.currency.symbol }}\n				<span ng-if="vm.frameData.table_data.ante">/ {{ vm.frameData.table_data.ante / vm.frameData.table_data.currency.divisor | chipsCurrency:vm.frameData.table_data.currency.symbol }}</span>\n				<span ng-if="vm.frameData.table_data.limits">- {{ vm.frameData.table_data.limits }}</span>\n			</h1>\n			<dl class="HudCC-keyValueList--horizontal">\n				<dt class="HudCC-keyValueList-term" ng-if="vm.frameData.seats">Players:</dt>\n				<dd class="HudCC-keyValueList-value" ng-if="vm.frameData.seats"> {{ vm.getCount(vm.frameData.seats) }}</dd>\n				<dt class="HudCC-keyValueList-term" ng-if="vm.frameData.table_data.seat_count">Type:</dt>\n				<dd class="HudCC-keyValueList-value" ng-if="vm.frameData.table_data.seat_count">{{ vm.frameData.table_data.seat_count }}max</dd>\n			</dl>\n\n			<div class="HudCC-tableInfo-row" ng-if="vm.isNullOrEmpty(vm.frameData.table_data.cash_game_info.net_gain)">\n				<h1 class="HudCC-tableInfo-title">Waiting for cash game data...</h1>\n			</div>\n			<div class="HudCC-tableInfo-row" ng-if="!vm.isNullOrEmpty(vm.frameData.table_data.cash_game_info.net_gain)">\n\n				<!-- Win / Loss -->\n				<section class="HudCC-tableInfo-col">\n					<h2 class="Heading--four Heading--dark">Win / Loss</h2>\n\n					<h2 class="Heading--one Heading--light"\n					    ng-if="!vm.isNullOrEmpty(vm.frameData.table_data.cash_game_info.net_gain)"\n					    ng-class="{\'is-positive\' : vm.frameData.table_data.cash_game_info.net_gain > 0, \'is-negative\' : vm.frameData.table_data.cash_game_info.net_gain < 0 }">\n						<span ng-if="vm.frameData.table_data.cash_game_info.net_gain > 0">+</span>{{ vm.frameData.table_data.cash_game_info.net_gain | chipsCurrency:vm.frameData.table_data.currency.symbol }}\n					</h2>\n				</section>\n\n				<!-- Table VPIP -->\n				<section class="HudCC-tableInfo-col" ng-if="!vm.frameData.table_data.is_fast_fold">\n					<h2 class="Heading--four Heading--dark">Avg. VPIP</h2>\n					<h2 class="Heading--one Heading--light" style="color: {{ vm.frameData.table_data.cash_game_info.table_vpip.color }}"\n					    ng-if="!vm.isNullOrEmpty(vm.frameData.table_data.cash_game_info.table_vpip.value)">{{ vm.frameData.table_data.cash_game_info.table_vpip.value * 100 | number:1 }}%</h2>\n				</section>\n\n				<!-- Table AFq -->\n\n				<section class="HudCC-tableInfo-col" ng-if="!vm.frameData.table_data.is_fast_fold">\n					<h2 class="Heading--four Heading--dark">Avg. AFq</h2>\n					<h2 class="Heading--one Heading--light" style="color: {{ vm.frameData.table_data.cash_game_info.table_afq.color }}"\n					    ng-if="!vm.isNullOrEmpty(vm.frameData.table_data.cash_game_info.table_afq.value)">{{ vm.frameData.table_data.cash_game_info.table_afq.value * 100 | number:1  }}%</h2>\n				</section>\n\n				<!-- Players pr. flop -->\n				<section class="HudCC-tableInfo-col" ng-if="!vm.frameData.table_data.is_fast_fold">\n					<h2 class="Heading--four Heading--dark">Players / flop</h2>\n					<h3 class="Heading--one Heading--light" ng-if="!vm.isNullOrEmpty(vm.frameData.table_data.cash_game_info.players_per_flop.value)">{{ vm.frameData.table_data.cash_game_info.players_per_flop.value * 100 | number:1 }}%</h3>\n					<p class="HudCC-tableInfo-colText" ng-if="!vm.isNullOrEmpty(vm.frameData.table_data.cash_game_info.players_per_flop.value) && !vm.isNullOrEmpty(vm.frameData.table_data.cash_game_info.players_per_flop.sample_count_displayed)">of the last\n						<strong>{{ vm.frameData.table_data.cash_game_info.players_per_flop.sample_count_displayed }}</strong>\n						<span ng-if="vm.frameData.table_data.cash_game_info.players_per_flop.sample_count_displayed === 1">hand</span>\n						<span ng-if="vm.frameData.table_data.cash_game_info.players_per_flop.sample_count_displayed > 1">hands</span>\n					</p>\n				</section>\n			</div>\n\n		</section>\n		<!-- / Cash games -->\n\n	</div>\n</section>'},function(t,n,e){"use strict";var a=function(t){return t&&t.__esModule?t["default"]:t},r=a(e(101));t.exports=r},function(t,n,e){"use strict";var a=angular.module("jivaro.common",[]);e(102)(a),e(103)(a),e(104)(a),e(105)(a),e(106)(a),e(107)(a),t.exports=a.name},function(t,n){"use strict";t.exports=function(t){function n(t,n,e){return{restrict:"A",link:function(a,r,i){function o(){n(function(){var t=f.width();e.debug("parentWidth",t);var n=f.height();e.debug("parentHeight",n),l.height!==n&&(c=n/u.height,e.debug("H scale",c)),l.width!==t&&(c=n/u.height,e.debug("W scale",c)),l.width=t,l.height=n,r.css({"-ms-transform":"scale("+c+")","-webkit-transform":"scale("+c+")","-moz-transform":"scale("+c+")",transform:"scale("+c+")"})},s)}var s=1*i.scalableTimeout||0,u={width:792,height:546},l={width:792,height:546},c=1,f=angular.element(r).parent();o(),angular.element(t).bind("resize",function(){o()}),a.$on("hud-loaded",function(){o()}),a.$on("is-fullScreen",function(){o()})}}}t.directive("scalable",n),n.$inject=["$window","$timeout","$log"]}},function(t,n,e){(function(n){"use strict";t.exports=function(t){function e(){var t=new a;return t}function a(){return this}function r(t){return"$"===t.substring(0,1)}function i(t){return null===t}function o(t){return typeof t==typeof{}}function s(){return{}}function u(t,n){return t.hasOwnProperty(n)}function l(t){return typeof t==typeof Boolean()||typeof t==typeof Number()||typeof t==typeof String()}function c(t,e,a){return n.each(e,function(n,r){i(e[r])||(o(e[r])?"undefined"==typeof t[r]?a[r]=e[r]:(a[r]=s(),c(t[r],e[r],a[r])):l(e[r])?a[r]=e[r]:console.log("updateDataCopy: ignoring unexpected source data",e[r]))}),n.each(t,function(n,r){"undefined"==typeof e[r]&&(a[r]=t[r])}),a}t.factory("StateHelper",e),a.prototype.setData=function(t,e){var a=this;n.each(t,function(n,i){r(i)||(u(e,i)?o(e[i])?a.setData(t[i],e[i]):l(e[i])?t[i]=e[i]:console.log("setData: ignoring unexpected source data",e[i]):delete t[i])}),n.each(e,function(n,i){r(i)||u(t,i)||(o(e[i])?(t[i]=s(),a.setData(t[i],e[i])):l(e[i])?t[i]=e[i]:console.log("setData: ignoring unexpected source data",e[i]))})},a.prototype.updateData=function(t,e){var a=this;if(i(e))for(var r in t)({}).hasOwnProperty.call(t,r)&&delete t[r];n.each(e,function(n,r){i(e[r])?delete t[r]:o(e[r])?(o(t[r])||(t[r]=s()),a.updateData(t[r],e[r])):l(e[r])?t[r]=e[r]:console.log("updateData: ignoring unexpected source data",e[r])})},a.prototype.updateDataCopy=function(t,n){return c(t,n,{})},a.prototype.unpackUpdateArray=function(t){var e=this,a={},r=[];return n.each(t,function(t){a=e.updateDataCopy(a,t),r.push(a)}),r},a.prototype.select=function(t,n){for(var e in n)if({}.hasOwnProperty.call(n,e)){if(t=t[n[e]],!t)return{};if(null===t)return null}return t}}}).call(n,e(98))},function(t,n){"use strict";t.exports=function(t){function n(t){function n(t,n,a){var r="";try{r=t(e(n,a))}catch(i){r=t(e(n,""))}return r}function e(t,n){var e=t;return n&&(e+=".v"+n),e+".html"}var a={getTemplateUrl:n};return a}t.factory("templateService",n),n.$inject=["$templateCache"]}},function(t,n){"use strict";t.exports=function(t){function n(t){var n=t("number");return function(t){var e=0;return t&&10>=t&&(e=1),n(t,e)}}t.filter("bigBlindsNumber",n),n.$inject=["$filter"]}},function(t,n){"use strict";t.exports=function(t){function n(t){var n=t("currency");return function(t,e,a,r){function i(t){return parseInt(t,10)===t}(i(t)||t>100)&&(a=0);var o=Math.abs(t),s="",u=1e6,l=1e5;if(o>=u){t/=u,s="M";var c=Math.abs(t);a=c>100?1:c>10?2:3}else o>=l&&(t/=1e3,a=1,s="K");return e&&"t"===e.trim().toLowerCase()&&(e="$"),n(t,e,a,r)+s}}t.filter("chipsCurrency",n),n.$inject=["$filter"]}},function(t,n,e){"use strict";var a=function(t){return t&&t.__esModule?t["default"]:t},r=a(e(108));t.exports=function(t){function n(t){var n=t("number");return function(t,e){function a(t){return parseInt(t,10)===t}return t=r.roundDecimal(t,-1),a(t)&&(e=0),n(t,e)}}t.filter("jvNumber",n),n.$inject=["$filter"]}},function(t,n){"use strict";function e(t,n,e){return"undefined"==typeof e||0===+e?Math[t](n):(n=+n,e=+e,isNaN(n)||"number"!=typeof e||e%1!==0?NaN:(n=n.toString().split("e"),n=Math[t](+(n[0]+"e"+(n[1]?+n[1]-e:-e))),n=n.toString().split("e"),+(n[0]+"e"+(n[1]?+n[1]+e:e))))}function a(t,n){return e("round",t,n)}function r(t,n){return e("floor",t,n)}function i(t,n){return e("ceil",t,n)}t.exports={roundDecimal:a,floorDecimal:r,ceilDecimal:i}},function(t,n){},,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,function(t,n,e){(function(n){"use strict";t.exports=function(t){function e(t,e){function a(a){function r(t){return R.data=angular.extend(R.data,t),R.setSeekPoints(),R.setupPlayerActionIndexes(),i(),o(),R.indexWatch&&R.indexWatch(),R.indexWatch=a.$watch(function(){return R.data.index},function(t){R.setStreetPosition(t),R.onSetFrameUpdate(R.data.index)}),R.data}function i(){a.$on("replayer:play",function(){R.onPlay()}),a.$on("replayer:pause",function(){R.onPause()}),a.$on("replayer:restart",function(){R.onRestart()}),a.$on("replayer:stepbackward",function(){R.onStepBackward()}),a.$on("replayer:stepforward",function(){R.onStepForward()}),a.$on("replayer:go-to-position",function(t,n){R.onGoToPosition(n)}),a.$on("replayer:playspeed:update",function(t,n){R.onPlaySpeedUpdate(n)})}function o(){n.each(R.data.states,function(t,e){n.each(t.seats,function(t){t.last_action&&R.frameTypesToSuspend.indexOf(t.last_action.text)>-1&&R.framesToSuspend.push(e+1)})}),R.framesToSuspend=n.uniq(R.framesToSuspend)}function s(t){"playing"===R.data.playStatus&&1===R.data.requestedPlayspeed&&R.framesToSuspend.indexOf(t)>-1&&(R.suspendTimeout&&e.cancel(R.suspendTimeout),m(),R.suspendTimeout=e(function(){p()},R.SUSPEND_DELAY))}function u(t){"playing"===R.data.playStatus&&1===R.data.requestedPlayspeed&&t>=R.data.seekpoints.preflop&&(R.suspendTimeout&&e.cancel(R.suspendTimeout),m(),R.suspendTimeout=e(function(){p()},R.DEALING_CARDS_DELAY))}function l(n){if(t.debug("index",n),R.data.replay)if(s(n),u(n),0>n||R.data.replay.length<=n)R.data.frame={},R.data.requestedTimestamp=0,R.onTimeStampUpdate(R.data.requestedTimestamp);else{R.data.index=n,R.data.replay.length-1===n&&(R.data.playStatus="finished"),angular.copy(R.data.replay[n],R.data.frame),"paused"===R.data.playStatus&&(R.data.requestedTimestamp=R.data.frame.timestamp);var e=R.data.replay[n+1];(R.data.requestedTimestamp<R.data.frame.timestamp||e&&e.timestamp<R.data.requestedTimestamp)&&(R.data.requestedTimestamp=R.data.frame.timestamp,R.onTimeStampUpdate(R.data.requestedTimestamp))}}function c(t){if(R.data.requestedTimestamp=t=Number(t),t>=0){for(var n=0;n<R.data.replay.length;++n){var e=R.data.replay[n];e.timestamp<=t&&n>R.data.index&&(R.data.index=n)}var a=R.data.replay[R.data.index+1];R.data.secondsUntilNextFrame=a?Math.ceil((a.timestamp-R.data.requestedTimestamp)/1e3):0}(0>t||R.data.duration()<t)&&(R.onPause(),0>t?R.data.requestedTimestamp=0:R.data.requestedTimestamp=R.data.duration())}function f(){n.each(R.data.replay,function(t,e){n.each(t.seats,function(t){n.has(t,"acting")&&t.acting===!0&&e&&R.data.actionIndexes.push(e)})}),R.data.actionIndexes=n.union(R.data.sortedSeekpoints,R.data.actionIndexes),R.data.actionIndexes=n.sortBy(n.uniq(R.data.actionIndexes),function(t){return t}),R.data.actionIndexes.shift()}function d(){var t=R.data.meta&&R.data.meta.seekpoints;t&&(R.data.seekpoints=t,R.data.sortedSeekpoints=n(t).sortBy(function(t){return parseInt(t,10)}),e(function(){R.onSetFrameUpdate(0)}))}function h(){if(R.data.lastHand){var t=R.data.replay.length-1;return R.onSetFrameUpdate(t),void(R.data.playStatus="finished")}R.onStepForward(),R.fastPlayTimer=e(h,R.FAST_PLAY_STEPPER_TIME)}function p(){function t(){R.data.playState.rafId=window.requestAnimationFrame(t),a.$apply(function(){var t=Number(new Date)-R.data.playState.realtime0,n=Math.floor(t*R.data.requestedPlayspeed);R.data.playState.replaytime1=R.data.requestedTimestamp=R.data.playState.replaytime0+n,R.onTimeStampUpdate(R.data.requestedTimestamp)})}R.data.playState.realtime0=Number(new Date),R.data.playState.replaytime0=R.data.requestedTimestamp,R.data.playState.rafId=window.requestAnimationFrame(t)}function m(){window.cancelAnimationFrame(R.data.playState.rafId),R.data.playState.rafId=null}function v(){"paused"===R.data.playStatus||"not-started"===R.data.playStatus?R.onPlay():"playing"===R.data.playStatus?R.onPause():"finished"===R.data.playStatus&&R.onRestart()}function g(){return t.debug("PLAY index",R.data.index),R.data.playStatus="playing",0===R.data.index&&1===R.data.requestedPlayspeed?(R.suspendTimeout&&e.cancel(R.suspendTimeout),m(),void(R.suspendTimeout=e(function(){p()},R.ANTE_DELAY))):void(R.data.requestedPlayspeed>1?(R.fastPlayTimer&&(e.cancel(R.fastPlayTimer),R.fastPlayTimer=null),h()):p())}function y(){R.fastPlayTimer&&(e.cancel(R.fastPlayTimer),R.fastPlayTimer=null),R.suspendTimeout&&e.cancel(R.suspendTimeout),m(),R.data.replay.length-1===R.data.index?R.data.playStatus="finished":R.data.playStatus="paused"}function b(){R.data.requestedTimestamp=0,R.data.index=0,R.data.playStatus="paused",R.data.lastHand=!1,R.data.street="preflop",R.onSetFrameUpdate(R.data.index),R.onPause(),R.onPlay()}function _(){var t=R.data.playStatus;"playing"===t?1===R.data.requestedPlayspeed?m():R.fastPlayTimer&&(e.cancel(R.fastPlayTimer),R.fastPlayTimer=null):"not-started"===t&&(R.data.playStatus="paused");var a=n.first(n.filter(R.data.actionIndexes,function(t){return t>R.data.index}));a?(R.data.lastHand=!1,R.onSetFrameUpdate(a)):R.data.lastHand=!0,R.data.lastHand&&(R.onPause(),R.data.index=R.data.replay.length-1,R.onSetFrameUpdate(R.data.index))}function x(){var t=R.data.playStatus;R.data.lastHand=!1,1===R.data.requestedPlayspeed?m():R.fastPlayTimer&&(e.cancel(R.fastPlayTimer),R.fastPlayTimer=null);var a=n.last(n.filter(R.data.actionIndexes,function(t){return t<R.data.index}));a?R.onSetFrameUpdate(a):R.onSetFrameUpdate(0),"playing"===t?(R.fastStepTimeout&&e.cancel(R.fastStepTimeout),R.fastStepTimeout=e(function(){R.onPlay()},500)):R.data.playStatus="paused"}function w(t){var n=R.data.playStatus;R.onPause();var e=R.data.seekpoints[t]||0;R.onSetFrameUpdate(e),"playing"===n&&R.onPlay()}function k(){var t=R.streets.indexOf(R.data.street);if(-1!==t){var n=R.data.sortedSeekpoints.length-1;R.data.street!==R.streets[n-1]&&R.onGoToPosition(R.streets[t+1]);
+	}}function D(){var t=R.streets.indexOf(R.data.street);-1!==t&&R.data.street!==R.streets[0]&&R.onGoToPosition(R.streets[t-1])}function C(t){var n=R.data.playStatus;"fast"===t?(R.data.requestedPlayspeed=3,m()):(R.data.requestedPlayspeed=1,R.fastPlayTimer&&e.cancel(R.fastPlayTimer)),"playing"===n&&R.onPlay()}function M(t){return R.data.seekpoints?R.data.seekpoints.river&&t>=R.data.seekpoints.river?(R.data.street="river",R.data.street):R.data.seekpoints.turn&&t>=R.data.seekpoints.turn?(R.data.street="turn",R.data.street):R.data.seekpoints.flop&&t>=R.data.seekpoints.flop?(R.data.street="flop",R.data.street):R.data.seekpoints.preflop&&t>=R.data.seekpoints.preflop?(R.data.street="preflop",R.data.street):void 0:null}function S(){return R.data.frame&&R.data.frame.timestamp||0}function P(){return!S()}function A(){return S()===T()}function T(){return R.data.meta&&R.data.meta.duration||0}function E(){return!!R.data.playState.rafId}function N(){return R.data.requestedPlayspeed<0}function H(){return R.data.replay.length&&!E()&&!(N()?P():A())}function I(){return R.data.playState.rafId}function z(){return!H()&&!I()}var R={FAST_PLAY_STEPPER_TIME:1500,SUSPEND_DELAY:500,ANTE_DELAY:1500,DEALING_CARDS_DELAY:1e3,frameTypesToSuspend:["Post SB","Post BB","Call","Raise","Bet"],framesToSuspend:[],suspendTimeout:null,streets:["preflop","flop","turn","river"],start:r,onSetFrameUpdate:l,onTimeStampUpdate:c,setSeekPoints:d,setupPlayerActionIndexes:f,setStreetPosition:M,onPlay:g,onPause:y,onRestart:b,onStepForward:_,onStepBackward:x,onGoToPosition:w,onNextStreet:k,onPreviousStreet:D,onPlaySpeedUpdate:C,togglePlay:v,data:{actionIndexes:[],frame:{},index:0,street:"preflop",playState:{rafId:null,realtime0:0,replaytime0:0,replaytime1:0},playStatus:"not-started",seekpoints:{},sortedSeekpoints:[],requestedTimestamp:0,requestedPlayspeed:1,duration:T,playable:H,pausable:I,restartable:z,isFullScreen:!1}};return R}return a}t.factory("ReplayerState",e),e.$inject=["$log","$timeout"]}}).call(n,e(98))},function(t,n){"use strict";t.exports=function(n){function e(){return o}/*!
+		  * screenfull
+		  * v2.0.0 - 2014-12-22
+		  * (c) Sindre Sorhus; MIT License
+		  */
+	n.service("ScreenFull",e);var a="undefined"!=typeof t&&t.exports,r="undefined"!=typeof Element&&"ALLOW_KEYBOARD_INPUT"in Element,i=function(){for(var t,n,e=[["requestFullscreen","exitFullscreen","fullscreenElement","fullscreenEnabled","fullscreenchange","fullscreenerror"],["webkitRequestFullscreen","webkitExitFullscreen","webkitFullscreenElement","webkitFullscreenEnabled","webkitfullscreenchange","webkitfullscreenerror"],["webkitRequestFullScreen","webkitCancelFullScreen","webkitCurrentFullScreenElement","webkitCancelFullScreen","webkitfullscreenchange","webkitfullscreenerror"],["mozRequestFullScreen","mozCancelFullScreen","mozFullScreenElement","mozFullScreenEnabled","mozfullscreenchange","mozfullscreenerror"],["msRequestFullscreen","msExitFullscreen","msFullscreenElement","msFullscreenEnabled","MSFullscreenChange","MSFullscreenError"]],a=0,r=e.length,i={};r>a;a++)if(t=e[a],t&&t[1]in document){for(a=0,n=t.length;n>a;a++)i[e[0][a]]=t[a];return i}return!1}(),o={request:function(t){var n=function(n){return t.apply(this,arguments)};return n.toString=function(){return t.toString()},n}(function(t){var n=i.requestFullscreen;t=t||document.documentElement,/5\.1[\.\d]* Safari/.test(navigator.userAgent)?t[n]():t[n](r&&Element.ALLOW_KEYBOARD_INPUT)}),exit:function(){document[i.exitFullscreen]()},toggle:function(t){this.isFullscreen?this.exit():this.request(t)},raw:i};return i?(Object.defineProperties(o,{isFullscreen:{get:function(){return!!document[i.fullscreenElement]}},element:{enumerable:!0,get:function(){return document[i.fullscreenElement]}},enabled:{enumerable:!0,get:function(){return!!document[i.fullscreenEnabled]}}}),void(a?t.exports=o:window.screenfull=o)):void(a?t.exports=!1:window.screenfull=!1)}},function(t,n){"use strict";t.exports=function(t){function n(t,n){function e(e,s){e.onKeyDown=function(u){return u.preventDefault(),u.stopPropagation(),u.keyCode===a?void e.data.togglePlay():void(u.altKey?((u.keyCode===r||u.keyCode===i)&&t.enabled(!1),u.keyCode===r&&s.onNextStreet(),u.keyCode===i&&s.onPreviousStreet(),n.cancel(o.activateAnimationTimer),o.activateAnimationTimer=n(function(){t.enabled(!0)},100)):((u.keyCode===r||u.keyCode===i)&&t.enabled(!1),u.keyCode===r&&s.onStepForward(),u.keyCode===i&&s.onStepBackward(),n.cancel(o.activateAnimationTimer),o.activateAnimationTimer=n(function(){t.enabled(!0)},100)))}}var a=32,r=39,i=37,o={register:e,activateAnimationTimeout:null};return o}t.factory("KeyboardEvents",n),n.$inject=["$animate","$timeout"]}},function(t,n){"use strict";t.exports=function(t){t.filter("formatMs",[function(){return function(t){var n=Math.floor(t/1e3),e=Math.floor(n/60);return n%=60,e+(10>n?":0":":")+n}}])}},function(t,n){"use strict";t.exports=function(t){function n(t){function n(n,e){n.$on("on:fullscreen",function(){t.enabled&&t.toggle(e[0])})}return{restrict:"A",link:n}}t.directive("screenfull",n),n.$inject=["ScreenFull"]}},function(t,n){"use strict";t.exports=function(t){function n(){return{scope:{bet:"=",divisor:"="},template:'<div ng-repeat="stack in vm.seatDatabetStack" class="Chip Chip-{{stack.value}}--{{stack.count}}"></div>',controller:"ChipsStackCtrl",controllerAs:"vm",bindToController:!0}}function e(t,n){function e(t){function e(t){return parseInt(t,10)===t}for(var i=t/a.divisor*100,o=[],s=r.length-1;s>=0;s--){var u=100*r[s],l=Math.floor(i/u),c=2;if(l>0){var f=u/100;e(f)&&(c=0);var d=n("currency")(f,"",c).replace(/,|\./g,"");d>=1e3&&(d=d/1e3+"k"),d>=1e6&&(d=d/1e6+"m"),d>=1e9&&(d=d/1e9+"b"),i-=l*u,o.push({count:l,value:d})}}return o}var a=this;if(a.bet){var r=[.01,.05,.25,1,5,25,100,500,1e3,5e3,25e3,1e5,5e5,1e6,5e6,25e6,1e8,5e8,1e9,5e9,25e9];t.$watch("vm.bet",function(t){a.seatDatabetStack=e(t)})}}t.directive("chipsStack",n).controller("ChipsStackCtrl",e),e.$inject=["$scope","$filter"]}},function(t,n){"use strict";t.exports=function(t){t.directive("scrolltoif",function(){return function(t,n,e){t.$eval(e.scrolltoif)&&setTimeout(function(){if(n.length){var t=n[0].parentElement;t.scrollTop=t.scrollHeight}})}})}},function(t,n){"use strict";t.exports=function(t){function n(t){function n(n,e,a){var r=t(a.sglclick),i=300,o=0,s=null;e.on("click",function(t){o++,1===o?s=setTimeout(function(){n.$apply(function(){r(n,{$event:t})}),o=0},i):(clearTimeout(s),o=0)})}return{restrict:"A",link:n}}t.directive("sglclick",n),n.$inject=["$parse"]}},function(t,n,e){(function(n){"use strict";t.exports=function(t){function a(t){t.debugEnabled(!1);var n=new RegExp(/debug=true/),e=n.exec(location.search);e&&t.debugEnabled(!0)}function r(t,n){return{scope:{data:"="},controller:"ReplayerCtrl",controllerAs:"vm",bindToController:!0,link:function(n,e,a){t(function(){e.focus()})},template:e(225)}}function i(t,e,a,r,i,u){function l(){t.$emit("on:fullscreen")}function c(){return g.data.meta?n.size(g.data.meta.hole_cards):2}function f(){y.togglePlay()}function d(){return"not-started"===g.data.playStatus}function h(){return"playing"===g.data.playStatus}function p(){return"paused"===g.data.playStatus}function m(){return"finished"===g.data.playStatus}function v(t){if(t.states){if(!n.isArray(t.states)){var e=o.inflate(s.decode(t.states),{to:"string"});t.states=JSON.parse(e)}t.replay=r.unpackUpdateArray(t.states)}return t}var g=this;window.vm=g,g.data=v(g.data);var y=new i(t);g.data=y.start(g.data),u.register(g,y),g.data.toggleFullScreen=l,g.data.togglePlay=f,g.data.isPlaying=h,g.data.isPaused=p,g.data.isFinished=m,g.data.notStarted=d,g.holeCardsCount=c}var o=e(207),s=e(223);t.config(a).directive("replayer",r).controller("ReplayerCtrl",i),a.$inject=["$logProvider"],r.$inject=["$timeout","templateService"],i.$inject=["$scope","$log","$timeout","StateHelper","ReplayerState","KeyboardEvents"]}}).call(n,e(98))},function(t,n,e){"use strict";var a=e(208).assign,r=e(209),i=e(217),o=e(221),s={};a(s,r,i,o),t.exports=s},function(t,n){"use strict";var e="undefined"!=typeof Uint8Array&&"undefined"!=typeof Uint16Array&&"undefined"!=typeof Int32Array;n.assign=function(t){for(var n=Array.prototype.slice.call(arguments,1);n.length;){var e=n.shift();if(e){if("object"!=typeof e)throw new TypeError(e+"must be non-object");for(var a in e)e.hasOwnProperty(a)&&(t[a]=e[a])}}return t},n.shrinkBuf=function(t,n){return t.length===n?t:t.subarray?t.subarray(0,n):(t.length=n,t)};var a={arraySet:function(t,n,e,a,r){if(n.subarray&&t.subarray)return void t.set(n.subarray(e,e+a),r);for(var i=0;a>i;i++)t[r+i]=n[e+i]},flattenChunks:function(t){var n,e,a,r,i,o;for(a=0,n=0,e=t.length;e>n;n++)a+=t[n].length;for(o=new Uint8Array(a),r=0,n=0,e=t.length;e>n;n++)i=t[n],o.set(i,r),r+=i.length;return o}},r={arraySet:function(t,n,e,a,r){for(var i=0;a>i;i++)t[r+i]=n[e+i]},flattenChunks:function(t){return[].concat.apply([],t)}};n.setTyped=function(t){t?(n.Buf8=Uint8Array,n.Buf16=Uint16Array,n.Buf32=Int32Array,n.assign(n,a)):(n.Buf8=Array,n.Buf16=Array,n.Buf32=Array,n.assign(n,r))},n.setTyped(e)},function(t,n,e){"use strict";function a(t,n){var e=new _(n);if(e.push(t,!0),e.err)throw e.msg;return e.result}function r(t,n){return n=n||{},n.raw=!0,a(t,n)}function i(t,n){return n=n||{},n.gzip=!0,a(t,n)}var o=e(210),s=e(208),u=e(215),l=e(214),c=e(216),f=Object.prototype.toString,d=0,h=4,p=0,m=1,v=2,g=-1,y=0,b=8,_=function(t){this.options=s.assign({level:g,method:b,chunkSize:16384,windowBits:15,memLevel:8,strategy:y,to:""},t||{});var n=this.options;n.raw&&n.windowBits>0?n.windowBits=-n.windowBits:n.gzip&&n.windowBits>0&&n.windowBits<16&&(n.windowBits+=16),this.err=0,this.msg="",this.ended=!1,this.chunks=[],this.strm=new c,this.strm.avail_out=0;var e=o.deflateInit2(this.strm,n.level,n.method,n.windowBits,n.memLevel,n.strategy);if(e!==p)throw new Error(l[e]);n.header&&o.deflateSetHeader(this.strm,n.header)};_.prototype.push=function(t,n){var e,a,r=this.strm,i=this.options.chunkSize;if(this.ended)return!1;a=n===~~n?n:n===!0?h:d,"string"==typeof t?r.input=u.string2buf(t):"[object ArrayBuffer]"===f.call(t)?r.input=new Uint8Array(t):r.input=t,r.next_in=0,r.avail_in=r.input.length;do{if(0===r.avail_out&&(r.output=new s.Buf8(i),r.next_out=0,r.avail_out=i),e=o.deflate(r,a),e!==m&&e!==p)return this.onEnd(e),this.ended=!0,!1;(0===r.avail_out||0===r.avail_in&&(a===h||a===v))&&("string"===this.options.to?this.onData(u.buf2binstring(s.shrinkBuf(r.output,r.next_out))):this.onData(s.shrinkBuf(r.output,r.next_out)))}while((r.avail_in>0||0===r.avail_out)&&e!==m);return a===h?(e=o.deflateEnd(this.strm),this.onEnd(e),this.ended=!0,e===p):a===v?(this.onEnd(p),r.avail_out=0,!0):!0},_.prototype.onData=function(t){this.chunks.push(t)},_.prototype.onEnd=function(t){t===p&&("string"===this.options.to?this.result=this.chunks.join(""):this.result=s.flattenChunks(this.chunks)),this.chunks=[],this.err=t,this.msg=this.strm.msg},n.Deflate=_,n.deflate=a,n.deflateRaw=r,n.gzip=i},function(t,n,e){"use strict";function a(t,n){return t.msg=N[n],n}function r(t){return(t<<1)-(t>4?9:0)}function i(t){for(var n=t.length;--n>=0;)t[n]=0}function o(t){var n=t.state,e=n.pending;e>t.avail_out&&(e=t.avail_out),0!==e&&(P.arraySet(t.output,n.pending_buf,n.pending_out,e,t.next_out),t.next_out+=e,n.pending_out+=e,t.total_out+=e,t.avail_out-=e,n.pending-=e,0===n.pending&&(n.pending_out=0))}function s(t,n){A._tr_flush_block(t,t.block_start>=0?t.block_start:-1,t.strstart-t.block_start,n),t.block_start=t.strstart,o(t.strm)}function u(t,n){t.pending_buf[t.pending++]=n}function l(t,n){t.pending_buf[t.pending++]=n>>>8&255,t.pending_buf[t.pending++]=255&n}function c(t,n,e,a){var r=t.avail_in;return r>a&&(r=a),0===r?0:(t.avail_in-=r,P.arraySet(n,t.input,t.next_in,r,e),1===t.state.wrap?t.adler=T(t.adler,n,r,e):2===t.state.wrap&&(t.adler=E(t.adler,n,r,e)),t.next_in+=r,t.total_in+=r,r)}function f(t,n){var e,a,r=t.max_chain_length,i=t.strstart,o=t.prev_length,s=t.nice_match,u=t.strstart>t.w_size-lt?t.strstart-(t.w_size-lt):0,l=t.window,c=t.w_mask,f=t.prev,d=t.strstart+ut,h=l[i+o-1],p=l[i+o];t.prev_length>=t.good_match&&(r>>=2),s>t.lookahead&&(s=t.lookahead);do if(e=n,l[e+o]===p&&l[e+o-1]===h&&l[e]===l[i]&&l[++e]===l[i+1]){i+=2,e++;do;while(l[++i]===l[++e]&&l[++i]===l[++e]&&l[++i]===l[++e]&&l[++i]===l[++e]&&l[++i]===l[++e]&&l[++i]===l[++e]&&l[++i]===l[++e]&&l[++i]===l[++e]&&d>i);if(a=ut-(d-i),i=d-ut,a>o){if(t.match_start=n,o=a,a>=s)break;h=l[i+o-1],p=l[i+o]}}while((n=f[n&c])>u&&0!==--r);return o<=t.lookahead?o:t.lookahead}function d(t){var n,e,a,r,i,o=t.w_size;do{if(r=t.window_size-t.lookahead-t.strstart,t.strstart>=o+(o-lt)){P.arraySet(t.window,t.window,o,o,0),t.match_start-=o,t.strstart-=o,t.block_start-=o,e=t.hash_size,n=e;do a=t.head[--n],t.head[n]=a>=o?a-o:0;while(--e);e=o,n=e;do a=t.prev[--n],t.prev[n]=a>=o?a-o:0;while(--e);r+=o}if(0===t.strm.avail_in)break;if(e=c(t.strm,t.window,t.strstart+t.lookahead,r),t.lookahead+=e,t.lookahead+t.insert>=st)for(i=t.strstart-t.insert,t.ins_h=t.window[i],t.ins_h=(t.ins_h<<t.hash_shift^t.window[i+1])&t.hash_mask;t.insert&&(t.ins_h=(t.ins_h<<t.hash_shift^t.window[i+st-1])&t.hash_mask,t.prev[i&t.w_mask]=t.head[t.ins_h],t.head[t.ins_h]=i,i++,t.insert--,!(t.lookahead+t.insert<st)););}while(t.lookahead<lt&&0!==t.strm.avail_in)}function h(t,n){var e=65535;for(e>t.pending_buf_size-5&&(e=t.pending_buf_size-5);;){if(t.lookahead<=1){if(d(t),0===t.lookahead&&n===H)return yt;if(0===t.lookahead)break}t.strstart+=t.lookahead,t.lookahead=0;var a=t.block_start+e;if((0===t.strstart||t.strstart>=a)&&(t.lookahead=t.strstart-a,t.strstart=a,s(t,!1),0===t.strm.avail_out))return yt;if(t.strstart-t.block_start>=t.w_size-lt&&(s(t,!1),0===t.strm.avail_out))return yt}return t.insert=0,n===R?(s(t,!0),0===t.strm.avail_out?_t:xt):t.strstart>t.block_start&&(s(t,!1),0===t.strm.avail_out)?yt:yt}function p(t,n){for(var e,a;;){if(t.lookahead<lt){if(d(t),t.lookahead<lt&&n===H)return yt;if(0===t.lookahead)break}if(e=0,t.lookahead>=st&&(t.ins_h=(t.ins_h<<t.hash_shift^t.window[t.strstart+st-1])&t.hash_mask,e=t.prev[t.strstart&t.w_mask]=t.head[t.ins_h],t.head[t.ins_h]=t.strstart),0!==e&&t.strstart-e<=t.w_size-lt&&(t.match_length=f(t,e)),t.match_length>=st)if(a=A._tr_tally(t,t.strstart-t.match_start,t.match_length-st),t.lookahead-=t.match_length,t.match_length<=t.max_lazy_match&&t.lookahead>=st){t.match_length--;do t.strstart++,t.ins_h=(t.ins_h<<t.hash_shift^t.window[t.strstart+st-1])&t.hash_mask,e=t.prev[t.strstart&t.w_mask]=t.head[t.ins_h],t.head[t.ins_h]=t.strstart;while(0!==--t.match_length);t.strstart++}else t.strstart+=t.match_length,t.match_length=0,t.ins_h=t.window[t.strstart],t.ins_h=(t.ins_h<<t.hash_shift^t.window[t.strstart+1])&t.hash_mask;else a=A._tr_tally(t,0,t.window[t.strstart]),t.lookahead--,t.strstart++;if(a&&(s(t,!1),0===t.strm.avail_out))return yt}return t.insert=t.strstart<st-1?t.strstart:st-1,n===R?(s(t,!0),0===t.strm.avail_out?_t:xt):t.last_lit&&(s(t,!1),0===t.strm.avail_out)?yt:bt}function m(t,n){for(var e,a,r;;){if(t.lookahead<lt){if(d(t),t.lookahead<lt&&n===H)return yt;if(0===t.lookahead)break}if(e=0,t.lookahead>=st&&(t.ins_h=(t.ins_h<<t.hash_shift^t.window[t.strstart+st-1])&t.hash_mask,e=t.prev[t.strstart&t.w_mask]=t.head[t.ins_h],t.head[t.ins_h]=t.strstart),t.prev_length=t.match_length,t.prev_match=t.match_start,t.match_length=st-1,0!==e&&t.prev_length<t.max_lazy_match&&t.strstart-e<=t.w_size-lt&&(t.match_length=f(t,e),t.match_length<=5&&(t.strategy===V||t.match_length===st&&t.strstart-t.match_start>4096)&&(t.match_length=st-1)),t.prev_length>=st&&t.match_length<=t.prev_length){r=t.strstart+t.lookahead-st,a=A._tr_tally(t,t.strstart-1-t.prev_match,t.prev_length-st),t.lookahead-=t.prev_length-1,t.prev_length-=2;do++t.strstart<=r&&(t.ins_h=(t.ins_h<<t.hash_shift^t.window[t.strstart+st-1])&t.hash_mask,e=t.prev[t.strstart&t.w_mask]=t.head[t.ins_h],t.head[t.ins_h]=t.strstart);while(0!==--t.prev_length);if(t.match_available=0,t.match_length=st-1,t.strstart++,a&&(s(t,!1),0===t.strm.avail_out))return yt}else if(t.match_available){if(a=A._tr_tally(t,0,t.window[t.strstart-1]),a&&s(t,!1),t.strstart++,t.lookahead--,0===t.strm.avail_out)return yt}else t.match_available=1,t.strstart++,t.lookahead--}return t.match_available&&(a=A._tr_tally(t,0,t.window[t.strstart-1]),t.match_available=0),t.insert=t.strstart<st-1?t.strstart:st-1,n===R?(s(t,!0),0===t.strm.avail_out?_t:xt):t.last_lit&&(s(t,!1),0===t.strm.avail_out)?yt:bt}function v(t,n){for(var e,a,r,i,o=t.window;;){if(t.lookahead<=ut){if(d(t),t.lookahead<=ut&&n===H)return yt;if(0===t.lookahead)break}if(t.match_length=0,t.lookahead>=st&&t.strstart>0&&(r=t.strstart-1,a=o[r],a===o[++r]&&a===o[++r]&&a===o[++r])){i=t.strstart+ut;do;while(a===o[++r]&&a===o[++r]&&a===o[++r]&&a===o[++r]&&a===o[++r]&&a===o[++r]&&a===o[++r]&&a===o[++r]&&i>r);t.match_length=ut-(i-r),t.match_length>t.lookahead&&(t.match_length=t.lookahead)}if(t.match_length>=st?(e=A._tr_tally(t,1,t.match_length-st),t.lookahead-=t.match_length,t.strstart+=t.match_length,t.match_length=0):(e=A._tr_tally(t,0,t.window[t.strstart]),t.lookahead--,t.strstart++),e&&(s(t,!1),0===t.strm.avail_out))return yt}return t.insert=0,n===R?(s(t,!0),0===t.strm.avail_out?_t:xt):t.last_lit&&(s(t,!1),0===t.strm.avail_out)?yt:bt}function g(t,n){for(var e;;){if(0===t.lookahead&&(d(t),0===t.lookahead)){if(n===H)return yt;break}if(t.match_length=0,e=A._tr_tally(t,0,t.window[t.strstart]),t.lookahead--,t.strstart++,e&&(s(t,!1),0===t.strm.avail_out))return yt}return t.insert=0,n===R?(s(t,!0),0===t.strm.avail_out?_t:xt):t.last_lit&&(s(t,!1),0===t.strm.avail_out)?yt:bt}function y(t){t.window_size=2*t.w_size,i(t.head),t.max_lazy_match=S[t.level].max_lazy,t.good_match=S[t.level].good_length,t.nice_match=S[t.level].nice_length,t.max_chain_length=S[t.level].max_chain,t.strstart=0,t.block_start=0,t.lookahead=0,t.insert=0,t.match_length=t.prev_length=st-1,t.match_available=0,t.ins_h=0}function b(){this.strm=null,this.status=0,this.pending_buf=null,this.pending_buf_size=0,this.pending_out=0,this.pending=0,this.wrap=0,this.gzhead=null,this.gzindex=0,this.method=G,this.last_flush=-1,this.w_size=0,this.w_bits=0,this.w_mask=0,this.window=null,this.window_size=0,this.prev=null,this.head=null,this.ins_h=0,this.hash_size=0,this.hash_bits=0,this.hash_mask=0,this.hash_shift=0,this.block_start=0,this.match_length=0,this.prev_match=0,this.match_available=0,this.strstart=0,this.match_start=0,this.lookahead=0,this.prev_length=0,this.max_chain_length=0,this.max_lazy_match=0,this.level=0,this.strategy=0,this.good_match=0,this.nice_match=0,this.dyn_ltree=new P.Buf16(2*it),this.dyn_dtree=new P.Buf16(2*(2*at+1)),this.bl_tree=new P.Buf16(2*(2*rt+1)),i(this.dyn_ltree),i(this.dyn_dtree),i(this.bl_tree),this.l_desc=null,this.d_desc=null,this.bl_desc=null,this.bl_count=new P.Buf16(ot+1),this.heap=new P.Buf16(2*et+1),i(this.heap),this.heap_len=0,this.heap_max=0,this.depth=new P.Buf16(2*et+1),i(this.depth),this.l_buf=0,this.lit_bufsize=0,this.last_lit=0,this.d_buf=0,this.opt_len=0,this.static_len=0,this.matches=0,this.insert=0,this.bi_buf=0,this.bi_valid=0}function _(t){var n;return t&&t.state?(t.total_in=t.total_out=0,t.data_type=W,n=t.state,n.pending=0,n.pending_out=0,n.wrap<0&&(n.wrap=-n.wrap),n.status=n.wrap?ft:vt,t.adler=2===n.wrap?0:1,n.last_flush=H,A._tr_init(n),L):a(t,j)}function x(t){var n=_(t);return n===L&&y(t.state),n}function w(t,n){return t&&t.state?2!==t.state.wrap?j:(t.state.gzhead=n,L):j}function k(t,n,e,r,i,o){if(!t)return j;var s=1;if(n===O&&(n=6),0>r?(s=0,r=-r):r>15&&(s=2,r-=16),1>i||i>X||e!==G||8>r||r>15||0>n||n>9||0>o||o>Y)return a(t,j);8===r&&(r=9);var u=new b;return t.state=u,u.strm=t,u.wrap=s,u.gzhead=null,u.w_bits=r,u.w_size=1<<u.w_bits,u.w_mask=u.w_size-1,u.hash_bits=i+7,u.hash_size=1<<u.hash_bits,u.hash_mask=u.hash_size-1,u.hash_shift=~~((u.hash_bits+st-1)/st),u.window=new P.Buf8(2*u.w_size),u.head=new P.Buf16(u.hash_size),u.prev=new P.Buf16(u.w_size),u.lit_bufsize=1<<i+6,u.pending_buf_size=4*u.lit_bufsize,u.pending_buf=new P.Buf8(u.pending_buf_size),u.d_buf=u.lit_bufsize>>1,u.l_buf=3*u.lit_bufsize,u.level=n,u.strategy=o,u.method=e,x(t)}function D(t,n){return k(t,n,G,J,Q,K)}function C(t,n){var e,s,c,f;if(!t||!t.state||n>U||0>n)return t?a(t,j):j;if(s=t.state,!t.output||!t.input&&0!==t.avail_in||s.status===gt&&n!==R)return a(t,0===t.avail_out?q:j);if(s.strm=t,e=s.last_flush,s.last_flush=n,s.status===ft)if(2===s.wrap)t.adler=0,u(s,31),u(s,139),u(s,8),s.gzhead?(u(s,(s.gzhead.text?1:0)+(s.gzhead.hcrc?2:0)+(s.gzhead.extra?4:0)+(s.gzhead.name?8:0)+(s.gzhead.comment?16:0)),u(s,255&s.gzhead.time),u(s,s.gzhead.time>>8&255),u(s,s.gzhead.time>>16&255),u(s,s.gzhead.time>>24&255),u(s,9===s.level?2:s.strategy>=$||s.level<2?4:0),u(s,255&s.gzhead.os),s.gzhead.extra&&s.gzhead.extra.length&&(u(s,255&s.gzhead.extra.length),u(s,s.gzhead.extra.length>>8&255)),s.gzhead.hcrc&&(t.adler=E(t.adler,s.pending_buf,s.pending,0)),s.gzindex=0,s.status=dt):(u(s,0),u(s,0),u(s,0),u(s,0),u(s,0),u(s,9===s.level?2:s.strategy>=$||s.level<2?4:0),u(s,wt),s.status=vt);else{var d=G+(s.w_bits-8<<4)<<8,h=-1;h=s.strategy>=$||s.level<2?0:s.level<6?1:6===s.level?2:3,d|=h<<6,0!==s.strstart&&(d|=ct),d+=31-d%31,s.status=vt,l(s,d),0!==s.strstart&&(l(s,t.adler>>>16),l(s,65535&t.adler)),t.adler=1}if(s.status===dt)if(s.gzhead.extra){for(c=s.pending;s.gzindex<(65535&s.gzhead.extra.length)&&(s.pending!==s.pending_buf_size||(s.gzhead.hcrc&&s.pending>c&&(t.adler=E(t.adler,s.pending_buf,s.pending-c,c)),o(t),c=s.pending,s.pending!==s.pending_buf_size));)u(s,255&s.gzhead.extra[s.gzindex]),s.gzindex++;s.gzhead.hcrc&&s.pending>c&&(t.adler=E(t.adler,s.pending_buf,s.pending-c,c)),s.gzindex===s.gzhead.extra.length&&(s.gzindex=0,s.status=ht)}else s.status=ht;if(s.status===ht)if(s.gzhead.name){c=s.pending;do{if(s.pending===s.pending_buf_size&&(s.gzhead.hcrc&&s.pending>c&&(t.adler=E(t.adler,s.pending_buf,s.pending-c,c)),o(t),c=s.pending,s.pending===s.pending_buf_size)){f=1;break}f=s.gzindex<s.gzhead.name.length?255&s.gzhead.name.charCodeAt(s.gzindex++):0,u(s,f)}while(0!==f);s.gzhead.hcrc&&s.pending>c&&(t.adler=E(t.adler,s.pending_buf,s.pending-c,c)),0===f&&(s.gzindex=0,s.status=pt)}else s.status=pt;if(s.status===pt)if(s.gzhead.comment){c=s.pending;do{if(s.pending===s.pending_buf_size&&(s.gzhead.hcrc&&s.pending>c&&(t.adler=E(t.adler,s.pending_buf,s.pending-c,c)),o(t),c=s.pending,s.pending===s.pending_buf_size)){f=1;break}f=s.gzindex<s.gzhead.comment.length?255&s.gzhead.comment.charCodeAt(s.gzindex++):0,u(s,f)}while(0!==f);s.gzhead.hcrc&&s.pending>c&&(t.adler=E(t.adler,s.pending_buf,s.pending-c,c)),0===f&&(s.status=mt)}else s.status=mt;if(s.status===mt&&(s.gzhead.hcrc?(s.pending+2>s.pending_buf_size&&o(t),s.pending+2<=s.pending_buf_size&&(u(s,255&t.adler),u(s,t.adler>>8&255),t.adler=0,s.status=vt)):s.status=vt),0!==s.pending){if(o(t),0===t.avail_out)return s.last_flush=-1,L}else if(0===t.avail_in&&r(n)<=r(e)&&n!==R)return a(t,q);if(s.status===gt&&0!==t.avail_in)return a(t,q);if(0!==t.avail_in||0!==s.lookahead||n!==H&&s.status!==gt){var p=s.strategy===$?g(s,n):s.strategy===Z?v(s,n):S[s.level].func(s,n);if((p===_t||p===xt)&&(s.status=gt),p===yt||p===_t)return 0===t.avail_out&&(s.last_flush=-1),L;if(p===bt&&(n===I?A._tr_align(s):n!==U&&(A._tr_stored_block(s,0,0,!1),n===z&&(i(s.head),0===s.lookahead&&(s.strstart=0,s.block_start=0,s.insert=0))),o(t),0===t.avail_out))return s.last_flush=-1,L}return n!==R?L:s.wrap<=0?F:(2===s.wrap?(u(s,255&t.adler),u(s,t.adler>>8&255),u(s,t.adler>>16&255),u(s,t.adler>>24&255),u(s,255&t.total_in),u(s,t.total_in>>8&255),u(s,t.total_in>>16&255),u(s,t.total_in>>24&255)):(l(s,t.adler>>>16),l(s,65535&t.adler)),o(t),s.wrap>0&&(s.wrap=-s.wrap),0!==s.pending?L:F)}function M(t){var n;return t&&t.state?(n=t.state.status,n!==ft&&n!==dt&&n!==ht&&n!==pt&&n!==mt&&n!==vt&&n!==gt?a(t,j):(t.state=null,n===vt?a(t,B):L)):j}var S,P=e(208),A=e(211),T=e(212),E=e(213),N=e(214),H=0,I=1,z=3,R=4,U=5,L=0,F=1,j=-2,B=-3,q=-5,O=-1,V=1,$=2,Z=3,Y=4,K=0,W=2,G=8,X=9,J=15,Q=8,tt=29,nt=256,et=nt+1+tt,at=30,rt=19,it=2*et+1,ot=15,st=3,ut=258,lt=ut+st+1,ct=32,ft=42,dt=69,ht=73,pt=91,mt=103,vt=113,gt=666,yt=1,bt=2,_t=3,xt=4,wt=3,kt=function(t,n,e,a,r){this.good_length=t,this.max_lazy=n,this.nice_length=e,this.max_chain=a,this.func=r};S=[new kt(0,0,0,0,h),new kt(4,4,8,4,p),new kt(4,5,16,8,p),new kt(4,6,32,32,p),new kt(4,4,16,16,m),new kt(8,16,32,32,m),new kt(8,16,128,128,m),new kt(8,32,128,256,m),new kt(32,128,258,1024,m),new kt(32,258,258,4096,m)],n.deflateInit=D,n.deflateInit2=k,n.deflateReset=x,n.deflateResetKeep=_,n.deflateSetHeader=w,n.deflate=C,n.deflateEnd=M,n.deflateInfo="pako deflate (from Nodeca project)"},function(t,n,e){"use strict";function a(t){for(var n=t.length;--n>=0;)t[n]=0}function r(t){return 256>t?ot[t]:ot[256+(t>>>7)]}function i(t,n){t.pending_buf[t.pending++]=255&n,t.pending_buf[t.pending++]=n>>>8&255}function o(t,n,e){t.bi_valid>Y-e?(t.bi_buf|=n<<t.bi_valid&65535,i(t,t.bi_buf),t.bi_buf=n>>Y-t.bi_valid,t.bi_valid+=e-Y):(t.bi_buf|=n<<t.bi_valid&65535,t.bi_valid+=e)}function s(t,n,e){o(t,e[2*n],e[2*n+1])}function u(t,n){var e=0;do e|=1&t,t>>>=1,e<<=1;while(--n>0);return e>>>1}function l(t){16===t.bi_valid?(i(t,t.bi_buf),t.bi_buf=0,t.bi_valid=0):t.bi_valid>=8&&(t.pending_buf[t.pending++]=255&t.bi_buf,t.bi_buf>>=8,t.bi_valid-=8)}function c(t,n){var e,a,r,i,o,s,u=n.dyn_tree,l=n.max_code,c=n.stat_desc.static_tree,f=n.stat_desc.has_stree,d=n.stat_desc.extra_bits,h=n.stat_desc.extra_base,p=n.stat_desc.max_length,m=0;for(i=0;Z>=i;i++)t.bl_count[i]=0;for(u[2*t.heap[t.heap_max]+1]=0,e=t.heap_max+1;$>e;e++)a=t.heap[e],i=u[2*u[2*a+1]+1]+1,i>p&&(i=p,m++),u[2*a+1]=i,a>l||(t.bl_count[i]++,o=0,a>=h&&(o=d[a-h]),s=u[2*a],t.opt_len+=s*(i+o),f&&(t.static_len+=s*(c[2*a+1]+o)));if(0!==m){do{for(i=p-1;0===t.bl_count[i];)i--;t.bl_count[i]--,t.bl_count[i+1]+=2,t.bl_count[p]--,m-=2}while(m>0);for(i=p;0!==i;i--)for(a=t.bl_count[i];0!==a;)r=t.heap[--e],r>l||(u[2*r+1]!==i&&(t.opt_len+=(i-u[2*r+1])*u[2*r],u[2*r+1]=i),a--)}}function f(t,n,e){var a,r,i=new Array(Z+1),o=0;for(a=1;Z>=a;a++)i[a]=o=o+e[a-1]<<1;for(r=0;n>=r;r++){var s=t[2*r+1];0!==s&&(t[2*r]=u(i[s]++,s))}}function d(){var t,n,e,a,r,i=new Array(Z+1);for(e=0,a=0;j-1>a;a++)for(ut[a]=e,t=0;t<1<<Q[a];t++)st[e++]=a;for(st[e-1]=a,r=0,a=0;16>a;a++)for(lt[a]=r,t=0;t<1<<tt[a];t++)ot[r++]=a;for(r>>=7;O>a;a++)for(lt[a]=r<<7,t=0;t<1<<tt[a]-7;t++)ot[256+r++]=a;for(n=0;Z>=n;n++)i[n]=0;for(t=0;143>=t;)rt[2*t+1]=8,t++,i[8]++;for(;255>=t;)rt[2*t+1]=9,t++,i[9]++;for(;279>=t;)rt[2*t+1]=7,t++,i[7]++;for(;287>=t;)rt[2*t+1]=8,t++,i[8]++;for(f(rt,q+1,i),t=0;O>t;t++)it[2*t+1]=5,it[2*t]=u(t,5);ct=new ht(rt,Q,B+1,q,Z),ft=new ht(it,tt,0,O,Z),dt=new ht(new Array(0),nt,0,V,K)}function h(t){var n;for(n=0;q>n;n++)t.dyn_ltree[2*n]=0;for(n=0;O>n;n++)t.dyn_dtree[2*n]=0;for(n=0;V>n;n++)t.bl_tree[2*n]=0;t.dyn_ltree[2*W]=1,t.opt_len=t.static_len=0,t.last_lit=t.matches=0}function p(t){t.bi_valid>8?i(t,t.bi_buf):t.bi_valid>0&&(t.pending_buf[t.pending++]=t.bi_buf),t.bi_buf=0,t.bi_valid=0}function m(t,n,e,a){p(t),a&&(i(t,e),i(t,~e)),T.arraySet(t.pending_buf,t.window,n,e,t.pending),t.pending+=e}function v(t,n,e,a){var r=2*n,i=2*e;return t[r]<t[i]||t[r]===t[i]&&a[n]<=a[e]}function g(t,n,e){for(var a=t.heap[e],r=e<<1;r<=t.heap_len&&(r<t.heap_len&&v(n,t.heap[r+1],t.heap[r],t.depth)&&r++,!v(n,a,t.heap[r],t.depth));)t.heap[e]=t.heap[r],e=r,r<<=1;t.heap[e]=a}function y(t,n,e){var a,i,u,l,c=0;if(0!==t.last_lit)do a=t.pending_buf[t.d_buf+2*c]<<8|t.pending_buf[t.d_buf+2*c+1],i=t.pending_buf[t.l_buf+c],c++,0===a?s(t,i,n):(u=st[i],s(t,u+B+1,n),l=Q[u],0!==l&&(i-=ut[u],o(t,i,l)),a--,u=r(a),s(t,u,e),l=tt[u],0!==l&&(a-=lt[u],o(t,a,l)));while(c<t.last_lit);s(t,W,n)}function b(t,n){var e,a,r,i=n.dyn_tree,o=n.stat_desc.static_tree,s=n.stat_desc.has_stree,u=n.stat_desc.elems,l=-1;for(t.heap_len=0,t.heap_max=$,e=0;u>e;e++)0!==i[2*e]?(t.heap[++t.heap_len]=l=e,t.depth[e]=0):i[2*e+1]=0;for(;t.heap_len<2;)r=t.heap[++t.heap_len]=2>l?++l:0,i[2*r]=1,t.depth[r]=0,t.opt_len--,s&&(t.static_len-=o[2*r+1]);for(n.max_code=l,e=t.heap_len>>1;e>=1;e--)g(t,i,e);r=u;do e=t.heap[1],t.heap[1]=t.heap[t.heap_len--],g(t,i,1),a=t.heap[1],t.heap[--t.heap_max]=e,t.heap[--t.heap_max]=a,i[2*r]=i[2*e]+i[2*a],t.depth[r]=(t.depth[e]>=t.depth[a]?t.depth[e]:t.depth[a])+1,i[2*e+1]=i[2*a+1]=r,t.heap[1]=r++,g(t,i,1);while(t.heap_len>=2);t.heap[--t.heap_max]=t.heap[1],c(t,n),f(i,l,t.bl_count)}function _(t,n,e){var a,r,i=-1,o=n[1],s=0,u=7,l=4;for(0===o&&(u=138,l=3),n[2*(e+1)+1]=65535,a=0;e>=a;a++)r=o,o=n[2*(a+1)+1],++s<u&&r===o||(l>s?t.bl_tree[2*r]+=s:0!==r?(r!==i&&t.bl_tree[2*r]++,t.bl_tree[2*G]++):10>=s?t.bl_tree[2*X]++:t.bl_tree[2*J]++,s=0,i=r,0===o?(u=138,l=3):r===o?(u=6,l=3):(u=7,l=4))}function x(t,n,e){var a,r,i=-1,u=n[1],l=0,c=7,f=4;for(0===u&&(c=138,f=3),a=0;e>=a;a++)if(r=u,u=n[2*(a+1)+1],!(++l<c&&r===u)){if(f>l){do s(t,r,t.bl_tree);while(0!==--l)}else 0!==r?(r!==i&&(s(t,r,t.bl_tree),l--),s(t,G,t.bl_tree),o(t,l-3,2)):10>=l?(s(t,X,t.bl_tree),o(t,l-3,3)):(s(t,J,t.bl_tree),o(t,l-11,7));l=0,i=r,0===u?(c=138,f=3):r===u?(c=6,f=3):(c=7,f=4)}}function w(t){var n;for(_(t,t.dyn_ltree,t.l_desc.max_code),_(t,t.dyn_dtree,t.d_desc.max_code),b(t,t.bl_desc),n=V-1;n>=3&&0===t.bl_tree[2*et[n]+1];n--);return t.opt_len+=3*(n+1)+5+5+4,n}function k(t,n,e,a){var r;for(o(t,n-257,5),o(t,e-1,5),o(t,a-4,4),r=0;a>r;r++)o(t,t.bl_tree[2*et[r]+1],3);x(t,t.dyn_ltree,n-1),x(t,t.dyn_dtree,e-1)}function D(t){var n,e=4093624447;for(n=0;31>=n;n++,e>>>=1)if(1&e&&0!==t.dyn_ltree[2*n])return N;if(0!==t.dyn_ltree[18]||0!==t.dyn_ltree[20]||0!==t.dyn_ltree[26])return H;for(n=32;B>n;n++)if(0!==t.dyn_ltree[2*n])return H;return N}function C(t){mt||(d(),mt=!0),t.l_desc=new pt(t.dyn_ltree,ct),t.d_desc=new pt(t.dyn_dtree,ft),t.bl_desc=new pt(t.bl_tree,dt),t.bi_buf=0,t.bi_valid=0,h(t)}function M(t,n,e,a){o(t,(z<<1)+(a?1:0),3),m(t,n,e,!0)}function S(t){o(t,R<<1,3),s(t,W,rt),l(t)}function P(t,n,e,a){var r,i,s=0;t.level>0?(t.strm.data_type===I&&(t.strm.data_type=D(t)),b(t,t.l_desc),b(t,t.d_desc),s=w(t),r=t.opt_len+3+7>>>3,i=t.static_len+3+7>>>3,r>=i&&(r=i)):r=i=e+5,r>=e+4&&-1!==n?M(t,n,e,a):t.strategy===E||i===r?(o(t,(R<<1)+(a?1:0),3),y(t,rt,it)):(o(t,(U<<1)+(a?1:0),3),k(t,t.l_desc.max_code+1,t.d_desc.max_code+1,s+1),y(t,t.dyn_ltree,t.dyn_dtree)),h(t),a&&p(t)}function A(t,n,e){return t.pending_buf[t.d_buf+2*t.last_lit]=n>>>8&255,t.pending_buf[t.d_buf+2*t.last_lit+1]=255&n,t.pending_buf[t.l_buf+t.last_lit]=255&e,t.last_lit++,0===n?t.dyn_ltree[2*e]++:(t.matches++,n--,t.dyn_ltree[2*(st[e]+B+1)]++,t.dyn_dtree[2*r(n)]++),t.last_lit===t.lit_bufsize-1}var T=e(208),E=4,N=0,H=1,I=2,z=0,R=1,U=2,L=3,F=258,j=29,B=256,q=B+1+j,O=30,V=19,$=2*q+1,Z=15,Y=16,K=7,W=256,G=16,X=17,J=18,Q=[0,0,0,0,0,0,0,0,1,1,1,1,2,2,2,2,3,3,3,3,4,4,4,4,5,5,5,5,0],tt=[0,0,0,0,1,1,2,2,3,3,4,4,5,5,6,6,7,7,8,8,9,9,10,10,11,11,12,12,13,13],nt=[0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,2,3,7],et=[16,17,18,0,8,7,9,6,10,5,11,4,12,3,13,2,14,1,15],at=512,rt=new Array(2*(q+2));a(rt);var it=new Array(2*O);a(it);var ot=new Array(at);a(ot);var st=new Array(F-L+1);a(st);var ut=new Array(j);a(ut);var lt=new Array(O);a(lt);var ct,ft,dt,ht=function(t,n,e,a,r){this.static_tree=t,this.extra_bits=n,this.extra_base=e,this.elems=a,this.max_length=r,this.has_stree=t&&t.length},pt=function(t,n){this.dyn_tree=t,this.max_code=0,this.stat_desc=n},mt=!1;n._tr_init=C,n._tr_stored_block=M,n._tr_flush_block=P,n._tr_tally=A,n._tr_align=S},function(t,n){"use strict";function e(t,n,e,a){for(var r=65535&t|0,i=t>>>16&65535|0,o=0;0!==e;){o=e>2e3?2e3:e,e-=o;do r=r+n[a++]|0,i=i+r|0;while(--o);r%=65521,i%=65521}return r|i<<16|0}t.exports=e},function(t,n){"use strict";function e(){for(var t,n=[],e=0;256>e;e++){t=e;for(var a=0;8>a;a++)t=1&t?3988292384^t>>>1:t>>>1;n[e]=t}return n}function a(t,n,e,a){var i=r,o=a+e;t=-1^t;for(var s=a;o>s;s++)t=t>>>8^i[255&(t^n[s])];return-1^t}var r=e();t.exports=a},function(t,n){"use strict";t.exports={2:"need dictionary",1:"stream end",0:"","-1":"file error","-2":"stream error","-3":"data error","-4":"insufficient memory","-5":"buffer error","-6":"incompatible version"}},function(t,n,e){"use strict";function a(t,n){if(65537>n&&(t.subarray&&o||!t.subarray&&i))return String.fromCharCode.apply(null,r.shrinkBuf(t,n));for(var e="",a=0;n>a;a++)e+=String.fromCharCode(t[a]);return e}var r=e(208),i=!0,o=!0;try{String.fromCharCode.apply(null,[0])}catch(s){i=!1}try{String.fromCharCode.apply(null,new Uint8Array(1))}catch(s){o=!1}for(var u=new r.Buf8(256),l=0;256>l;l++)u[l]=l>=252?6:l>=248?5:l>=240?4:l>=224?3:l>=192?2:1;u[254]=u[254]=1,n.string2buf=function(t){var n,e,a,i,o,s=t.length,u=0;for(i=0;s>i;i++)e=t.charCodeAt(i),55296===(64512&e)&&s>i+1&&(a=t.charCodeAt(i+1),56320===(64512&a)&&(e=65536+(e-55296<<10)+(a-56320),i++)),u+=128>e?1:2048>e?2:65536>e?3:4;for(n=new r.Buf8(u),o=0,i=0;u>o;i++)e=t.charCodeAt(i),55296===(64512&e)&&s>i+1&&(a=t.charCodeAt(i+1),56320===(64512&a)&&(e=65536+(e-55296<<10)+(a-56320),i++)),128>e?n[o++]=e:2048>e?(n[o++]=192|e>>>6,n[o++]=128|63&e):65536>e?(n[o++]=224|e>>>12,n[o++]=128|e>>>6&63,n[o++]=128|63&e):(n[o++]=240|e>>>18,n[o++]=128|e>>>12&63,n[o++]=128|e>>>6&63,n[o++]=128|63&e);return n},n.buf2binstring=function(t){return a(t,t.length)},n.binstring2buf=function(t){for(var n=new r.Buf8(t.length),e=0,a=n.length;a>e;e++)n[e]=t.charCodeAt(e);return n},n.buf2string=function(t,n){var e,r,i,o,s=n||t.length,l=new Array(2*s);for(r=0,e=0;s>e;)if(i=t[e++],128>i)l[r++]=i;else if(o=u[i],o>4)l[r++]=65533,e+=o-1;else{for(i&=2===o?31:3===o?15:7;o>1&&s>e;)i=i<<6|63&t[e++],o--;o>1?l[r++]=65533:65536>i?l[r++]=i:(i-=65536,l[r++]=55296|i>>10&1023,l[r++]=56320|1023&i)}return a(l,r)},n.utf8border=function(t,n){var e;for(n=n||t.length,n>t.length&&(n=t.length),e=n-1;e>=0&&128===(192&t[e]);)e--;return 0>e?n:0===e?n:e+u[t[e]]>n?e:n}},function(t,n){"use strict";function e(){this.input=null,this.next_in=0,this.avail_in=0,this.total_in=0,this.output=null,this.next_out=0,this.avail_out=0,this.total_out=0,this.msg="",this.state=null,this.data_type=2,this.adler=0}t.exports=e},function(t,n,e){"use strict";function a(t,n){var e=new h(n);if(e.push(t,!0),e.err)throw e.msg;return e.result}function r(t,n){return n=n||{},n.raw=!0,a(t,n)}var i=e(218),o=e(208),s=e(215),u=e(221),l=e(214),c=e(216),f=e(222),d=Object.prototype.toString,h=function(t){this.options=o.assign({chunkSize:16384,windowBits:0,to:""},t||{});var n=this.options;n.raw&&n.windowBits>=0&&n.windowBits<16&&(n.windowBits=-n.windowBits,
+	0===n.windowBits&&(n.windowBits=-15)),!(n.windowBits>=0&&n.windowBits<16)||t&&t.windowBits||(n.windowBits+=32),n.windowBits>15&&n.windowBits<48&&0===(15&n.windowBits)&&(n.windowBits|=15),this.err=0,this.msg="",this.ended=!1,this.chunks=[],this.strm=new c,this.strm.avail_out=0;var e=i.inflateInit2(this.strm,n.windowBits);if(e!==u.Z_OK)throw new Error(l[e]);this.header=new f,i.inflateGetHeader(this.strm,this.header)};h.prototype.push=function(t,n){var e,a,r,l,c,f=this.strm,h=this.options.chunkSize,p=!1;if(this.ended)return!1;a=n===~~n?n:n===!0?u.Z_FINISH:u.Z_NO_FLUSH,"string"==typeof t?f.input=s.binstring2buf(t):"[object ArrayBuffer]"===d.call(t)?f.input=new Uint8Array(t):f.input=t,f.next_in=0,f.avail_in=f.input.length;do{if(0===f.avail_out&&(f.output=new o.Buf8(h),f.next_out=0,f.avail_out=h),e=i.inflate(f,u.Z_NO_FLUSH),e===u.Z_BUF_ERROR&&p===!0&&(e=u.Z_OK,p=!1),e!==u.Z_STREAM_END&&e!==u.Z_OK)return this.onEnd(e),this.ended=!0,!1;f.next_out&&(0===f.avail_out||e===u.Z_STREAM_END||0===f.avail_in&&(a===u.Z_FINISH||a===u.Z_SYNC_FLUSH))&&("string"===this.options.to?(r=s.utf8border(f.output,f.next_out),l=f.next_out-r,c=s.buf2string(f.output,r),f.next_out=l,f.avail_out=h-l,l&&o.arraySet(f.output,f.output,r,l,0),this.onData(c)):this.onData(o.shrinkBuf(f.output,f.next_out))),0===f.avail_in&&0===f.avail_out&&(p=!0)}while((f.avail_in>0||0===f.avail_out)&&e!==u.Z_STREAM_END);return e===u.Z_STREAM_END&&(a=u.Z_FINISH),a===u.Z_FINISH?(e=i.inflateEnd(this.strm),this.onEnd(e),this.ended=!0,e===u.Z_OK):a===u.Z_SYNC_FLUSH?(this.onEnd(u.Z_OK),f.avail_out=0,!0):!0},h.prototype.onData=function(t){this.chunks.push(t)},h.prototype.onEnd=function(t){t===u.Z_OK&&("string"===this.options.to?this.result=this.chunks.join(""):this.result=o.flattenChunks(this.chunks)),this.chunks=[],this.err=t,this.msg=this.strm.msg},n.Inflate=h,n.inflate=a,n.inflateRaw=r,n.ungzip=a},function(t,n,e){"use strict";function a(t){return(t>>>24&255)+(t>>>8&65280)+((65280&t)<<8)+((255&t)<<24)}function r(){this.mode=0,this.last=!1,this.wrap=0,this.havedict=!1,this.flags=0,this.dmax=0,this.check=0,this.total=0,this.head=null,this.wbits=0,this.wsize=0,this.whave=0,this.wnext=0,this.window=null,this.hold=0,this.bits=0,this.length=0,this.offset=0,this.extra=0,this.lencode=null,this.distcode=null,this.lenbits=0,this.distbits=0,this.ncode=0,this.nlen=0,this.ndist=0,this.have=0,this.next=null,this.lens=new g.Buf16(320),this.work=new g.Buf16(288),this.lendyn=null,this.distdyn=null,this.sane=0,this.back=0,this.was=0}function i(t){var n;return t&&t.state?(n=t.state,t.total_in=t.total_out=n.total=0,t.msg="",n.wrap&&(t.adler=1&n.wrap),n.mode=R,n.last=0,n.havedict=0,n.dmax=32768,n.head=null,n.hold=0,n.bits=0,n.lencode=n.lendyn=new g.Buf32(pt),n.distcode=n.distdyn=new g.Buf32(mt),n.sane=1,n.back=-1,P):E}function o(t){var n;return t&&t.state?(n=t.state,n.wsize=0,n.whave=0,n.wnext=0,i(t)):E}function s(t,n){var e,a;return t&&t.state?(a=t.state,0>n?(e=0,n=-n):(e=(n>>4)+1,48>n&&(n&=15)),n&&(8>n||n>15)?E:(null!==a.window&&a.wbits!==n&&(a.window=null),a.wrap=e,a.wbits=n,o(t))):E}function u(t,n){var e,a;return t?(a=new r,t.state=a,a.window=null,e=s(t,n),e!==P&&(t.state=null),e):E}function l(t){return u(t,gt)}function c(t){if(yt){var n;for(m=new g.Buf32(512),v=new g.Buf32(32),n=0;144>n;)t.lens[n++]=8;for(;256>n;)t.lens[n++]=9;for(;280>n;)t.lens[n++]=7;for(;288>n;)t.lens[n++]=8;for(x(k,t.lens,0,288,m,0,t.work,{bits:9}),n=0;32>n;)t.lens[n++]=5;x(D,t.lens,0,32,v,0,t.work,{bits:5}),yt=!1}t.lencode=m,t.lenbits=9,t.distcode=v,t.distbits=5}function f(t,n,e,a){var r,i=t.state;return null===i.window&&(i.wsize=1<<i.wbits,i.wnext=0,i.whave=0,i.window=new g.Buf8(i.wsize)),a>=i.wsize?(g.arraySet(i.window,n,e-i.wsize,i.wsize,0),i.wnext=0,i.whave=i.wsize):(r=i.wsize-i.wnext,r>a&&(r=a),g.arraySet(i.window,n,e-a,r,i.wnext),a-=r,a?(g.arraySet(i.window,n,e-a,a,0),i.wnext=a,i.whave=i.wsize):(i.wnext+=r,i.wnext===i.wsize&&(i.wnext=0),i.whave<i.wsize&&(i.whave+=r))),0}function d(t,n){var e,r,i,o,s,u,l,d,h,p,m,v,pt,mt,vt,gt,yt,bt,_t,xt,wt,kt,Dt,Ct,Mt=0,St=new g.Buf8(4),Pt=[16,17,18,0,8,7,9,6,10,5,11,4,12,3,13,2,14,1,15];if(!t||!t.state||!t.output||!t.input&&0!==t.avail_in)return E;e=t.state,e.mode===Y&&(e.mode=K),s=t.next_out,i=t.output,l=t.avail_out,o=t.next_in,r=t.input,u=t.avail_in,d=e.hold,h=e.bits,p=u,m=l,kt=P;t:for(;;)switch(e.mode){case R:if(0===e.wrap){e.mode=K;break}for(;16>h;){if(0===u)break t;u--,d+=r[o++]<<h,h+=8}if(2&e.wrap&&35615===d){e.check=0,St[0]=255&d,St[1]=d>>>8&255,e.check=b(e.check,St,2,0),d=0,h=0,e.mode=U;break}if(e.flags=0,e.head&&(e.head.done=!1),!(1&e.wrap)||(((255&d)<<8)+(d>>8))%31){t.msg="incorrect header check",e.mode=ft;break}if((15&d)!==z){t.msg="unknown compression method",e.mode=ft;break}if(d>>>=4,h-=4,wt=(15&d)+8,0===e.wbits)e.wbits=wt;else if(wt>e.wbits){t.msg="invalid window size",e.mode=ft;break}e.dmax=1<<wt,t.adler=e.check=1,e.mode=512&d?$:Y,d=0,h=0;break;case U:for(;16>h;){if(0===u)break t;u--,d+=r[o++]<<h,h+=8}if(e.flags=d,(255&e.flags)!==z){t.msg="unknown compression method",e.mode=ft;break}if(57344&e.flags){t.msg="unknown header flags set",e.mode=ft;break}e.head&&(e.head.text=d>>8&1),512&e.flags&&(St[0]=255&d,St[1]=d>>>8&255,e.check=b(e.check,St,2,0)),d=0,h=0,e.mode=L;case L:for(;32>h;){if(0===u)break t;u--,d+=r[o++]<<h,h+=8}e.head&&(e.head.time=d),512&e.flags&&(St[0]=255&d,St[1]=d>>>8&255,St[2]=d>>>16&255,St[3]=d>>>24&255,e.check=b(e.check,St,4,0)),d=0,h=0,e.mode=F;case F:for(;16>h;){if(0===u)break t;u--,d+=r[o++]<<h,h+=8}e.head&&(e.head.xflags=255&d,e.head.os=d>>8),512&e.flags&&(St[0]=255&d,St[1]=d>>>8&255,e.check=b(e.check,St,2,0)),d=0,h=0,e.mode=j;case j:if(1024&e.flags){for(;16>h;){if(0===u)break t;u--,d+=r[o++]<<h,h+=8}e.length=d,e.head&&(e.head.extra_len=d),512&e.flags&&(St[0]=255&d,St[1]=d>>>8&255,e.check=b(e.check,St,2,0)),d=0,h=0}else e.head&&(e.head.extra=null);e.mode=B;case B:if(1024&e.flags&&(v=e.length,v>u&&(v=u),v&&(e.head&&(wt=e.head.extra_len-e.length,e.head.extra||(e.head.extra=new Array(e.head.extra_len)),g.arraySet(e.head.extra,r,o,v,wt)),512&e.flags&&(e.check=b(e.check,r,v,o)),u-=v,o+=v,e.length-=v),e.length))break t;e.length=0,e.mode=q;case q:if(2048&e.flags){if(0===u)break t;v=0;do wt=r[o+v++],e.head&&wt&&e.length<65536&&(e.head.name+=String.fromCharCode(wt));while(wt&&u>v);if(512&e.flags&&(e.check=b(e.check,r,v,o)),u-=v,o+=v,wt)break t}else e.head&&(e.head.name=null);e.length=0,e.mode=O;case O:if(4096&e.flags){if(0===u)break t;v=0;do wt=r[o+v++],e.head&&wt&&e.length<65536&&(e.head.comment+=String.fromCharCode(wt));while(wt&&u>v);if(512&e.flags&&(e.check=b(e.check,r,v,o)),u-=v,o+=v,wt)break t}else e.head&&(e.head.comment=null);e.mode=V;case V:if(512&e.flags){for(;16>h;){if(0===u)break t;u--,d+=r[o++]<<h,h+=8}if(d!==(65535&e.check)){t.msg="header crc mismatch",e.mode=ft;break}d=0,h=0}e.head&&(e.head.hcrc=e.flags>>9&1,e.head.done=!0),t.adler=e.check=0,e.mode=Y;break;case $:for(;32>h;){if(0===u)break t;u--,d+=r[o++]<<h,h+=8}t.adler=e.check=a(d),d=0,h=0,e.mode=Z;case Z:if(0===e.havedict)return t.next_out=s,t.avail_out=l,t.next_in=o,t.avail_in=u,e.hold=d,e.bits=h,T;t.adler=e.check=1,e.mode=Y;case Y:if(n===M||n===S)break t;case K:if(e.last){d>>>=7&h,h-=7&h,e.mode=ut;break}for(;3>h;){if(0===u)break t;u--,d+=r[o++]<<h,h+=8}switch(e.last=1&d,d>>>=1,h-=1,3&d){case 0:e.mode=W;break;case 1:if(c(e),e.mode=nt,n===S){d>>>=2,h-=2;break t}break;case 2:e.mode=J;break;case 3:t.msg="invalid block type",e.mode=ft}d>>>=2,h-=2;break;case W:for(d>>>=7&h,h-=7&h;32>h;){if(0===u)break t;u--,d+=r[o++]<<h,h+=8}if((65535&d)!==(d>>>16^65535)){t.msg="invalid stored block lengths",e.mode=ft;break}if(e.length=65535&d,d=0,h=0,e.mode=G,n===S)break t;case G:e.mode=X;case X:if(v=e.length){if(v>u&&(v=u),v>l&&(v=l),0===v)break t;g.arraySet(i,r,o,v,s),u-=v,o+=v,l-=v,s+=v,e.length-=v;break}e.mode=Y;break;case J:for(;14>h;){if(0===u)break t;u--,d+=r[o++]<<h,h+=8}if(e.nlen=(31&d)+257,d>>>=5,h-=5,e.ndist=(31&d)+1,d>>>=5,h-=5,e.ncode=(15&d)+4,d>>>=4,h-=4,e.nlen>286||e.ndist>30){t.msg="too many length or distance symbols",e.mode=ft;break}e.have=0,e.mode=Q;case Q:for(;e.have<e.ncode;){for(;3>h;){if(0===u)break t;u--,d+=r[o++]<<h,h+=8}e.lens[Pt[e.have++]]=7&d,d>>>=3,h-=3}for(;e.have<19;)e.lens[Pt[e.have++]]=0;if(e.lencode=e.lendyn,e.lenbits=7,Dt={bits:e.lenbits},kt=x(w,e.lens,0,19,e.lencode,0,e.work,Dt),e.lenbits=Dt.bits,kt){t.msg="invalid code lengths set",e.mode=ft;break}e.have=0,e.mode=tt;case tt:for(;e.have<e.nlen+e.ndist;){for(;Mt=e.lencode[d&(1<<e.lenbits)-1],vt=Mt>>>24,gt=Mt>>>16&255,yt=65535&Mt,!(h>=vt);){if(0===u)break t;u--,d+=r[o++]<<h,h+=8}if(16>yt)d>>>=vt,h-=vt,e.lens[e.have++]=yt;else{if(16===yt){for(Ct=vt+2;Ct>h;){if(0===u)break t;u--,d+=r[o++]<<h,h+=8}if(d>>>=vt,h-=vt,0===e.have){t.msg="invalid bit length repeat",e.mode=ft;break}wt=e.lens[e.have-1],v=3+(3&d),d>>>=2,h-=2}else if(17===yt){for(Ct=vt+3;Ct>h;){if(0===u)break t;u--,d+=r[o++]<<h,h+=8}d>>>=vt,h-=vt,wt=0,v=3+(7&d),d>>>=3,h-=3}else{for(Ct=vt+7;Ct>h;){if(0===u)break t;u--,d+=r[o++]<<h,h+=8}d>>>=vt,h-=vt,wt=0,v=11+(127&d),d>>>=7,h-=7}if(e.have+v>e.nlen+e.ndist){t.msg="invalid bit length repeat",e.mode=ft;break}for(;v--;)e.lens[e.have++]=wt}}if(e.mode===ft)break;if(0===e.lens[256]){t.msg="invalid code -- missing end-of-block",e.mode=ft;break}if(e.lenbits=9,Dt={bits:e.lenbits},kt=x(k,e.lens,0,e.nlen,e.lencode,0,e.work,Dt),e.lenbits=Dt.bits,kt){t.msg="invalid literal/lengths set",e.mode=ft;break}if(e.distbits=6,e.distcode=e.distdyn,Dt={bits:e.distbits},kt=x(D,e.lens,e.nlen,e.ndist,e.distcode,0,e.work,Dt),e.distbits=Dt.bits,kt){t.msg="invalid distances set",e.mode=ft;break}if(e.mode=nt,n===S)break t;case nt:e.mode=et;case et:if(u>=6&&l>=258){t.next_out=s,t.avail_out=l,t.next_in=o,t.avail_in=u,e.hold=d,e.bits=h,_(t,m),s=t.next_out,i=t.output,l=t.avail_out,o=t.next_in,r=t.input,u=t.avail_in,d=e.hold,h=e.bits,e.mode===Y&&(e.back=-1);break}for(e.back=0;Mt=e.lencode[d&(1<<e.lenbits)-1],vt=Mt>>>24,gt=Mt>>>16&255,yt=65535&Mt,!(h>=vt);){if(0===u)break t;u--,d+=r[o++]<<h,h+=8}if(gt&&0===(240&gt)){for(bt=vt,_t=gt,xt=yt;Mt=e.lencode[xt+((d&(1<<bt+_t)-1)>>bt)],vt=Mt>>>24,gt=Mt>>>16&255,yt=65535&Mt,!(h>=bt+vt);){if(0===u)break t;u--,d+=r[o++]<<h,h+=8}d>>>=bt,h-=bt,e.back+=bt}if(d>>>=vt,h-=vt,e.back+=vt,e.length=yt,0===gt){e.mode=st;break}if(32&gt){e.back=-1,e.mode=Y;break}if(64&gt){t.msg="invalid literal/length code",e.mode=ft;break}e.extra=15&gt,e.mode=at;case at:if(e.extra){for(Ct=e.extra;Ct>h;){if(0===u)break t;u--,d+=r[o++]<<h,h+=8}e.length+=d&(1<<e.extra)-1,d>>>=e.extra,h-=e.extra,e.back+=e.extra}e.was=e.length,e.mode=rt;case rt:for(;Mt=e.distcode[d&(1<<e.distbits)-1],vt=Mt>>>24,gt=Mt>>>16&255,yt=65535&Mt,!(h>=vt);){if(0===u)break t;u--,d+=r[o++]<<h,h+=8}if(0===(240&gt)){for(bt=vt,_t=gt,xt=yt;Mt=e.distcode[xt+((d&(1<<bt+_t)-1)>>bt)],vt=Mt>>>24,gt=Mt>>>16&255,yt=65535&Mt,!(h>=bt+vt);){if(0===u)break t;u--,d+=r[o++]<<h,h+=8}d>>>=bt,h-=bt,e.back+=bt}if(d>>>=vt,h-=vt,e.back+=vt,64&gt){t.msg="invalid distance code",e.mode=ft;break}e.offset=yt,e.extra=15&gt,e.mode=it;case it:if(e.extra){for(Ct=e.extra;Ct>h;){if(0===u)break t;u--,d+=r[o++]<<h,h+=8}e.offset+=d&(1<<e.extra)-1,d>>>=e.extra,h-=e.extra,e.back+=e.extra}if(e.offset>e.dmax){t.msg="invalid distance too far back",e.mode=ft;break}e.mode=ot;case ot:if(0===l)break t;if(v=m-l,e.offset>v){if(v=e.offset-v,v>e.whave&&e.sane){t.msg="invalid distance too far back",e.mode=ft;break}v>e.wnext?(v-=e.wnext,pt=e.wsize-v):pt=e.wnext-v,v>e.length&&(v=e.length),mt=e.window}else mt=i,pt=s-e.offset,v=e.length;v>l&&(v=l),l-=v,e.length-=v;do i[s++]=mt[pt++];while(--v);0===e.length&&(e.mode=et);break;case st:if(0===l)break t;i[s++]=e.length,l--,e.mode=et;break;case ut:if(e.wrap){for(;32>h;){if(0===u)break t;u--,d|=r[o++]<<h,h+=8}if(m-=l,t.total_out+=m,e.total+=m,m&&(t.adler=e.check=e.flags?b(e.check,i,m,s-m):y(e.check,i,m,s-m)),m=l,(e.flags?d:a(d))!==e.check){t.msg="incorrect data check",e.mode=ft;break}d=0,h=0}e.mode=lt;case lt:if(e.wrap&&e.flags){for(;32>h;){if(0===u)break t;u--,d+=r[o++]<<h,h+=8}if(d!==(4294967295&e.total)){t.msg="incorrect length check",e.mode=ft;break}d=0,h=0}e.mode=ct;case ct:kt=A;break t;case ft:kt=N;break t;case dt:return H;case ht:default:return E}return t.next_out=s,t.avail_out=l,t.next_in=o,t.avail_in=u,e.hold=d,e.bits=h,(e.wsize||m!==t.avail_out&&e.mode<ft&&(e.mode<ut||n!==C))&&f(t,t.output,t.next_out,m-t.avail_out)?(e.mode=dt,H):(p-=t.avail_in,m-=t.avail_out,t.total_in+=p,t.total_out+=m,e.total+=m,e.wrap&&m&&(t.adler=e.check=e.flags?b(e.check,i,m,t.next_out-m):y(e.check,i,m,t.next_out-m)),t.data_type=e.bits+(e.last?64:0)+(e.mode===Y?128:0)+(e.mode===nt||e.mode===G?256:0),(0===p&&0===m||n===C)&&kt===P&&(kt=I),kt)}function h(t){if(!t||!t.state)return E;var n=t.state;return n.window&&(n.window=null),t.state=null,P}function p(t,n){var e;return t&&t.state?(e=t.state,0===(2&e.wrap)?E:(e.head=n,n.done=!1,P)):E}var m,v,g=e(208),y=e(212),b=e(213),_=e(219),x=e(220),w=0,k=1,D=2,C=4,M=5,S=6,P=0,A=1,T=2,E=-2,N=-3,H=-4,I=-5,z=8,R=1,U=2,L=3,F=4,j=5,B=6,q=7,O=8,V=9,$=10,Z=11,Y=12,K=13,W=14,G=15,X=16,J=17,Q=18,tt=19,nt=20,et=21,at=22,rt=23,it=24,ot=25,st=26,ut=27,lt=28,ct=29,ft=30,dt=31,ht=32,pt=852,mt=592,vt=15,gt=vt,yt=!0;n.inflateReset=o,n.inflateReset2=s,n.inflateResetKeep=i,n.inflateInit=l,n.inflateInit2=u,n.inflate=d,n.inflateEnd=h,n.inflateGetHeader=p,n.inflateInfo="pako inflate (from Nodeca project)"},function(t,n){"use strict";var e=30,a=12;t.exports=function(t,n){var r,i,o,s,u,l,c,f,d,h,p,m,v,g,y,b,_,x,w,k,D,C,M,S,P;r=t.state,i=t.next_in,S=t.input,o=i+(t.avail_in-5),s=t.next_out,P=t.output,u=s-(n-t.avail_out),l=s+(t.avail_out-257),c=r.dmax,f=r.wsize,d=r.whave,h=r.wnext,p=r.window,m=r.hold,v=r.bits,g=r.lencode,y=r.distcode,b=(1<<r.lenbits)-1,_=(1<<r.distbits)-1;t:do{15>v&&(m+=S[i++]<<v,v+=8,m+=S[i++]<<v,v+=8),x=g[m&b];n:for(;;){if(w=x>>>24,m>>>=w,v-=w,w=x>>>16&255,0===w)P[s++]=65535&x;else{if(!(16&w)){if(0===(64&w)){x=g[(65535&x)+(m&(1<<w)-1)];continue n}if(32&w){r.mode=a;break t}t.msg="invalid literal/length code",r.mode=e;break t}k=65535&x,w&=15,w&&(w>v&&(m+=S[i++]<<v,v+=8),k+=m&(1<<w)-1,m>>>=w,v-=w),15>v&&(m+=S[i++]<<v,v+=8,m+=S[i++]<<v,v+=8),x=y[m&_];e:for(;;){if(w=x>>>24,m>>>=w,v-=w,w=x>>>16&255,!(16&w)){if(0===(64&w)){x=y[(65535&x)+(m&(1<<w)-1)];continue e}t.msg="invalid distance code",r.mode=e;break t}if(D=65535&x,w&=15,w>v&&(m+=S[i++]<<v,v+=8,w>v&&(m+=S[i++]<<v,v+=8)),D+=m&(1<<w)-1,D>c){t.msg="invalid distance too far back",r.mode=e;break t}if(m>>>=w,v-=w,w=s-u,D>w){if(w=D-w,w>d&&r.sane){t.msg="invalid distance too far back",r.mode=e;break t}if(C=0,M=p,0===h){if(C+=f-w,k>w){k-=w;do P[s++]=p[C++];while(--w);C=s-D,M=P}}else if(w>h){if(C+=f+h-w,w-=h,k>w){k-=w;do P[s++]=p[C++];while(--w);if(C=0,k>h){w=h,k-=w;do P[s++]=p[C++];while(--w);C=s-D,M=P}}}else if(C+=h-w,k>w){k-=w;do P[s++]=p[C++];while(--w);C=s-D,M=P}for(;k>2;)P[s++]=M[C++],P[s++]=M[C++],P[s++]=M[C++],k-=3;k&&(P[s++]=M[C++],k>1&&(P[s++]=M[C++]))}else{C=s-D;do P[s++]=P[C++],P[s++]=P[C++],P[s++]=P[C++],k-=3;while(k>2);k&&(P[s++]=P[C++],k>1&&(P[s++]=P[C++]))}break}}break}}while(o>i&&l>s);k=v>>3,i-=k,v-=k<<3,m&=(1<<v)-1,t.next_in=i,t.next_out=s,t.avail_in=o>i?5+(o-i):5-(i-o),t.avail_out=l>s?257+(l-s):257-(s-l),r.hold=m,r.bits=v}},function(t,n,e){"use strict";var a=e(208),r=15,i=852,o=592,s=0,u=1,l=2,c=[3,4,5,6,7,8,9,10,11,13,15,17,19,23,27,31,35,43,51,59,67,83,99,115,131,163,195,227,258,0,0],f=[16,16,16,16,16,16,16,16,17,17,17,17,18,18,18,18,19,19,19,19,20,20,20,20,21,21,21,21,16,72,78],d=[1,2,3,4,5,7,9,13,17,25,33,49,65,97,129,193,257,385,513,769,1025,1537,2049,3073,4097,6145,8193,12289,16385,24577,0,0],h=[16,16,16,16,17,17,18,18,19,19,20,20,21,21,22,22,23,23,24,24,25,25,26,26,27,27,28,28,29,29,64,64];t.exports=function(t,n,e,p,m,v,g,y){var b,_,x,w,k,D,C,M,S,P=y.bits,A=0,T=0,E=0,N=0,H=0,I=0,z=0,R=0,U=0,L=0,F=null,j=0,B=new a.Buf16(r+1),q=new a.Buf16(r+1),O=null,V=0;for(A=0;r>=A;A++)B[A]=0;for(T=0;p>T;T++)B[n[e+T]]++;for(H=P,N=r;N>=1&&0===B[N];N--);if(H>N&&(H=N),0===N)return m[v++]=20971520,m[v++]=20971520,y.bits=1,0;for(E=1;N>E&&0===B[E];E++);for(E>H&&(H=E),R=1,A=1;r>=A;A++)if(R<<=1,R-=B[A],0>R)return-1;if(R>0&&(t===s||1!==N))return-1;for(q[1]=0,A=1;r>A;A++)q[A+1]=q[A]+B[A];for(T=0;p>T;T++)0!==n[e+T]&&(g[q[n[e+T]]++]=T);if(t===s?(F=O=g,D=19):t===u?(F=c,j-=257,O=f,V-=257,D=256):(F=d,O=h,D=-1),L=0,T=0,A=E,k=v,I=H,z=0,x=-1,U=1<<H,w=U-1,t===u&&U>i||t===l&&U>o)return 1;for(var $=0;;){$++,C=A-z,g[T]<D?(M=0,S=g[T]):g[T]>D?(M=O[V+g[T]],S=F[j+g[T]]):(M=96,S=0),b=1<<A-z,_=1<<I,E=_;do _-=b,m[k+(L>>z)+_]=C<<24|M<<16|S|0;while(0!==_);for(b=1<<A-1;L&b;)b>>=1;if(0!==b?(L&=b-1,L+=b):L=0,T++,0===--B[A]){if(A===N)break;A=n[e+g[T]]}if(A>H&&(L&w)!==x){for(0===z&&(z=H),k+=E,I=A-z,R=1<<I;N>I+z&&(R-=B[I+z],!(0>=R));)I++,R<<=1;if(U+=1<<I,t===u&&U>i||t===l&&U>o)return 1;x=L&w,m[x]=H<<24|I<<16|k-v|0}}return 0!==L&&(m[k+L]=A-z<<24|64<<16|0),y.bits=H,0}},function(t,n){t.exports={Z_NO_FLUSH:0,Z_PARTIAL_FLUSH:1,Z_SYNC_FLUSH:2,Z_FULL_FLUSH:3,Z_FINISH:4,Z_BLOCK:5,Z_TREES:6,Z_OK:0,Z_STREAM_END:1,Z_NEED_DICT:2,Z_ERRNO:-1,Z_STREAM_ERROR:-2,Z_DATA_ERROR:-3,Z_BUF_ERROR:-5,Z_NO_COMPRESSION:0,Z_BEST_SPEED:1,Z_BEST_COMPRESSION:9,Z_DEFAULT_COMPRESSION:-1,Z_FILTERED:1,Z_HUFFMAN_ONLY:2,Z_RLE:3,Z_FIXED:4,Z_DEFAULT_STRATEGY:0,Z_BINARY:0,Z_TEXT:1,Z_UNKNOWN:2,Z_DEFLATED:8}},function(t,n){"use strict";function e(){this.text=0,this.time=0,this.xflags=0,this.os=0,this.extra=null,this.extra_len=0,this.name="",this.comment="",this.hcrc=0,this.done=!1}t.exports=e},function(t,n,e){var a;(function(t,r){!function(i){var o="object"==typeof n&&n,s=("object"==typeof t&&t&&t.exports==o&&t,"object"==typeof r&&r);(s.global===s||s.window===s)&&(i=s);var u=function(t){this.message=t};u.prototype=new Error,u.prototype.name="InvalidCharacterError";var l=function(t){throw new u(t)},c="ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789+/",f=/[\t\n\f\r ]/g,d=function(t){t=String(t).replace(f,"");var n=t.length;n%4==0&&(t=t.replace(/==?$/,""),n=t.length),(n%4==1||/[^+a-zA-Z0-9\/]/.test(t))&&l("Invalid character: the string to be decoded is not correctly encoded.");for(var e,a,r=0,i="",o=-1;++o<n;)a=c.indexOf(t.charAt(o)),e=r%4?64*e+a:a,r++%4&&(i+=String.fromCharCode(255&e>>(-2*r&6)));return i},h=function(t){t=String(t),/[^\0-\xFF]/.test(t)&&l("The string to be encoded contains characters outside of the Latin1 range.");for(var n,e,a,r,i=t.length%3,o="",s=-1,u=t.length-i;++s<u;)n=t.charCodeAt(s)<<16,e=t.charCodeAt(++s)<<8,a=t.charCodeAt(++s),r=n+e+a,o+=c.charAt(r>>18&63)+c.charAt(r>>12&63)+c.charAt(r>>6&63)+c.charAt(63&r);return 2==i?(n=t.charCodeAt(s)<<8,e=t.charCodeAt(++s),r=n+e,o+=c.charAt(r>>10)+c.charAt(r>>4&63)+c.charAt(r<<2&63)+"="):1==i&&(r=t.charCodeAt(s),o+=c.charAt(r>>2)+c.charAt(r<<4&63)+"=="),o},p={encode:h,decode:d,version:"0.1.0"};a=function(){return p}.call(n,e,n,t),!(void 0!==a&&(t.exports=a))}(this)}).call(n,e(224)(t),function(){return this}())},function(t,n){t.exports=function(t){return t.webpackPolyfill||(t.deprecate=function(){},t.paths=[],t.children=[],t.webpackPolyfill=1),t}},function(t,n){t.exports='<div class="Replayer">\n	<div class="Replayer-container" ng-if="vm.data" ng-keydown="vm.onKeyDown($event)" tabindex="-1" ng-class="{\'dealing-cards\': (vm.data.index >= vm.data.seekpoints.preflop)}">\n\n		<replayer-table-info class="Replayer-tableInfoContainer" table-data="vm.data.meta" version="{{ vm.data.version }}"></replayer-table-info>\n\n		<div class="Replayer-tableContainer" ng-dblclick="vm.data.toggleFullScreen()" sglclick="vm.data.togglePlay()">\n			<div ng-class="\'cards-\'+ vm.holeCardsCount() +\' seats-\' + vm.data.meta.seat_count + \' is-\' + vm.data.playStatus"\n					 class="Table Table-theme"\n					 scalable scalable-timeout="0">\n\n				<div class="Replayer-background"></div>\n				<div class="Replayer-table"></div>\n				<div class="Replayer-tableUnder"></div>\n				<div class="Replayer-tableLights"></div>\n				<div class="Replayer-tableFelt"></div>\n				<div class="Replayer-tableBranding"></div>\n\n				<replayer-table-community-cards frame-data="vm.data.frame"></replayer-table-community-cards>\n\n				<replayer-players meta-data="vm.data.meta" seats-data="vm.data.frame.seats" seconds-until-next-frame="vm.data.secondsUntilNextFrame"></replayer-players>\n\n				<replayer-table-meta data="vm.data" class="replayer-table-meta Replayer-meta" version="{{ vm.data.version }}"></replayer-table-meta>\n\n				<hud class="HUD" frame-data="vm.data.frame" version="{{ vm.data.version }}"></hud>\n\n				<div class="Replayer-tablePlayStatus" ng-if="vm.data.notStarted()">\n					<i class="fa fa-fw fa-play"></i>\n				</div>\n				<div class="Replayer-tablePlayStatus" ng-if="vm.data.isPaused()">\n					<i class="fa fa-fw fa-pause"></i>\n				</div>\n				<div class="Replayer-tablePlayStatus" ng-if="vm.data.isPlaying()">\n					<i class="fa fa-fw fa-play"></i>\n				</div>\n				<div class="Replayer-tablePlayStatus" ng-if="vm.data.isFinished()">\n					<i class="fa fa-fw fa-repeat"></i>\n				</div>\n			</div>\n		</div>\n\n		<replayer-controls class="Replayer-playerControlsContainer" data="vm.data" bla="{{ vm.data.version }}"></replayer-controls>\n\n	</div>\n</div>\n'},function(t,n,e){"use strict";t.exports=function(t){function n(){return{scope:{data:"="},controller:"ControlsCtrl",controllerAs:"vm",bindToController:!0,template:e(227)}}function a(t,n){function e(){var e=n;e&&document.addEventListener(e.raw.fullscreenchange,function(){d.viewState.isFullScreen=e.isFullscreen,d.data.isFullScreen=e.isFullscreen,e.isFullscreen&&t.$emit("is-fullScreen")})}function a(){return(d.data.requestedTimestamp/d.data.meta.duration*100).toFixed(2)}function r(){t.$emit("replayer:play")}function i(){t.$emit("replayer:pause")}function o(){t.$emit("replayer:restart")}function s(){t.$emit("replayer:stepbackward")}function u(){t.$emit("replayer:stepforward")}function l(n){d.data.street=n,t.$emit("replayer:go-to-position",n)}function c(n){d.speed=n,t.$emit("replayer:playspeed:update",n)}function f(){t.$emit("on:fullscreen")}var d=this;d.viewState={isFullScreen:!1},d.speed="normal",d.data.street="preflop",d.getPercentage=a,d.play=r,d.pause=i,d.restart=o,d.stepbackward=s,d.stepforward=u,d.goTo=l,d.playSpeedUpdate=c,d.toggleFullScreen=f,e()}t.directive("replayerControls",n).controller("ControlsCtrl",a),a.$inject=["$scope","ScreenFull"]}},function(t,n){t.exports='<section class="PlayerControls">\n\n    <div class="PlayerControls-progress">\n        <span class="PlayerControls-progressTimestamp">{{ vm.data.requestedTimestamp | formatMs}} / {{ ::vm.data.meta.duration | formatMs }}</span>\n\n        <div class="PlayerControls-progressBar">\n            <div class="PlayerControls-progressBarInner" ng-style="{width : ( vm.getPercentage() + \'%\' ) }"></div>\n        </div>\n    </div>\n\n    <div class="PlayerControls-container">\n\n        <div class="row">\n\n            <div class="col-xs-4">\n\n                <ul class="PlayerControls-streets">\n                    <li class="PlayerControls-streets-item PlayerControls-streets-preflop">\n                        <button class="Button" ng-class="{\'is-active\': vm.data.street == \'preflop\'}" ng-click="vm.goTo(\'preflop\')" title="Skip to preflop action">Preflop</button>\n                    </li>\n                    <li class="PlayerControls-streets-item PlayerControls-streets-flop" ng-if="vm.data.seekpoints.flop">\n                        <button class="Button" ng-class="{\'is-active\': vm.data.street == \'flop\'}" ng-click="vm.goTo(\'flop\')" title="Skip to flop action">Flop</button>\n                    </li>\n                    <li class="PlayerControls-streets-item PlayerControls-streets-turn" ng-if="vm.data.seekpoints.turn">\n                        <button class="Button" ng-class="{\'is-active\': vm.data.street == \'turn\'}" ng-click="vm.goTo(\'turn\')" title="Skip to turn action">Turn</button>\n                    </li>\n                    <li class="PlayerControls-streets-item PlayerControls-streets-river" ng-if="vm.data.seekpoints.river">\n                        <button class="Button" ng-class="{\'is-active\': vm.data.street == \'river\'}" ng-click="vm.goTo(\'river\')" title="Skip to river action">River</button>\n                    </li>\n                </ul>\n\n            </div>\n\n            <div class="col-xs-4">\n                <section class="PlayerControls-mainControls">\n                    <div class="Button-group">\n                        <button class="Button" ng-click="vm.stepbackward()" title="Skip to previous player action (left arrow key)">\n                            <i class="fa fa-fw fa-step-backward"></i>\n                        </button>\n                        <button class="Button" ng-if="vm.data.playStatus == \'paused\' || vm.data.playStatus == \'not-started\'" ng-click="vm.play()" title="Play (space bar)">\n                            <i class="fa fa-fw fa-play"></i>\n                        </button>\n                        <button class="Button is-active" ng-if="vm.data.playStatus == \'playing\'" ng-click="vm.pause()" title="Pause (space bar)">\n                            <i class="fa fa-fw fa-pause"></i>\n                        </button>\n                        <button class="Button" ng-if="vm.data.playStatus == \'finished\' " ng-click="vm.restart()" title="Play again (space bar)">\n                            <i class="fa fa-fw fa-repeat"></i>\n                        </button>\n                        <button class="Button" ng-click="vm.stepforward()" ng-disabled="vm.data.lastHand" title="Skip to next player action (right arrow key)">\n                            <i class="fa fa-fw fa-step-forward"></i>\n                        </button>\n                    </div>\n                </section>\n\n            </div>\n\n            <div class="col-xs-4">\n                <section class="PlayerControls-extraControls">\n                    <div class="Button-group">\n	                    <button class="Button fn-realTimeModeButton" ng-class="{\'is-active\': vm.speed == \'normal\'}" ng-click="vm.playSpeedUpdate(\'normal\')" title="View replay in Real time mode">Real Time</button>\n	                    <button class="Button fn-fastModeButton" ng-class="{\'is-active\': vm.speed == \'fast\'}" ng-click="vm.playSpeedUpdate(\'fast\')" title="View replay in fast mode">Fast</button>\n	                    <button class="Button fn-fullScreenButton" ng-click="vm.toggleFullScreen()" title="View replay in full screen"><i class="PlayerControls-fullscreenIcon fa" ng-class="{\'fa-compress fa-flip-horizontal\': vm.viewState.isFullScreen, \'fa-arrows-alt\' : !vm.viewState.isFullScreen}"></i></button>\n                    </div>\n                </section>\n            </div>\n        </div>\n    </div>\n</section>'},function(t,n,e){"use strict";t.exports=function(t){function n(){return{scope:{metaData:"=",seatsData:"=",secondsUntilNextFrame:"="},controller:"ReplayerPlayersCtrl",controllerAs:"vm",bindToController:!0,template:e(229)}}function a(){}t.directive("replayerPlayers",n).controller("ReplayerPlayersCtrl",a)}},function(t,n){t.exports='<div class="seats Replayer-seats">\n	<div ng-repeat="(seatNo,seatData) in vm.seatsData track by seatNo; seats = seatNo">\n		<div title="{{ seatData.title }}"\n				 class="{{ \'Replayer-seat seat seat-\' + seatNo + \' Replayer-seat--\' + (seatNo < seats / 2 && \'right\' || \'left\') }}"\n		     ng-class="{\n					\'is-acting\' : seatData.acting,\n					\'has-folded\' : (!seatData.in_hand && !seatData.mucked) || seatData.is_afk || seatData.sit_out,\n					\'has-mucked\' : seatData.mucked,\n					\'is-occupied\' : seatData.state == \'OCCUPIED\',\n					\'is-hidden\' : seatData.state == \'HIDDEN\',\n					\'is-open\' : (seatData.state != \'OCCUPIED\' && seatData.state != \'HIDDEN\')\n					}">\n\n			<div class="Replayer-seat-background"></div>\n			<div class="Replayer-seat-foreground"></div>\n\n			<div ng-if="seatData.state == \'OCCUPIED\'">\n\n				<div class="Replayer-seatInfo">\n					<div ng-if="!seatData.sit_out && !seatData.acting && seatData.last_action.text" class="Replayer-seatInfo-item Replayer-seat-action"><span class="Replayer-seatInfo-value">{{seatData.last_action.text}}</span></div>\n					<div ng-if="seatData.sit_out" class="Replayer-seatInfo-item Replayer-seat-status"><span class="Replayer-seatInfo-value">Sitting Out</span></div>\n					<div ng-if="seatData.acting" class="Replayer-seatInfo-item Replayer-seat-timer {{vm.secondsUntilNextFrame % 2 == 0 ? \'Replayer-seat-timer--counting\' : \'\'}}">\n						<span class="Replayer-seatInfo-value">{{ vm.secondsUntilNextFrame }}</span>\n					</div>\n				</div>\n\n				<div class="Replayer-holeCards" ng-class="\'Replayer-holeCards--\'+(seatData.cards.length)">\n					<div class="Card Card--{{cardNo}} Card--{{cardValue}}" ng-repeat="(cardNo,cardValue) in seatData.cards track by cardNo"></div>\n				</div>\n			</div>\n		</div>\n	</div>\n</div>\n'},function(t,n,e){"use strict";t.exports=function(t){function n(){return{scope:{frameData:"="},controller:"TableCommunityCardsCtrl",controllerAs:"vm",bindToController:!0,template:e(231)}}function a(){}t.directive("replayerTableCommunityCards",n).controller("TableCommunityCardsCtrl",a)}},function(t,n){t.exports='<div ng-class="&quot;cards-&quot;+count(vm.frameData.table_data.cards)" class="Replayer-communityCards">\n\n	<div ng-repeat="(cardNo,cardData) in vm.frameData.table_data.cards_on_board track by cardNo"\n			 ng-animate="{enter: \'animate-enter\', leave: \'animate-leave\'}"\n\n			 class="Card Card--{{cardNo}} Card--{{cardData}}"></div>\n\n</div>\n'},function(t,n,e){"use strict";t.exports=function(t){function n(t,n){return{scope:{tableData:"="},controller:"TableInfoCtrl",controllerAs:"vm",bindToController:!0,link:function(a,r,i){var o=n.getTemplateUrl(e(233),"./replayer-table-info.template",i.version);r.html(o),t(r.contents())(a)}}}function a(){function t(){}function n(){return"tourney"===e.tableData.game_type}var e=this;e.isTourney=n,t()}t.directive("replayerTableInfo",n).controller("TableInfoCtrl",a),n.$inject=["$compile","templateService"]}},function(t,n,e){function a(t){return e(r(t))}function r(t){return i[t]||function(){throw new Error("Cannot find module '"+t+"'.")}()}var i={"./replayer-table-info.component":232,"./replayer-table-info.component.js":232,"./replayer-table-info.template":234,"./replayer-table-info.template.html":234,"./replayer-table-info.template.v2":235,"./replayer-table-info.template.v2.html":235};a.keys=function(){return Object.keys(i)},a.resolve=r,t.exports=a,a.id=233},function(t,n){t.exports='<header class="TableInfo-wrapper">\n	<div class="TableInfo" ng-if="vm.isTourney()">\n		<div class="TableInfo-item">\n			<label class="TableInfo-itemLabel">Tournament:</label>\n	    <span class="TableInfo-itemValue">{{ vm.tableData.tournament_info.title }}</span>\n		</div>\n\n		<div class="TableInfo-seperator"></div>\n\n		<div class="TableInfo-item">\n			<label class="TableInfo-itemLabel">Prize pool:</label>\n	    <span class="TableInfo-itemValue">{{ vm.tableData.tournament_info.prize_pool }}</span>\n		</div>\n\n		<div class="TableInfo-item--right">\n			<label class="TableInfo-itemLabel">Entries:</label>\n			<span class="TableInfo-itemValue">{{ vm.tableData.tournament_info.entrants }}</span>\n			<label class="TableInfo-itemLabel">Position:</label>\n			<span class="TableInfo-itemValue">{{ vm.tableData.tournament_info.current_position }}</span> of <span class="TableInfo-itemValue">{{ vm.tableData.tournament_info.remaining }}</span>\n		</div>\n	</div>\n\n	<div class="TableInfo" ng-if="!vm.isTourney()">\n		<div class="TableInfo-item">\n			<label class="TableInfo-itemLabel">Table:</label>\n			<span class="TableInfo-itemValue">{{ vm.tableData.table_name }}</span>\n		</div>\n\n		<div class="TableInfo-seperator"></div>\n\n		<div class="TableInfo-item">\n			<label class="TableInfo-itemLabel">Stakes:</label>\n			<span class="TableInfo-itemValue">\n				{{ ( vm.tableData.small_blind / vm.tableData.currency.divisor ) | chipsCurrency:vm.tableData.currency.symbol }}\n				/\n				{{ ( vm.tableData.big_blind / vm.tableData.currency.divisor ) | chipsCurrency:vm.tableData.currency.symbol }}\n			</span>\n		</div>\n		<div class="TableInfo-item--right">\n			<label class="TableInfo-itemLabel">Hero:</label>\n			<span class="TableInfo-itemValue">{{ vm.tableData.hero }}</span>\n		</div>\n	</div>\n\n</header>';
+	},function(t,n){t.exports='<header class="TableInfo-wrapper">\n	<div class="TableInfo">\n		<div class="TableInfo-item">\n			<label class="TableInfo-itemLabel">Table:</label>\n			<span class="TableInfo-itemValue">{{ vm.tableData.table_name }}</span>\n		</div>\n\n		<div class="TableInfo-seperator"></div>\n\n		<div class="TableInfo-item">\n			<label class="TableInfo-itemLabel">Blinds:</label>\n			<span class="TableInfo-itemValue">\n				{{ ( vm.tableData.small_blind / vm.tableData.currency.divisor ) | chipsCurrency:vm.tableData.currency.symbol }}\n				/\n				{{ ( vm.tableData.big_blind / vm.tableData.currency.divisor ) | chipsCurrency:vm.tableData.currency.symbol }}\n			</span>\n		</div>\n		<div class="TableInfo-item--right">\n			<label class="TableInfo-itemLabel">Hero:</label>\n			<span class="TableInfo-itemValue">{{ vm.tableData.hero }}</span>\n		</div>\n	</div>\n</header>'},function(t,n,e){"use strict";t.exports=function(t){function n(t,n){return{scope:{data:"="},controller:"TableMetaCtrl",controllerAs:"vm",bindToController:!0,link:function(a,r,i){var o=n.getTemplateUrl(e(237),"./replayer-table-meta.template",i.version);r.html(o),t(r.contents())(a)}}}function a(){}t.directive("replayerTableMeta",n).controller("TableMetaCtrl",a),n.$inject=["$compile","templateService"]}},function(t,n,e){function a(t){return e(r(t))}function r(t){return i[t]||function(){throw new Error("Cannot find module '"+t+"'.")}()}var i={"./replayer-table-meta.component":236,"./replayer-table-meta.component.js":236,"./replayer-table-meta.template":238,"./replayer-table-meta.template.html":238,"./replayer-table-meta.template.v2":239,"./replayer-table-meta.template.v2.html":239};a.keys=function(){return Object.keys(i)},a.resolve=r,t.exports=a,a.id=237},function(t,n){t.exports='<div ng-if="vm.data.frame.table_data.pot" class="Replayer-tablePotTotal">\n	<span class="Replayer-tablePotLabel" ng-if="vm.data.frame.table_data.pot">Pot: {{ ( vm.data.frame.table_data.pot / vm.data.meta.currency.divisor ) | chipsCurrency:vm.data.meta.currency.symbol }}</span>\n</div>\n\n<div class="Replayer-tableBets">\n	<div ng-repeat="(seatNo,seatData) in vm.data.frame.seats track by seatNo" class="Replayer-tableBet Replayer-tableBet--{{seatNo}}" ng-animate-children>\n		<div class="ChipStack-wrapper" ng-animate-children>\n			<div class="ChipStack">\n\n				<span ng-if="seatData.last_action.text == \'Post Ante\' " class="Replayer-betLabel bet--{{vm.data.frame.table_data.ante}} Replayer-betLabel-antes" ng-animate>\n				{{ ( vm.data.frame.table_data.ante / vm.data.meta.currency.divisor ) | chipsCurrency:vm.data.meta.currency.symbol }}\n				</span>\n				<chips-stack class="ChipStack-antes" ng-if="seatData.last_action.text == \'Post Ante\' " bet="vm.data.frame.table_data.ante" divisor="vm.data.meta.currency.divisor"></chips-stack>\n\n				<chips-stack ng-if="seatData.bet" bet="seatData.bet" divisor="vm.data.meta.currency.divisor"></chips-stack>\n				<span ng-if="seatData.bet" class="Replayer-betLabel bet--{{seatData.bet}}"  ng-if="seatData.bet">\n				{{ ( seatData.bet / vm.data.meta.currency.divisor ) | chipsCurrency:vm.data.meta.currency.symbol }}\n				</span>\n\n			</div>\n		</div>\n	</div>\n</div>\n\n<div class="Replayer-tablePots {{vm.data.frame.table_data.ante ? \'is-antes\' : \'\'}}">\n	<div ng-repeat="(potNo,potData) in vm.data.frame.table_data.pots track by potNo" ng-if="potData" class="pot pot-{{potNo}} Replayer-tablePot Replayer-tablePot--winnerSeat-{{potData.winner}}">\n\n		<div class="ChipStack ChipStack--tablePot">\n			<chips-stack bet="potData.amount" divisor="vm.data.meta.currency.divisor"></chips-stack>\n		</div>\n\n		<span class="Replayer-tablePotLabel">{{ ( potData.amount / vm.data.meta.currency.divisor ) | chipsCurrency:vm.data.meta.currency.symbol }}</span>\n	</div>\n</div>\n<div class="dealer-{{vm.data.meta.button_seat}} Replayer-tableDealer Replayer-tableDealer--{{vm.data.meta.button_seat}}"></div>\n'},function(t,n){t.exports='<div ng-if="vm.data.frame.table_data.pot" class="Replayer-tablePotTotal">\n	<span class="Replayer-tablePotLabel" ng-if="vm.data.frame.table_data.pot">Pot: {{ ( vm.data.frame.table_data.pot / vm.data.meta.currency.divisor ) | chipsCurrency:vm.data.meta.currency.symbol }}</span>\n</div>\n\n<div class="Replayer-tableBets">\n	<div ng-repeat="(seatNo,seatData) in vm.data.frame.seats track by seatNo" class="Replayer-tableBet Replayer-tableBet--{{seatNo}}" ng-animate-children>\n		<div class="ChipStack-wrapper" ng-animate-children>\n			<div class="ChipStack">\n\n				<span ng-if="seatData.last_action.text == \'Post Ante\' " class="Replayer-betLabel bet--{{vm.data.frame.table_data.ante}} Replayer-betLabel-antes" ng-animate>\n				{{ ( vm.data.frame.table_data.ante / vm.data.meta.currency.divisor ) | chipsCurrency:vm.data.meta.currency.symbol }}\n				</span>\n				<chips-stack class="ChipStack-antes" ng-if="seatData.last_action.text == \'Post Ante\' " bet="vm.data.frame.table_data.ante" divisor="vm.data.meta.currency.divisor"></chips-stack>\n\n				<chips-stack ng-if="seatData.bet" bet="seatData.bet" divisor="vm.data.meta.currency.divisor"></chips-stack>\n				<span ng-if="seatData.bet" class="Replayer-betLabel bet--{{seatData.bet}}"  ng-if="seatData.bet">\n				{{ ( seatData.bet / vm.data.meta.currency.divisor ) | chipsCurrency:vm.data.meta.currency.symbol }}\n				</span>\n\n			</div>\n		</div>\n	</div>\n</div>\n\n<div class="Replayer-tablePots {{vm.data.frame.table_data.ante ? \'is-antes\' : \'\'}}">\n	<!-- todo: add the .Replayer-tablePots--winnerSeat-@{winnerSeatNumber} class to animate the pot to the winner -->\n	<div ng-repeat="(potNo,potData) in vm.data.frame.table_data.pots track by potNo" ng-if="potData" class="pot pot-{{potNo}} Replayer-tablePot">\n\n		<div class="ChipStack ChipStack--tablePot">\n			<chips-stack bet="potData" divisor="vm.data.meta.currency.divisor"></chips-stack>\n		</div>\n\n		<span class="Replayer-tablePotLabel">{{ ( potData / vm.data.meta.currency.divisor ) | chipsCurrency:vm.data.meta.currency.symbol }}</span>\n	</div>\n</div>\n<div class="dealer-{{vm.data.meta.dealer}} Replayer-tableDealer Replayer-tableDealer--{{vm.data.meta.dealer}}"></div>\n'},function(t,n,e){t.exports=e.p+"fixtures/7.json?cf307ebbfe8381748949e033d4f83ce8"},function(t,n,e){t.exports=e.p+"fixtures/8.json?8bec1a60620de94f3621f0ab65bc22c6"},function(t,n,e){t.exports=e.p+"fixtures/1.json?4fb68329f9aed0dee1caf7b97cf9e0a3"},function(t,n,e){t.exports=e.p+"fixtures/2.json?fcdb2fb22062befe5928df0512679bc3"},function(t,n,e){t.exports=e.p+"fixtures/18.json?0e81b516301d7b8d28c0cf1dba0949f6"},function(t,n,e){t.exports=e.p+"fixtures/19.json?09cb090522d1defb05b47559dd269bc3"},function(t,n,e){t.exports=e.p+"fixtures/20.json?7ea5e0b515f844b8c1807e714c0e4558"},function(t,n,e){t.exports=e.p+"fixtures/21.json?0c2e1b3b81b43c51e6c4f5e4295bc7ce"},function(t,n,e){t.exports=e.p+"fixtures/22.json?09cb090522d1defb05b47559dd269bc3"},function(t,n,e){t.exports=e.p+"fixtures/23.json?01a3d4affd27ef5ef5b61751131f12b8"}]);
+	//# sourceMappingURL=jivaro-web-replayer.min.js.map
 
 /***/ }
 

@@ -1,9 +1,4 @@
-@import "../../../assets/less/app/core";
-@import "../../../assets/less/utils/text";
-@import "../../../assets/less/utils/layout";
-@import "../../../assets/less/legos";
-@import "../../../assets/less/structure/base";
-@import "../../../assets/less/structure/layouts";
+@import "../../../assets/less/app";
 @import "../../../assets/font-awesome/less/font-awesome";
 
 // Hand History list box
@@ -190,8 +185,13 @@
   padding: 9px;
   border-radius: 3px;
   min-height: 20px;
-  .margin-top(5);
-  background-color: darken(@base-backgroundColor, 10%);
+  .margin-top(4);
+  background-color: darken(@base-backgroundColor, 14%);
   color: @base-color--light;
 }
 
+.TableContainer {
+  /* Scaling calculation will be based from the height */
+  width: 418px;
+  height: 639px
+}

@@ -35,8 +35,19 @@
         <div class="Grid-col--2--tablet Grid-col--12 Grid--alignRight">
             <div class="HandHistory-gameItem-actions">
                 <button class="Button Button--icon fn-shareButton" ng-click="$ctrl.shareClick(detail.replay_id)"><span class="Circle"><i class="fa fa-share-alt Button-icon"></i></span></button>
-                <button class="Button Button--icon fn-playButton" ng-click="$ctrl.click()"><span class="Circle"><i class="fa fa-play Button-icon"></i></span></button>
+                <button class="Button Button--icon fn-playButton" ng-click="$ctrl.replayClick(detail.replay_id)"><span class="Circle"><i class="fa fa-play Button-icon"></i></span></button>
             </div>
         </div>
     </div>
 </div>
+
+<ui-modal modal-id="'replayModal'" visible="$ctrl.showModal" max-width="'200px'">
+    <modal-body>
+        <div class="TableContainer"
+             id="table-container-{{$ctrl.replayData._id}}"
+             screenfull=""
+             ng-class="{'is-fullScreen' : $ctrl.replayData.isFullScreen, 'is-paused': $ctrl.replayData.playStatus=='paused', 'is-playing': $ctrl.replayData.playStatus=='playing', 'is-finished': $ctrl.replayData.playStatus=='finished'}">
+            <replayer ng-if="$ctrl.replayData" data="$ctrl.replayData"></replayer>
+        </div>
+    </modal-body>
+</ui-modal>

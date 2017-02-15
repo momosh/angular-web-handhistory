@@ -6,7 +6,12 @@ export class ReplayService {
     }
 
     shareReplay(id) {
-        return this.$http.post('/replay/' + id , {})
+        return this.$http.post('/replay/' + id, {})
+            .then(res => { return res.data; });
+    }
+
+    getReplay(id) {
+        return this.$http.get('/replay/' + id)
             .then(res => { return res.data; });
     }
 }
