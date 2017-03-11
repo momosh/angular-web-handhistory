@@ -52,7 +52,7 @@ class FilterController {
         this.filterModel.won = !this.filterModel.won;
         this.onFilterClick(
             this.EventEmmiter({
-                outcome: 'won',
+                outcome: true,
                 query: this.filterModel.won
             })
         );
@@ -66,7 +66,7 @@ class FilterController {
         this.filterModel.lost = !this.filterModel.lost;
         this.onFilterClick(
             this.EventEmmiter({
-                outcome: 'lost',
+                outcome: false,
                 query: this.filterModel.lost
             })
         );
