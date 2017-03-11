@@ -683,7 +683,7 @@
 
 	            this.filterModel.won = !this.filterModel.won;
 	            this.onFilterClick(this.EventEmmiter({
-	                outcome: 'won',
+	                outcome: true,
 	                query: this.filterModel.won
 	            }));
 	            this.sendScrollPosiotionResetEvent();
@@ -696,7 +696,7 @@
 
 	            this.filterModel.lost = !this.filterModel.lost;
 	            this.onFilterClick(this.EventEmmiter({
-	                outcome: 'lost',
+	                outcome: false,
 	                query: this.filterModel.lost
 	            }));
 	            this.sendScrollPosiotionResetEvent();
